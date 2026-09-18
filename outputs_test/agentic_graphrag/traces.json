@@ -1,0 +1,1109 @@
+[
+  {
+    "qid": "pub-001",
+    "question": "According to the provided corpus, how many biathlon events at the 2018 Winter Olympics had more than 73 competitors?",
+    "qtype": "aggregation",
+    "complexity_level": 4,
+    "steps_count": 2,
+    "agents_invoked": [
+      "EntityLinkingAgent",
+      "StructuralAggregatorAgent"
+    ],
+    "tools_called": [
+      "link_question_entities",
+      "aggregate_event_count"
+    ],
+    "total_tokens": 205,
+    "prompt_tokens": 153,
+    "completion_tokens": 51,
+    "latency_ms": 1.87,
+    "confidence": 0.98,
+    "stopping_reason": "Aggregated 5 qualifying events exceeding competitor threshold from graph structure.",
+    "citations": [
+      {
+        "title": "Biathlon at the 2018 Winter Olympics – Mixed relay",
+        "doc_id": "Q47155555",
+        "url": ""
+      },
+      {
+        "title": "Biathlon at the 2018 Winter Olympics – Women's sprint",
+        "doc_id": "Q47091419",
+        "url": ""
+      },
+      {
+        "title": "Biathlon at the 2018 Winter Olympics – Men's sprint",
+        "doc_id": "Q47105341",
+        "url": ""
+      },
+      {
+        "title": "Biathlon at the 2018 Winter Olympics – Women's individual",
+        "doc_id": "Q47155425",
+        "url": ""
+      },
+      {
+        "title": "Biathlon at the 2018 Winter Olympics – Men's individual",
+        "doc_id": "Q47155408",
+        "url": ""
+      }
+    ],
+    "cited_doc_ids": [
+      "Q47155555",
+      "Q47091419",
+      "Q47105341",
+      "Q47155425",
+      "Q47155408"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "agent_name": "EntityLinkingAgent",
+        "tool_name": "link_question_entities",
+        "action_description": "Extract and link named entities, sports, venues, dates, and conditions",
+        "tool_input": {
+          "question": "According to the provided corpus, how many biathlon events at the 2018 Winter Olympics had more than 73 competitors?"
+        },
+        "tool_output": {
+          "venues": [],
+          "sports": [
+            "Biathlon"
+          ],
+          "games": [
+            "2018 Winter"
+          ],
+          "years": [
+            2018
+          ],
+          "dates": [],
+          "competitors_threshold": 73,
+          "superlative_target": null
+        },
+        "tokens_used": 65,
+        "latency_ms": 1.0,
+        "strategy_changed": false,
+        "decision_reasoning": "Identified entities: sports=['Biathlon'], venues=[], dates=[]"
+      },
+      {
+        "step_number": 2,
+        "agent_name": "StructuralAggregatorAgent",
+        "tool_name": "aggregate_event_count",
+        "action_description": "Query graph for count of Biathlon events in 2018 Winter with > 73 competitors",
+        "tool_input": {
+          "games": "2018 Winter",
+          "sport": "Biathlon",
+          "min_competitors": 73
+        },
+        "tool_output": {
+          "query_type": "aggregation_count",
+          "games": "2018 Winter",
+          "sport": "Biathlon",
+          "min_competitors": 73,
+          "count": 5,
+          "qualifying_events": [
+            {
+              "title": "Biathlon at the 2018 Winter Olympics – Mixed relay",
+              "doc_id": "Q47155555",
+              "competitors": 80
+            },
+            {
+              "title": "Biathlon at the 2018 Winter Olympics – Women's sprint",
+              "doc_id": "Q47091419",
+              "competitors": 87
+            },
+            {
+              "title": "Biathlon at the 2018 Winter Olympics – Men's sprint",
+              "doc_id": "Q47105341",
+              "competitors": 87
+            },
+            {
+              "title": "Biathlon at the 2018 Winter Olympics – Women's individual",
+              "doc_id": "Q47155425",
+              "competitors": 87
+            },
+            {
+              "title": "Biathlon at the 2018 Winter Olympics – Men's individual",
+              "doc_id": "Q47155408",
+              "competitors": 86
+            }
+          ],
+          "gsql_equivalent": "INTERPRET QUERY () FOR GRAPH OlympicGraph {\n  SumAccum<INT> @@count = 0;\n  Events = SELECT e FROM Games:g -(IN_GAMES_REVERSE:e)-> Event:e\n           WHERE g.name LIKE \"%2018 Winter%\" \n             AND e.sport LIKE \"%Biathlon%\"\n             AND e.competitors > 73\n           ACCUM @@count += 1;\n  PRINT @@count;\n}"
+        },
+        "tokens_used": 140,
+        "latency_ms": 0.82,
+        "strategy_changed": false,
+        "decision_reasoning": "Found 5 qualifying events matching criteria in graph structure"
+      }
+    ]
+  },
+  {
+    "qid": "pub-002",
+    "question": "Who won the gold medal in the men's 20 kilometres walk athletics event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "complexity_level": 2,
+    "steps_count": 2,
+    "agents_invoked": [
+      "EntityLinkingAgent",
+      "GraphTraversalAgent"
+    ],
+    "tools_called": [
+      "link_question_entities",
+      "traverse_temporal_predecessor"
+    ],
+    "total_tokens": 175,
+    "prompt_tokens": 130,
+    "completion_tokens": 43,
+    "latency_ms": 1.97,
+    "confidence": 0.96,
+    "stopping_reason": "Temporal predecessor path resolved gold medalist 'Chen Ding'.",
+    "citations": [
+      {
+        "title": "Athletics at the 2012 Summer Olympics – Men's 20 kilometres walk",
+        "doc_id": "Q1050909",
+        "url": "https://en.wikipedia.org/wiki/Athletics_at_the_2012_Summer_Olympics_%E2%80%93_Men%27s_20_kilometres_walk"
+      }
+    ],
+    "cited_doc_ids": [
+      "Q1050909"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "agent_name": "EntityLinkingAgent",
+        "tool_name": "link_question_entities",
+        "action_description": "Extract and link named entities, sports, venues, dates, and conditions",
+        "tool_input": {
+          "question": "Who won the gold medal in the men's 20 kilometres walk athletics event at the Summer Olympics held immediately before 2016?"
+        },
+        "tool_output": {
+          "venues": [],
+          "sports": [
+            "Athletics"
+          ],
+          "games": [
+            "2016 Summer"
+          ],
+          "years": [
+            2016
+          ],
+          "dates": [],
+          "competitors_threshold": null,
+          "superlative_target": null
+        },
+        "tokens_used": 65,
+        "latency_ms": 0.94,
+        "strategy_changed": false,
+        "decision_reasoning": "Identified entities: sports=['Athletics'], venues=[], dates=[]"
+      },
+      {
+        "step_number": 2,
+        "agent_name": "GraphTraversalAgent",
+        "tool_name": "traverse_temporal_predecessor",
+        "action_description": "Follow PREV_GAMES link from 2016 Summer for Athletics event",
+        "tool_input": {
+          "event_description": "Who won the gold medal in the men's 20 kilometres walk athletics event at the Summer Olympics held immediately before 2016?",
+          "sport": "Athletics",
+          "year": 2016,
+          "season": "Summer"
+        },
+        "tool_output": {
+          "found": true,
+          "event_title": "Athletics at the 2012 Summer Olympics – Men's 20 kilometres walk",
+          "doc_id": "Q1050909",
+          "games": "2012 Summer",
+          "year": 2012,
+          "gold_winners": [
+            "Chen Ding"
+          ],
+          "gold_noc": [
+            "CHN"
+          ],
+          "url": "https://en.wikipedia.org/wiki/Athletics_at_the_2012_Summer_Olympics_%E2%80%93_Men%27s_20_kilometres_walk",
+          "path": "Event(Who won the gold medal in the men's 20 kilometres walk athletics event at the Summer Olympics held immediately before 2016?) -[TARGET_YEAR:2016]-> PREV_GAMES(2012 Summer) -> Event(Athletics at the 2012 Summer Olympics – Men's 20 kilometres walk) -> WON_GOLD(['Chen Ding'])"
+        },
+        "tokens_used": 110,
+        "latency_ms": 1.0,
+        "strategy_changed": false,
+        "decision_reasoning": "Resolved predecessor event: Athletics at the 2012 Summer Olympics – Men's 20 kilometres walk -> Winner: ['Chen Ding']"
+      }
+    ]
+  },
+  {
+    "qid": "pub-003",
+    "question": "According to the provided corpus, how many shooting events at the 2004 Summer Olympics had more than 37 competitors?",
+    "qtype": "aggregation",
+    "complexity_level": 4,
+    "steps_count": 2,
+    "agents_invoked": [
+      "EntityLinkingAgent",
+      "StructuralAggregatorAgent"
+    ],
+    "tools_called": [
+      "link_question_entities",
+      "aggregate_event_count"
+    ],
+    "total_tokens": 205,
+    "prompt_tokens": 153,
+    "completion_tokens": 51,
+    "latency_ms": 2.64,
+    "confidence": 0.98,
+    "stopping_reason": "Aggregated 8 qualifying events exceeding competitor threshold from graph structure.",
+    "citations": [
+      {
+        "title": "Shooting at the 2004 Summer Olympics – Men's 50 metre pistol",
+        "doc_id": "Q7500827",
+        "url": ""
+      },
+      {
+        "title": "Shooting at the 2004 Summer Olympics – Men's 50 metre rifle prone",
+        "doc_id": "Q7500832",
+        "url": ""
+      },
+      {
+        "title": "Shooting at the 2004 Summer Olympics – Men's skeet",
+        "doc_id": "Q7500834",
+        "url": ""
+      },
+      {
+        "title": "Shooting at the 2004 Summer Olympics – Men's 50 metre rifle three positions",
+        "doc_id": "Q5395306",
+        "url": ""
+      },
+      {
+        "title": "Shooting at the 2004 Summer Olympics – Men's 10 metre air rifle",
+        "doc_id": "Q7500829",
+        "url": ""
+      },
+      {
+        "title": "Shooting at the 2004 Summer Olympics – Women's 10 metre air rifle",
+        "doc_id": "Q4354074",
+        "url": ""
+      },
+      {
+        "title": "Shooting at the 2004 Summer Olympics – Men's 10 metre air pistol",
+        "doc_id": "Q4354615",
+        "url": ""
+      },
+      {
+        "title": "Shooting at the 2004 Summer Olympics – Women's 10 metre air pistol",
+        "doc_id": "Q5481589",
+        "url": ""
+      }
+    ],
+    "cited_doc_ids": [
+      "Q7500827",
+      "Q7500832",
+      "Q7500834",
+      "Q5395306",
+      "Q7500829",
+      "Q4354074",
+      "Q4354615",
+      "Q5481589"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "agent_name": "EntityLinkingAgent",
+        "tool_name": "link_question_entities",
+        "action_description": "Extract and link named entities, sports, venues, dates, and conditions",
+        "tool_input": {
+          "question": "According to the provided corpus, how many shooting events at the 2004 Summer Olympics had more than 37 competitors?"
+        },
+        "tool_output": {
+          "venues": [],
+          "sports": [
+            "Shooting"
+          ],
+          "games": [
+            "2004 Summer"
+          ],
+          "years": [
+            2004
+          ],
+          "dates": [],
+          "competitors_threshold": 37,
+          "superlative_target": null
+        },
+        "tokens_used": 65,
+        "latency_ms": 0.99,
+        "strategy_changed": false,
+        "decision_reasoning": "Identified entities: sports=['Shooting'], venues=[], dates=[]"
+      },
+      {
+        "step_number": 2,
+        "agent_name": "StructuralAggregatorAgent",
+        "tool_name": "aggregate_event_count",
+        "action_description": "Query graph for count of Shooting events in 2004 Summer with > 37 competitors",
+        "tool_input": {
+          "games": "2004 Summer",
+          "sport": "Shooting",
+          "min_competitors": 37
+        },
+        "tool_output": {
+          "query_type": "aggregation_count",
+          "games": "2004 Summer",
+          "sport": "Shooting",
+          "min_competitors": 37,
+          "count": 8,
+          "qualifying_events": [
+            {
+              "title": "Shooting at the 2004 Summer Olympics – Men's 50 metre pistol",
+              "doc_id": "Q7500827",
+              "competitors": 42
+            },
+            {
+              "title": "Shooting at the 2004 Summer Olympics – Men's 50 metre rifle prone",
+              "doc_id": "Q7500832",
+              "competitors": 46
+            },
+            {
+              "title": "Shooting at the 2004 Summer Olympics – Men's skeet",
+              "doc_id": "Q7500834",
+              "competitors": 41
+            },
+            {
+              "title": "Shooting at the 2004 Summer Olympics – Men's 50 metre rifle three positions",
+              "doc_id": "Q5395306",
+              "competitors": 40
+            },
+            {
+              "title": "Shooting at the 2004 Summer Olympics – Men's 10 metre air rifle",
+              "doc_id": "Q7500829",
+              "competitors": 47
+            },
+            {
+              "title": "Shooting at the 2004 Summer Olympics – Women's 10 metre air rifle",
+              "doc_id": "Q4354074",
+              "competitors": 44
+            },
+            {
+              "title": "Shooting at the 2004 Summer Olympics – Men's 10 metre air pistol",
+              "doc_id": "Q4354615",
+              "competitors": 47
+            },
+            {
+              "title": "Shooting at the 2004 Summer Olympics – Women's 10 metre air pistol",
+              "doc_id": "Q5481589",
+              "competitors": 41
+            }
+          ],
+          "gsql_equivalent": "INTERPRET QUERY () FOR GRAPH OlympicGraph {\n  SumAccum<INT> @@count = 0;\n  Events = SELECT e FROM Games:g -(IN_GAMES_REVERSE:e)-> Event:e\n           WHERE g.name LIKE \"%2004 Summer%\" \n             AND e.sport LIKE \"%Shooting%\"\n             AND e.competitors > 37\n           ACCUM @@count += 1;\n  PRINT @@count;\n}"
+        },
+        "tokens_used": 140,
+        "latency_ms": 1.59,
+        "strategy_changed": false,
+        "decision_reasoning": "Found 8 qualifying events matching criteria in graph structure"
+      }
+    ]
+  },
+  {
+    "qid": "pub-004",
+    "question": "According to the provided corpus, which athletics event at the 2008 Summer Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "complexity_level": 4,
+    "steps_count": 2,
+    "agents_invoked": [
+      "EntityLinkingAgent",
+      "StructuralAggregatorAgent"
+    ],
+    "tools_called": [
+      "link_question_entities",
+      "get_superlative_event"
+    ],
+    "total_tokens": 185,
+    "prompt_tokens": 138,
+    "completion_tokens": 46,
+    "latency_ms": 2.09,
+    "confidence": 0.98,
+    "stopping_reason": "Identified maximal event 'Athletics at the 2008 Summer Olympics – Men's marathon' with highest value (95) from graph.",
+    "citations": [
+      {
+        "title": "Athletics at the 2008 Summer Olympics – Men's marathon",
+        "doc_id": "Q693595",
+        "url": "https://en.wikipedia.org/wiki/Athletics_at_the_2008_Summer_Olympics_%E2%80%93_Men%27s_marathon"
+      }
+    ],
+    "cited_doc_ids": [
+      "Q693595"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "agent_name": "EntityLinkingAgent",
+        "tool_name": "link_question_entities",
+        "action_description": "Extract and link named entities, sports, venues, dates, and conditions",
+        "tool_input": {
+          "question": "According to the provided corpus, which athletics event at the 2008 Summer Olympics had the highest number of competitors?"
+        },
+        "tool_output": {
+          "venues": [],
+          "sports": [
+            "Athletics"
+          ],
+          "games": [
+            "2008 Summer"
+          ],
+          "years": [
+            2008
+          ],
+          "dates": [],
+          "competitors_threshold": null,
+          "superlative_target": "competitors"
+        },
+        "tokens_used": 65,
+        "latency_ms": 1.0,
+        "strategy_changed": false,
+        "decision_reasoning": "Identified entities: sports=['Athletics'], venues=[], dates=[]"
+      },
+      {
+        "step_number": 2,
+        "agent_name": "StructuralAggregatorAgent",
+        "tool_name": "get_superlative_event",
+        "action_description": "Traverse graph to find Athletics event at 2008 Summer with highest competitors",
+        "tool_input": {
+          "games": "2008 Summer",
+          "sport": "Athletics",
+          "attribute": "competitors"
+        },
+        "tool_output": {
+          "query_type": "superlative_max",
+          "found": true,
+          "games": "2008 Summer",
+          "sport": "Athletics",
+          "attribute": "competitors",
+          "max_value": 95,
+          "event_title": "Athletics at the 2008 Summer Olympics – Men's marathon",
+          "doc_id": "Q693595",
+          "url": "https://en.wikipedia.org/wiki/Athletics_at_the_2008_Summer_Olympics_%E2%80%93_Men%27s_marathon",
+          "gsql_equivalent": "INTERPRET QUERY () FOR GRAPH OlympicGraph {\n  MaxAccum<INT> @@max_comp = 0;\n  Events = SELECT e FROM Games:g -(IN_GAMES_REVERSE:e)-> Event:e\n           WHERE g.name LIKE \"%2008 Summer%\" AND e.sport LIKE \"%Athletics%\"\n           ACCUM @@max_comp += e.competitors\n           ORDER BY e.competitors DESC\n           LIMIT 1;\n  PRINT Events;\n}"
+        },
+        "tokens_used": 120,
+        "latency_ms": 1.05,
+        "strategy_changed": false,
+        "decision_reasoning": "Identified maximal event: Athletics at the 2008 Summer Olympics – Men's marathon with 95 competitors"
+      }
+    ]
+  },
+  {
+    "qid": "pub-005",
+    "question": "Who won the gold medal in the event held at Olympic Weightlifting Gymnasium on 20 September 1988?",
+    "qtype": "multi_hop",
+    "complexity_level": 3,
+    "steps_count": 2,
+    "agents_invoked": [
+      "EntityLinkingAgent",
+      "GraphTraversalAgent"
+    ],
+    "tools_called": [
+      "link_question_entities",
+      "traverse_venue_event_winner"
+    ],
+    "total_tokens": 190,
+    "prompt_tokens": 141,
+    "completion_tokens": 47,
+    "latency_ms": 6.64,
+    "confidence": 0.95,
+    "stopping_reason": "Multi-hop venue and date constraint resolved gold medalist 'Naim Süleymanoğlu'.",
+    "citations": [
+      {
+        "title": "Weightlifting at the 1988 Summer Olympics – Men's 60 kg",
+        "doc_id": "Q25239316",
+        "url": "https://en.wikipedia.org/wiki/Weightlifting_at_the_1988_Summer_Olympics_%E2%80%93_Men%27s_60_kg"
+      }
+    ],
+    "cited_doc_ids": [
+      "Q25239316"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "agent_name": "EntityLinkingAgent",
+        "tool_name": "link_question_entities",
+        "action_description": "Extract and link named entities, sports, venues, dates, and conditions",
+        "tool_input": {
+          "question": "Who won the gold medal in the event held at Olympic Weightlifting Gymnasium on 20 September 1988?"
+        },
+        "tool_output": {
+          "venues": [
+            "Olympic Weightlifting Gymnasium"
+          ],
+          "sports": [
+            "Weightlifting"
+          ],
+          "games": [
+            "1988 Summer"
+          ],
+          "years": [
+            1988
+          ],
+          "dates": [
+            "20 September 1988"
+          ],
+          "competitors_threshold": null,
+          "superlative_target": null
+        },
+        "tokens_used": 65,
+        "latency_ms": 0.97,
+        "strategy_changed": false,
+        "decision_reasoning": "Identified entities: sports=['Weightlifting'], venues=['Olympic Weightlifting Gymnasium'], dates=['20 September 1988']"
+      },
+      {
+        "step_number": 2,
+        "agent_name": "GraphTraversalAgent",
+        "tool_name": "traverse_venue_event_winner",
+        "action_description": "Traverse Venue(Olympic Weightlifting Gymnasium) <- HELD_AT - Event(on 20 September 1988) -> WON_GOLD",
+        "tool_input": {
+          "venue": "Olympic Weightlifting Gymnasium",
+          "date": "20 September 1988"
+        },
+        "tool_output": {
+          "found": true,
+          "matches_count": 1,
+          "event_title": "Weightlifting at the 1988 Summer Olympics – Men's 60 kg",
+          "doc_id": "Q25239316",
+          "venue": "Olympic Weightlifting Gymnasium",
+          "date": "20 September 1988",
+          "gold_winners": [
+            "Naim Süleymanoğlu"
+          ],
+          "gold_noc": [
+            "TUR"
+          ],
+          "competitors": 17,
+          "url": "https://en.wikipedia.org/wiki/Weightlifting_at_the_1988_Summer_Olympics_%E2%80%93_Men%27s_60_kg",
+          "path": "Venue(Olympic Weightlifting Gymnasium) <-[HELD_AT]- Event(Weightlifting at the 1988 Summer Olympics – Men's 60 kg on 20 September 1988) -[WON_GOLD]-> Athlete(['Naim Süleymanoğlu'])"
+        },
+        "tokens_used": 125,
+        "latency_ms": 5.63,
+        "strategy_changed": false,
+        "decision_reasoning": "Matched event: Weightlifting at the 1988 Summer Olympics – Men's 60 kg -> Gold winner: ['Naim Süleymanoğlu']"
+      }
+    ]
+  },
+  {
+    "qid": "pub-006",
+    "question": "Who won the gold medal in the women's 57 kg judo event at the Summer Olympics held immediately before 2020?",
+    "qtype": "temporal",
+    "complexity_level": 2,
+    "steps_count": 2,
+    "agents_invoked": [
+      "EntityLinkingAgent",
+      "GraphTraversalAgent"
+    ],
+    "tools_called": [
+      "link_question_entities",
+      "traverse_temporal_predecessor"
+    ],
+    "total_tokens": 175,
+    "prompt_tokens": 130,
+    "completion_tokens": 43,
+    "latency_ms": 1.95,
+    "confidence": 0.96,
+    "stopping_reason": "Temporal predecessor path resolved gold medalist 'Haruka Tachimoto'.",
+    "citations": [
+      {
+        "title": "Judo at the 2016 Summer Olympics – Women's 70 kg",
+        "doc_id": "Q26217871",
+        "url": "https://en.wikipedia.org/wiki/Judo_at_the_2016_Summer_Olympics_%E2%80%93_Women%27s_70_kg"
+      }
+    ],
+    "cited_doc_ids": [
+      "Q26217871"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "agent_name": "EntityLinkingAgent",
+        "tool_name": "link_question_entities",
+        "action_description": "Extract and link named entities, sports, venues, dates, and conditions",
+        "tool_input": {
+          "question": "Who won the gold medal in the women's 57 kg judo event at the Summer Olympics held immediately before 2020?"
+        },
+        "tool_output": {
+          "venues": [],
+          "sports": [
+            "Judo"
+          ],
+          "games": [
+            "2020 Summer"
+          ],
+          "years": [
+            2020
+          ],
+          "dates": [],
+          "competitors_threshold": null,
+          "superlative_target": null
+        },
+        "tokens_used": 65,
+        "latency_ms": 0.93,
+        "strategy_changed": false,
+        "decision_reasoning": "Identified entities: sports=['Judo'], venues=[], dates=[]"
+      },
+      {
+        "step_number": 2,
+        "agent_name": "GraphTraversalAgent",
+        "tool_name": "traverse_temporal_predecessor",
+        "action_description": "Follow PREV_GAMES link from 2020 Summer for Judo event",
+        "tool_input": {
+          "event_description": "Who won the gold medal in the women's 57 kg judo event at the Summer Olympics held immediately before 2020?",
+          "sport": "Judo",
+          "year": 2020,
+          "season": "Summer"
+        },
+        "tool_output": {
+          "found": true,
+          "event_title": "Judo at the 2016 Summer Olympics – Women's 70 kg",
+          "doc_id": "Q26217871",
+          "games": "2016 Summer",
+          "year": 2016,
+          "gold_winners": [
+            "Haruka Tachimoto"
+          ],
+          "gold_noc": [
+            "JPN"
+          ],
+          "url": "https://en.wikipedia.org/wiki/Judo_at_the_2016_Summer_Olympics_%E2%80%93_Women%27s_70_kg",
+          "path": "Event(Who won the gold medal in the women's 57 kg judo event at the Summer Olympics held immediately before 2020?) -[TARGET_YEAR:2020]-> PREV_GAMES(2016 Summer) -> Event(Judo at the 2016 Summer Olympics – Women's 70 kg) -> WON_GOLD(['Haruka Tachimoto'])"
+        },
+        "tokens_used": 110,
+        "latency_ms": 0.99,
+        "strategy_changed": false,
+        "decision_reasoning": "Resolved predecessor event: Judo at the 2016 Summer Olympics – Women's 70 kg -> Winner: ['Haruka Tachimoto']"
+      }
+    ]
+  },
+  {
+    "qid": "pub-007",
+    "question": "Who won the gold medal in the men's pole vault athletics event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "complexity_level": 2,
+    "steps_count": 2,
+    "agents_invoked": [
+      "EntityLinkingAgent",
+      "GraphTraversalAgent"
+    ],
+    "tools_called": [
+      "link_question_entities",
+      "traverse_temporal_predecessor"
+    ],
+    "total_tokens": 175,
+    "prompt_tokens": 130,
+    "completion_tokens": 43,
+    "latency_ms": 2.4,
+    "confidence": 0.96,
+    "stopping_reason": "Temporal predecessor path resolved gold medalist 'Renaud Lavillenie'.",
+    "citations": [
+      {
+        "title": "Athletics at the 2012 Summer Olympics – Men's pole vault",
+        "doc_id": "Q2000968",
+        "url": "https://en.wikipedia.org/wiki/Athletics_at_the_2012_Summer_Olympics_%E2%80%93_Men%27s_pole_vault"
+      }
+    ],
+    "cited_doc_ids": [
+      "Q2000968"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "agent_name": "EntityLinkingAgent",
+        "tool_name": "link_question_entities",
+        "action_description": "Extract and link named entities, sports, venues, dates, and conditions",
+        "tool_input": {
+          "question": "Who won the gold medal in the men's pole vault athletics event at the Summer Olympics held immediately before 2016?"
+        },
+        "tool_output": {
+          "venues": [],
+          "sports": [
+            "Athletics"
+          ],
+          "games": [
+            "2016 Summer"
+          ],
+          "years": [
+            2016
+          ],
+          "dates": [],
+          "competitors_threshold": null,
+          "superlative_target": null
+        },
+        "tokens_used": 65,
+        "latency_ms": 1.24,
+        "strategy_changed": false,
+        "decision_reasoning": "Identified entities: sports=['Athletics'], venues=[], dates=[]"
+      },
+      {
+        "step_number": 2,
+        "agent_name": "GraphTraversalAgent",
+        "tool_name": "traverse_temporal_predecessor",
+        "action_description": "Follow PREV_GAMES link from 2016 Summer for Athletics event",
+        "tool_input": {
+          "event_description": "Who won the gold medal in the men's pole vault athletics event at the Summer Olympics held immediately before 2016?",
+          "sport": "Athletics",
+          "year": 2016,
+          "season": "Summer"
+        },
+        "tool_output": {
+          "found": true,
+          "event_title": "Athletics at the 2012 Summer Olympics – Men's pole vault",
+          "doc_id": "Q2000968",
+          "games": "2012 Summer",
+          "year": 2012,
+          "gold_winners": [
+            "Renaud Lavillenie"
+          ],
+          "gold_noc": [
+            "FRA"
+          ],
+          "url": "https://en.wikipedia.org/wiki/Athletics_at_the_2012_Summer_Olympics_%E2%80%93_Men%27s_pole_vault",
+          "path": "Event(Who won the gold medal in the men's pole vault athletics event at the Summer Olympics held immediately before 2016?) -[TARGET_YEAR:2016]-> PREV_GAMES(2012 Summer) -> Event(Athletics at the 2012 Summer Olympics – Men's pole vault) -> WON_GOLD(['Renaud Lavillenie'])"
+        },
+        "tokens_used": 110,
+        "latency_ms": 1.12,
+        "strategy_changed": false,
+        "decision_reasoning": "Resolved predecessor event: Athletics at the 2012 Summer Olympics – Men's pole vault -> Winner: ['Renaud Lavillenie']"
+      }
+    ]
+  },
+  {
+    "qid": "pub-008",
+    "question": "According to the provided corpus, which sailing event at the 2000 Summer Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "complexity_level": 4,
+    "steps_count": 2,
+    "agents_invoked": [
+      "EntityLinkingAgent",
+      "StructuralAggregatorAgent"
+    ],
+    "tools_called": [
+      "link_question_entities",
+      "get_superlative_event"
+    ],
+    "total_tokens": 185,
+    "prompt_tokens": 138,
+    "completion_tokens": 46,
+    "latency_ms": 3.24,
+    "confidence": 0.98,
+    "stopping_reason": "Identified maximal event 'Sailing at the 2000 Summer Olympics – Soling' with highest value (48) from graph.",
+    "citations": [
+      {
+        "title": "Sailing at the 2000 Summer Olympics – Soling",
+        "doc_id": "Q7400333",
+        "url": "https://en.wikipedia.org/wiki/Sailing_at_the_2000_Summer_Olympics_%E2%80%93_Soling"
+      }
+    ],
+    "cited_doc_ids": [
+      "Q7400333"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "agent_name": "EntityLinkingAgent",
+        "tool_name": "link_question_entities",
+        "action_description": "Extract and link named entities, sports, venues, dates, and conditions",
+        "tool_input": {
+          "question": "According to the provided corpus, which sailing event at the 2000 Summer Olympics had the highest number of competitors?"
+        },
+        "tool_output": {
+          "venues": [],
+          "sports": [
+            "Sailing"
+          ],
+          "games": [
+            "2000 Summer"
+          ],
+          "years": [
+            2000
+          ],
+          "dates": [],
+          "competitors_threshold": null,
+          "superlative_target": "competitors"
+        },
+        "tokens_used": 65,
+        "latency_ms": 1.4,
+        "strategy_changed": false,
+        "decision_reasoning": "Identified entities: sports=['Sailing'], venues=[], dates=[]"
+      },
+      {
+        "step_number": 2,
+        "agent_name": "StructuralAggregatorAgent",
+        "tool_name": "get_superlative_event",
+        "action_description": "Traverse graph to find Sailing event at 2000 Summer with highest competitors",
+        "tool_input": {
+          "games": "2000 Summer",
+          "sport": "Sailing",
+          "attribute": "competitors"
+        },
+        "tool_output": {
+          "query_type": "superlative_max",
+          "found": true,
+          "games": "2000 Summer",
+          "sport": "Sailing",
+          "attribute": "competitors",
+          "max_value": 48,
+          "event_title": "Sailing at the 2000 Summer Olympics – Soling",
+          "doc_id": "Q7400333",
+          "url": "https://en.wikipedia.org/wiki/Sailing_at_the_2000_Summer_Olympics_%E2%80%93_Soling",
+          "gsql_equivalent": "INTERPRET QUERY () FOR GRAPH OlympicGraph {\n  MaxAccum<INT> @@max_comp = 0;\n  Events = SELECT e FROM Games:g -(IN_GAMES_REVERSE:e)-> Event:e\n           WHERE g.name LIKE \"%2000 Summer%\" AND e.sport LIKE \"%Sailing%\"\n           ACCUM @@max_comp += e.competitors\n           ORDER BY e.competitors DESC\n           LIMIT 1;\n  PRINT Events;\n}"
+        },
+        "tokens_used": 120,
+        "latency_ms": 1.8,
+        "strategy_changed": false,
+        "decision_reasoning": "Identified maximal event: Sailing at the 2000 Summer Olympics – Soling with 48 competitors"
+      }
+    ]
+  },
+  {
+    "qid": "pub-009",
+    "question": "How many nations competed in Sailing at the 2016 Summer Olympics – Women's RS:X?",
+    "qtype": "lookup",
+    "complexity_level": 1,
+    "steps_count": 2,
+    "agents_invoked": [
+      "EntityLinkingAgent",
+      "VectorSearchAgent"
+    ],
+    "tools_called": [
+      "link_question_entities",
+      "semantic_similarity_search"
+    ],
+    "total_tokens": 245,
+    "prompt_tokens": 183,
+    "completion_tokens": 61,
+    "latency_ms": 8.13,
+    "confidence": 0.92,
+    "stopping_reason": "Direct lookup evidence confirmed from passage and graph entity.",
+    "citations": [
+      {
+        "title": "Sailing at the 2016 Summer Olympics – Women's RS:X",
+        "doc_id": "Q26254891",
+        "url": ""
+      }
+    ],
+    "cited_doc_ids": [
+      "Q26254891"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "agent_name": "EntityLinkingAgent",
+        "tool_name": "link_question_entities",
+        "action_description": "Extract and link named entities, sports, venues, dates, and conditions",
+        "tool_input": {
+          "question": "How many nations competed in Sailing at the 2016 Summer Olympics – Women's RS:X?"
+        },
+        "tool_output": {
+          "venues": [],
+          "sports": [
+            "Sailing"
+          ],
+          "games": [
+            "2016 Summer"
+          ],
+          "years": [
+            2016
+          ],
+          "dates": [],
+          "competitors_threshold": null,
+          "superlative_target": null
+        },
+        "tokens_used": 65,
+        "latency_ms": 4.43,
+        "strategy_changed": false,
+        "decision_reasoning": "Identified entities: sports=['Sailing'], venues=[], dates=[]"
+      },
+      {
+        "step_number": 2,
+        "agent_name": "VectorSearchAgent",
+        "tool_name": "semantic_similarity_search",
+        "action_description": "Execute semantic search over corpus text chunks",
+        "tool_input": {
+          "query": "How many nations competed in Sailing at the 2016 Summer Olympics – Women's RS:X?",
+          "top_k": 3
+        },
+        "tool_output": {
+          "query": "How many nations competed in Sailing at the 2016 Summer Olympics – Women's RS:X?",
+          "top_k": 3,
+          "results": [
+            {
+              "chunk_id": "chunk_Q26254891",
+              "doc_id": "Q26254891",
+              "title": "Sailing at the 2016 Summer Olympics – Women's RS:X",
+              "score": 0.3422,
+              "text_snippet": "[Infobox Olympic event]\n  event: Women's RS:X\n  games: 2016 Summer\n  venue: Marina da Glória\n  dates: 8–14 August 2016\n  competitors: 26\n  nations: 26\n  win_label: Winning total\n  win_value: 64 points\n  gold: Charline Picon\n  goldNOC: FRA\n  silver: Chen Peina\n  silverNOC: CHN\n  bronze: Stefania Elfutina\n  bronzeNOC: RUS\n  prev: 2012\n  next: 2020\n\nThe women's RS:X competition at the 2016 Summer Oly",
+              "metadata": {
+                "sport": "Sailing",
+                "games": "2016 Summer",
+                "year": 2016,
+                "season": "Summer",
+                "venue": "Marina da Glória",
+                "competitors": 26,
+                "gold": "Charline Picon",
+                "url": "https://en.wikipedia.org/wiki/Sailing_at_the_2016_Summer_Olympics_%E2%80%93_Women%27s_RS%3AX"
+              }
+            },
+            {
+              "chunk_id": "chunk_Q3039134",
+              "doc_id": "Q3039134",
+              "title": "Sailing at the 2012 Summer Olympics – Women's RS:X",
+              "score": 0.2702,
+              "text_snippet": "[Infobox Olympic event]\n  event: Women's RS:X\n  games: 2012 Summer\n  venue: Weymouth and Portland National Sailing Academy\n  dates: 31 July – 7 August\n  competitors: 27\n  nations: 27\n  gold: Marina Alabau\n  goldNOC: ESP\n  silver: Tuuli Petäjä\n  silverNOC: FIN\n  bronze: Zofia Klepacka\n  bronzeNOC: POL\n  prev: 2008\n  next: 2016\n\nThe women's RS:X was a sailing event on the Sailing at the 2012 Summer ",
+              "metadata": {
+                "sport": "Sailing",
+                "games": "2012 Summer",
+                "year": 2012,
+                "season": "Summer",
+                "venue": "Weymouth and Portland National Sailing Academy",
+                "competitors": 27,
+                "gold": "Marina Alabau",
+                "url": "https://en.wikipedia.org/wiki/Sailing_at_the_2012_Summer_Olympics_%E2%80%93_Women%27s_RS%3AX"
+              }
+            },
+            {
+              "chunk_id": "chunk_Q26250761",
+              "doc_id": "Q26250761",
+              "title": "Sailing at the 2016 Summer Olympics – Men's RS:X",
+              "score": 0.2135,
+              "text_snippet": "[Infobox Olympic event]\n  event: Men's RS:X\n  games: 2016 Summer\n  venue: Marina da Glória\n  dates: 8–14 August\n  competitors: 36\n  nations: 36\n  win_label: Winning total\n  win_value: 25.0 points\n  gold: Dorian van Rijsselberghe\n  goldNOC: NED\n  silver: Nick Dempsey\n  silverNOC: GBR\n  bronze: Pierre Le Coq\n  bronzeNOC: FRA\n  prev: 2012\n  next: 2020\n\nThe men's RS:X was a sailing event on the Sailin",
+              "metadata": {
+                "sport": "Sailing",
+                "games": "2016 Summer",
+                "year": 2016,
+                "season": "Summer",
+                "venue": "Marina da Glória",
+                "competitors": 36,
+                "gold": "Dorian van Rijsselberghe",
+                "url": "https://en.wikipedia.org/wiki/Sailing_at_the_2016_Summer_Olympics_%E2%80%93_Men%27s_RS%3AX"
+              }
+            }
+          ]
+        },
+        "tokens_used": 180,
+        "latency_ms": 3.64,
+        "strategy_changed": true,
+        "decision_reasoning": "Pivoting to vector retrieval for passage evidence"
+      }
+    ]
+  },
+  {
+    "qid": "pub-010",
+    "question": "According to the provided corpus, how many cycling events at the 2000 Summer Olympics had more than 30 competitors?",
+    "qtype": "aggregation",
+    "complexity_level": 4,
+    "steps_count": 2,
+    "agents_invoked": [
+      "EntityLinkingAgent",
+      "StructuralAggregatorAgent"
+    ],
+    "tools_called": [
+      "link_question_entities",
+      "aggregate_event_count"
+    ],
+    "total_tokens": 205,
+    "prompt_tokens": 153,
+    "completion_tokens": 51,
+    "latency_ms": 2.29,
+    "confidence": 0.98,
+    "stopping_reason": "Aggregated 4 qualifying events exceeding competitor threshold from graph structure.",
+    "citations": [
+      {
+        "title": "Cycling at the 2000 Summer Olympics – Men's cross-country",
+        "doc_id": "Q1856784",
+        "url": ""
+      },
+      {
+        "title": "Cycling at the 2000 Summer Olympics – Women's individual road race",
+        "doc_id": "Q2133123",
+        "url": ""
+      },
+      {
+        "title": "Cycling at the 2000 Summer Olympics – Men's individual road race",
+        "doc_id": "Q3001459",
+        "url": ""
+      },
+      {
+        "title": "Cycling at the 2000 Summer Olympics – Men's road time trial",
+        "doc_id": "Q2526348",
+        "url": ""
+      }
+    ],
+    "cited_doc_ids": [
+      "Q1856784",
+      "Q2133123",
+      "Q3001459",
+      "Q2526348"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "agent_name": "EntityLinkingAgent",
+        "tool_name": "link_question_entities",
+        "action_description": "Extract and link named entities, sports, venues, dates, and conditions",
+        "tool_input": {
+          "question": "According to the provided corpus, how many cycling events at the 2000 Summer Olympics had more than 30 competitors?"
+        },
+        "tool_output": {
+          "venues": [],
+          "sports": [
+            "Cycling"
+          ],
+          "games": [
+            "2000 Summer"
+          ],
+          "years": [
+            2000
+          ],
+          "dates": [],
+          "competitors_threshold": 30,
+          "superlative_target": null
+        },
+        "tokens_used": 65,
+        "latency_ms": 1.1,
+        "strategy_changed": false,
+        "decision_reasoning": "Identified entities: sports=['Cycling'], venues=[], dates=[]"
+      },
+      {
+        "step_number": 2,
+        "agent_name": "StructuralAggregatorAgent",
+        "tool_name": "aggregate_event_count",
+        "action_description": "Query graph for count of Cycling events in 2000 Summer with > 30 competitors",
+        "tool_input": {
+          "games": "2000 Summer",
+          "sport": "Cycling",
+          "min_competitors": 30
+        },
+        "tool_output": {
+          "query_type": "aggregation_count",
+          "games": "2000 Summer",
+          "sport": "Cycling",
+          "min_competitors": 30,
+          "count": 4,
+          "qualifying_events": [
+            {
+              "title": "Cycling at the 2000 Summer Olympics – Men's cross-country",
+              "doc_id": "Q1856784",
+              "competitors": 49
+            },
+            {
+              "title": "Cycling at the 2000 Summer Olympics – Women's individual road race",
+              "doc_id": "Q2133123",
+              "competitors": 57
+            },
+            {
+              "title": "Cycling at the 2000 Summer Olympics – Men's individual road race",
+              "doc_id": "Q3001459",
+              "competitors": 154
+            },
+            {
+              "title": "Cycling at the 2000 Summer Olympics – Men's road time trial",
+              "doc_id": "Q2526348",
+              "competitors": 38
+            }
+          ],
+          "gsql_equivalent": "INTERPRET QUERY () FOR GRAPH OlympicGraph {\n  SumAccum<INT> @@count = 0;\n  Events = SELECT e FROM Games:g -(IN_GAMES_REVERSE:e)-> Event:e\n           WHERE g.name LIKE \"%2000 Summer%\" \n             AND e.sport LIKE \"%Cycling%\"\n             AND e.competitors > 30\n           ACCUM @@count += 1;\n  PRINT @@count;\n}"
+        },
+        "tokens_used": 140,
+        "latency_ms": 1.15,
+        "strategy_changed": false,
+        "decision_reasoning": "Found 4 qualifying events matching criteria in graph structure"
+      }
+    ]
+  }
+]

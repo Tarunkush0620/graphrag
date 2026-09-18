@@ -1,0 +1,256 @@
+[
+  {
+    "qid": "pub-001",
+    "question": "According to the provided corpus, how many biathlon events at the 2018 Winter Olympics had more than 73 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "5",
+    "gold_answers": [
+      "5"
+    ],
+    "exact_match": true,
+    "f1": 1.0,
+    "doc_hit": 1.0,
+    "doc_precision": 1.0,
+    "doc_recall": 0.4545,
+    "context_tokens": 250,
+    "prompt_tokens": 320,
+    "completion_tokens": 35,
+    "total_tokens": 355,
+    "latency_ms": 3.8673877716064453,
+    "retrieval_steps": 2,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q47155555",
+      "Q47091419",
+      "Q47105341",
+      "Q47155425",
+      "Q47155408"
+    ]
+  },
+  {
+    "qid": "pub-002",
+    "question": "Who won the gold medal in the men's 20 kilometres walk athletics event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Chen Ding",
+    "gold_answers": [
+      "Chen Ding"
+    ],
+    "exact_match": true,
+    "f1": 1.0,
+    "doc_hit": 1.0,
+    "doc_precision": 1.0,
+    "doc_recall": 0.5,
+    "context_tokens": 250,
+    "prompt_tokens": 320,
+    "completion_tokens": 35,
+    "total_tokens": 355,
+    "latency_ms": 2.4156570434570312,
+    "retrieval_steps": 2,
+    "citations_count": 1,
+    "cited_doc_ids": [
+      "Q1050909"
+    ]
+  },
+  {
+    "qid": "pub-003",
+    "question": "According to the provided corpus, how many shooting events at the 2004 Summer Olympics had more than 37 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "8",
+    "gold_answers": [
+      "8"
+    ],
+    "exact_match": true,
+    "f1": 1.0,
+    "doc_hit": 1.0,
+    "doc_precision": 1.0,
+    "doc_recall": 0.4706,
+    "context_tokens": 250,
+    "prompt_tokens": 320,
+    "completion_tokens": 35,
+    "total_tokens": 355,
+    "latency_ms": 2.432584762573242,
+    "retrieval_steps": 2,
+    "citations_count": 8,
+    "cited_doc_ids": [
+      "Q7500827",
+      "Q7500832",
+      "Q7500834",
+      "Q5395306",
+      "Q7500829",
+      "Q4354074",
+      "Q4354615",
+      "Q5481589"
+    ]
+  },
+  {
+    "qid": "pub-004",
+    "question": "According to the provided corpus, which athletics event at the 2008 Summer Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "predicted_answer": "Athletics at the 2008 Summer Olympics – Men's marathon",
+    "gold_answers": [
+      "Athletics at the 2008 Summer Olympics – Men's marathon"
+    ],
+    "exact_match": true,
+    "f1": 1.0,
+    "doc_hit": 1.0,
+    "doc_precision": 1.0,
+    "doc_recall": 0.0233,
+    "context_tokens": 250,
+    "prompt_tokens": 320,
+    "completion_tokens": 35,
+    "total_tokens": 355,
+    "latency_ms": 2.494335174560547,
+    "retrieval_steps": 2,
+    "citations_count": 1,
+    "cited_doc_ids": [
+      "Q693595"
+    ]
+  },
+  {
+    "qid": "pub-005",
+    "question": "Who won the gold medal in the event held at Olympic Weightlifting Gymnasium on 20 September 1988?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Naim Süleymanoğlu",
+    "gold_answers": [
+      "Naim Süleymanoğlu"
+    ],
+    "exact_match": true,
+    "f1": 1.0,
+    "doc_hit": 1.0,
+    "doc_precision": 1.0,
+    "doc_recall": 1.0,
+    "context_tokens": 250,
+    "prompt_tokens": 320,
+    "completion_tokens": 35,
+    "total_tokens": 355,
+    "latency_ms": 7.106542587280273,
+    "retrieval_steps": 2,
+    "citations_count": 1,
+    "cited_doc_ids": [
+      "Q25239316"
+    ]
+  },
+  {
+    "qid": "pub-006",
+    "question": "Who won the gold medal in the women's 57 kg judo event at the Summer Olympics held immediately before 2020?",
+    "qtype": "temporal",
+    "predicted_answer": "Haruka Tachimoto",
+    "gold_answers": [
+      "Rafaela Silva"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 250,
+    "prompt_tokens": 320,
+    "completion_tokens": 35,
+    "total_tokens": 355,
+    "latency_ms": 2.2192001342773438,
+    "retrieval_steps": 2,
+    "citations_count": 1,
+    "cited_doc_ids": [
+      "Q26217871"
+    ]
+  },
+  {
+    "qid": "pub-007",
+    "question": "Who won the gold medal in the men's pole vault athletics event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Renaud Lavillenie",
+    "gold_answers": [
+      "Renaud Lavillenie"
+    ],
+    "exact_match": true,
+    "f1": 1.0,
+    "doc_hit": 1.0,
+    "doc_precision": 1.0,
+    "doc_recall": 0.5,
+    "context_tokens": 250,
+    "prompt_tokens": 320,
+    "completion_tokens": 35,
+    "total_tokens": 355,
+    "latency_ms": 2.3136138916015625,
+    "retrieval_steps": 2,
+    "citations_count": 1,
+    "cited_doc_ids": [
+      "Q2000968"
+    ]
+  },
+  {
+    "qid": "pub-008",
+    "question": "According to the provided corpus, which sailing event at the 2000 Summer Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "predicted_answer": "Sailing at the 2000 Summer Olympics – Soling",
+    "gold_answers": [
+      "Sailing at the 2000 Summer Olympics – Soling"
+    ],
+    "exact_match": true,
+    "f1": 1.0,
+    "doc_hit": 1.0,
+    "doc_precision": 1.0,
+    "doc_recall": 0.125,
+    "context_tokens": 250,
+    "prompt_tokens": 320,
+    "completion_tokens": 35,
+    "total_tokens": 355,
+    "latency_ms": 2.5565624237060547,
+    "retrieval_steps": 2,
+    "citations_count": 1,
+    "cited_doc_ids": [
+      "Q7400333"
+    ]
+  },
+  {
+    "qid": "pub-009",
+    "question": "How many nations competed in Sailing at the 2016 Summer Olympics – Women's RS:X?",
+    "qtype": "lookup",
+    "predicted_answer": "26",
+    "gold_answers": [
+      "26"
+    ],
+    "exact_match": true,
+    "f1": 1.0,
+    "doc_hit": 1.0,
+    "doc_precision": 1.0,
+    "doc_recall": 1.0,
+    "context_tokens": 250,
+    "prompt_tokens": 320,
+    "completion_tokens": 35,
+    "total_tokens": 355,
+    "latency_ms": 6.818294525146484,
+    "retrieval_steps": 2,
+    "citations_count": 1,
+    "cited_doc_ids": [
+      "Q26254891"
+    ]
+  },
+  {
+    "qid": "pub-010",
+    "question": "According to the provided corpus, how many cycling events at the 2000 Summer Olympics had more than 30 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "4",
+    "gold_answers": [
+      "4"
+    ],
+    "exact_match": true,
+    "f1": 1.0,
+    "doc_hit": 1.0,
+    "doc_precision": 1.0,
+    "doc_recall": 0.4,
+    "context_tokens": 250,
+    "prompt_tokens": 320,
+    "completion_tokens": 35,
+    "total_tokens": 355,
+    "latency_ms": 3.0565261840820312,
+    "retrieval_steps": 2,
+    "citations_count": 4,
+    "cited_doc_ids": [
+      "Q1856784",
+      "Q2133123",
+      "Q3001459",
+      "Q2526348"
+    ]
+  }
+]

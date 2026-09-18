@@ -12,6 +12,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      '/api': 'http://localhost:8000',
       '/ui': 'http://localhost:8000',
       '^/ui/.*/chat': {
         target: 'ws://localhost:8000',

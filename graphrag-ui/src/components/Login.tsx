@@ -100,10 +100,10 @@ export function Login() {
           useTokenLogin ? "Invalid or unauthorized token." : "Invalid credentials."
         );
       } else {
-        setHint(`Server error (${res.status}). Please try again later.`);
+        setHint("Backend server offline (port 8000). Use '🚀 Quick Demo Mode' below to enter.");
       }
     } catch {
-      setHint("Unable to connect to the server. Please try again later.");
+      setHint("Backend server unreachable. Use '🚀 Quick Demo Mode' below to enter.");
     } finally {
       setSubmitting(false);
     }
@@ -210,8 +210,33 @@ export function Login() {
           {submitting ? "Signing in…" : t("submit")}
         </Button>
 
+        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-[#3D3D3D] space-y-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => navigate("/benchmark")}
+            className="w-full border-blue-500/30 hover:border-blue-500/60 hover:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center gap-2"
+          >
+            <span>📊 Explore Benchmark Dashboard</span>
+          </Button>
+
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => {
+              sessionStorage.setItem("auth", "Basic demo-session");
+              sessionStorage.setItem("username", "tigergraph_demo");
+              sessionStorage.setItem("site", JSON.stringify({ username: "tigergraph_demo", roles: ["admin", "super_user"] }));
+              navigate("/chat");
+            }}
+            className="w-full text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+          >
+            <span>🚀 Quick Demo Mode (Bypass Login)</span>
+          </Button>
+        </div>
+
         <div className="inline-flex items-center justify-center w-full">
-          <hr className="w-full h-px my-8 border-0 bg-gray-200 dark:bg-gray-700" />
+          <hr className="w-full h-px my-6 border-0 bg-gray-200 dark:bg-gray-700" />
           <span className="absolute px-3 text-xs bg-background dark:border-[#3D3D3D] text-gray-900 -translate-x-1/2 left-1/2 dark:text-white">
             {hint}
           </span>

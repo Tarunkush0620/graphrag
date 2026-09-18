@@ -1,5 +1,5 @@
 import { BsGrid } from "react-icons/bs";
-import { IoDocumentTextOutline } from "react-icons/io5";
+import { IoDocumentTextOutline, IoStatsChartOutline } from "react-icons/io5";
 import { FiTerminal } from "react-icons/fi";
 import { FiLoader } from "react-icons/fi";
 import { IoCartOutline } from "react-icons/io5";
@@ -170,14 +170,49 @@ const SideMenu = ({
   // Initial / refresh load: latest PAGE_SIZE conversations only.
   const fetchHistory2 = useCallback(async () => {
     try {
-      const list = await fetchConvList();
-      setConvList(list);
-      const firstBatch = list.slice(0, PAGE_SIZE);
-      const details = await loadDetails(firstBatch);
-      setConversationId(details as any);
-      setLoadedCount(firstBatch.length);
+      // 1. Fetch from server if reachable
+      let serverDetails: any[] = [];
+      try {
+        const list = await fetchConvList();
+        setConvList(list);
+        if (list && list.length > 0) {
+          const firstBatch = list.slice(0, PAGE_SIZE);
+          const details = await loadDetails(firstBatch);
+          serverDetails = details || [];
+        }
+      } catch (err) {
+        // Server fallback
+      }
+
+      // 2. Fetch from LocalStorage
+      let localConvs: any[] = [];
+      try {
+        localConvs = JSON.parse(localStorage.getItem("tigergraph_chat_conversations") || "[]");
+      } catch (e) {
+        localConvs = [];
+      }
+
+      // Combine both, avoiding duplicate conversation_ids
+      const mergedMap = new Map<string, any>();
+      for (const item of localConvs) {
+        if (item && item.conversation_id) mergedMap.set(item.conversation_id, item);
+      }
+      for (const item of serverDetails) {
+        if (item && item.conversation_id) mergedMap.set(item.conversation_id, item);
+      }
+
+      const combined = Array.from(mergedMap.values()).sort((a, b) => {
+        const timeA = new Date(a.update_ts || a.create_ts || 0).getTime();
+        const timeB = new Date(b.update_ts || b.create_ts || 0).getTime();
+        return timeB - timeA;
+      });
+
+      setConversationId(combined);
+      setNewSet(combined);
+      setLoadedCount(combined.length);
     } catch (error) {
       setConversationId([]);
+      setNewSet([]);
       setConvList([]);
       setLoadedCount(0);
     }
@@ -191,6 +226,7 @@ const SideMenu = ({
       const nextBatch = convList.slice(loadedCount, loadedCount + PAGE_SIZE);
       const details = await loadDetails(nextBatch);
       setConversationId((prev: any[]) => [...prev, ...(details as any[])]);
+      setNewSet((prev: any[]) => [...prev, ...(details as any[])]);
       setLoadedCount((c) => c + nextBatch.length);
     } finally {
       setLoadingMore(false);
@@ -244,7 +280,7 @@ const SideMenu = ({
 
   // eslint-disable-next-line
   // @ts-ignore
-  const resumeConvo = async (id):any => {
+  const resumeConvo = async (id: string): any => {
     try {
       // Load conversation into conversation manager
       conversationManager.loadConversation(id);
@@ -253,42 +289,47 @@ const SideMenu = ({
       setActiveConversationId(id);
       setExpandedConversations(prev => new Set([...prev, id]));
 
-      // Store conversation data for the chat component
-      const creds = sessionStorage.getItem("auth");
-      if (!creds) {
+      // 1. Check local storage
+      const localConvs = JSON.parse(localStorage.getItem("tigergraph_chat_conversations") || "[]");
+      const found = localConvs.find((c: any) => c.conversation_id === id);
+
+      if (found) {
+        sessionStorage.setItem('selectedConversationData', JSON.stringify(found));
+        if (window.location.pathname === "/chat") {
+          window.location.reload();
+        } else {
+          navigate("/chat");
+        }
         return;
       }
 
-      const settings = {
-        method: 'GET',
-        headers: {
-          Authorization: creds!,
-          "Content-Type": "application/json",
+      // 2. Fetch from backend if available
+      const creds = sessionStorage.getItem("auth");
+      if (creds) {
+        const settings = {
+          method: 'GET',
+          headers: {
+            Authorization: creds,
+            "Content-Type": "application/json",
+          }
+        };
+
+        const response = await fetch(`${WS_CONVO_URL}/${id}`, settings);
+        if (response.ok) {
+          const data = await safeJson(response);
+          setConversationId2(data);
+          sessionStorage.setItem('selectedConversationData', JSON.stringify(data));
+          if (window.location.pathname === "/chat") {
+            window.location.reload();
+          } else {
+            navigate("/chat");
+          }
         }
       }
-
-      const response = await fetch(`${WS_CONVO_URL}/${id}`, settings);
-      if (!response.ok) {
-        return;
-      }
-
-      const data = await safeJson(response);
-      setConversationId2(data);
-
-      // Store the conversation data in sessionStorage for the chat component
-      sessionStorage.setItem('selectedConversationData', JSON.stringify(data));
-
-      // Force reload to restart the WebSocket connection with the conversation ID
-      // This ensures the Bot component re-initializes and loads the conversation messages
-      if (window.location.pathname === "/chat") {
-        window.location.reload();
-      } else {
-        navigate("/chat");
-      }
     } catch (error) {
-      // Silently handle error
+      console.error("Error resuming conversation:", error);
     }
-  }
+  };
 
   const toggleConversation = (conversationId: string) => {
     setExpandedConversations(prev => {
@@ -660,11 +701,21 @@ const SideMenu = ({
         </div>
       </div>
 
-      <div 
-        className="gradient rounded-lg h-[44px] flex items-center justify-center mx-5 mt-5 text-white cursor-pointer"
-        onClick={() => handleNewChat()}
-      >
-        + New Chat
+      <div className="flex gap-2 mx-5 mt-4">
+        <div 
+          className="gradient rounded-lg h-[40px] flex-1 flex items-center justify-center text-white text-sm font-medium cursor-pointer shadow-sm hover:opacity-95 transition-opacity"
+          onClick={() => handleNewChat()}
+        >
+          + New Chat
+        </div>
+        <div
+          className="rounded-lg h-[40px] px-3 flex items-center gap-1.5 justify-center border border-gray-300 dark:border-[#3D3D3D] hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 text-xs font-medium cursor-pointer transition-colors"
+          onClick={() => navigate("/benchmark")}
+          title="Agentic GraphRAG Benchmark Dashboard"
+        >
+          <IoStatsChartOutline className="text-base text-blue-500" />
+          <span>Metrics</span>
+        </div>
       </div>
 
       <h1 className="Urbane-Medium text-lg pl-4 pt-5 text-black dark:text-white flex">

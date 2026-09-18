@@ -1,4 +1,4 @@
-import { Moon, Sun, LogOut, Settings } from "lucide-react";
+import { Moon, Sun, LogOut, Settings, BarChart3 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -70,6 +70,19 @@ export function ModeToggle() {
 
   return (
     <div className="fixed right-4 top-[13px] z-[60] flex items-center gap-2">
+      {location.pathname !== "/benchmark" && (
+        <Button
+          variant="outline"
+          size="sm"
+          className="dark:border-[#3D3D3D] h-9"
+          onClick={() => navigate("/benchmark")}
+          title="Benchmark & Metrics Dashboard"
+        >
+          <BarChart3 className="h-4 w-4 mr-1.5 text-blue-500" />
+          <span className="text-xs font-semibold">Benchmark</span>
+        </Button>
+      )}
+
       {!isLoginRoute && rolesLoaded && canAccessSetup && (
         <Button
           variant="outline"

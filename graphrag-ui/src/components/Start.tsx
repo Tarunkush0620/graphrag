@@ -21,15 +21,15 @@ const questions = (() => {
       {title: 'Tell me about transaction fraud.'},
       {title: 'Describe flow of one transaction.'},
       {title: 'How TigerGraph can help me?'}
-      // { title: "How to use visualization correctly?" },
-      // { title: "How to detect fraud in transactions?" },
-      // { title: "What is William Torres' ID?" },
-      // { title: "What's his email?" },
-      // {title:"How do I get a count of vertices in Python?"}
     ];
   }
 
-  return [];
+  return [
+    { title: "Who won the gold medal in Men's Singles Tennis at Athens 2004?" },
+    { title: "Which athlete won the men's 50 km race walk at the Summer Olympics immediately before 2016?" },
+    { title: "Which venue hosted both an event won by China and an event won by France?" },
+    { title: "Which gold medalist had more competitors in their event than Chen Ding?" },
+  ];
 })();
 
 interface Start {

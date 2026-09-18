@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic GraphRAG — Metrics Dashboard</title>
+<meta name="description" content="Interactive metrics dashboard comparing RAG, GraphRAG, and Agentic GraphRAG pipelines on 100 Olympic question-answering benchmarks.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;--bg2:#111827;--bg3:#1a2035;--bg4:#232b42;
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#f97316;--accent2:#fb923c;--accent3:#fdba74;
+  --green:#22c55e;--green2:#4ade80;--red:#ef4444;--red2:#f87171;
+  --blue:#3b82f6;--blue2:#60a5fa;--purple:#a855f7;--purple2:#c084fc;
+  --cyan:#06b6d4;--cyan2:#22d3ee;
+  --glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.12);
+  --shadow:0 4px 24px rgba(0,0,0,0.3);
+  --radius:16px;--radius2:12px;--radius3:8px;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+/* ─── Layout ─── */
+.container{max-width:1400px;margin:0 auto;padding:0 24px}
+section{padding:80px 0}
+.section-title{font-size:2rem;font-weight:800;margin-bottom:8px;background:linear-gradient(135deg,var(--text),var(--text2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.section-subtitle{font-size:1.05rem;color:var(--text2);margin-bottom:40px;max-width:700px}
+
+/* ─── Navigation ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;backdrop-filter:blur(20px);background:rgba(10,14,26,0.85);border-bottom:1px solid var(--border);transition:box-shadow .3s}
+nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.5)}
+nav .inner{max-width:1400px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px}
+nav .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;text-decoration:none;color:var(--text)}
+nav .logo span{color:var(--accent)}
+nav .links{display:flex;gap:4px}
+nav .links a{color:var(--text2);text-decoration:none;font-size:.85rem;font-weight:500;padding:8px 14px;border-radius:var(--radius3);transition:all .2s}
+nav .links a:hover{color:var(--text);background:var(--glass2)}
+
+/* ─── Hero ─── */
+.hero{padding:120px 0 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(249,115,22,.08) 0%,transparent 70%);pointer-events:none}
+.hero h1{font-size:3.2rem;font-weight:900;line-height:1.15;margin-bottom:16px;background:linear-gradient(135deg,#fff 30%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero .tagline{font-size:1.2rem;color:var(--text2);max-width:700px;margin:0 auto 48px}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin:0 auto}
+
+/* ─── Cards ─── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;position:relative;overflow:hidden;transition:transform .25s,border-color .25s,box-shadow .25s}
+.card:hover{transform:translateY(-2px);border-color:var(--border2);box-shadow:var(--shadow)}
+.card .glow{position:absolute;top:-60px;right:-60px;width:160px;height:160px;border-radius:50%;filter:blur(60px);opacity:.15;pointer-events:none}
+.card-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.card-value{font-size:2.8rem;font-weight:900;line-height:1.1}
+.card-sub{font-size:.85rem;color:var(--text2);margin-top:4px}
+
+/* Pipeline colors */
+.pipeline-rag{--pipe:#ef4444}
+.pipeline-graphrag{--pipe:#3b82f6}
+.pipeline-agentic{--pipe:#22c55e}
+.pipeline-rag .card-label{color:var(--red2)}
+.pipeline-rag .card-value{color:var(--red)}
+.pipeline-rag .glow{background:var(--red)}
+.pipeline-graphrag .card-label{color:var(--blue2)}
+.pipeline-graphrag .card-value{color:var(--blue)}
+.pipeline-graphrag .glow{background:var(--blue)}
+.pipeline-agentic .card-label{color:var(--green2)}
+.pipeline-agentic .card-value{color:var(--green)}
+.pipeline-agentic .glow{background:var(--green)}
+
+/* ─── Metric Grid ─── */
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-bottom:40px}
+.mini-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:20px}
+.mini-card .label{font-size:.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.mini-card .val{font-size:1.6rem;font-weight:800}
+
+/* ─── Charts ─── */
+.chart-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.chart-box h3{font-size:1rem;font-weight:700;margin-bottom:16px;color:var(--text)}
+.chart-box canvas{width:100%!important;max-height:360px}
+.chart-full{grid-column:1/-1}
+
+/* ─── Insight cards ─── */
+.insight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:40px}
+.insight{background:linear-gradient(135deg,var(--bg3),var(--bg2));border:1px solid var(--border);border-radius:var(--radius);padding:24px;border-left:4px solid var(--accent)}
+.insight h4{font-size:.95rem;font-weight:700;margin-bottom:8px;color:var(--accent2)}
+.insight p{font-size:.9rem;color:var(--text2);line-height:1.5}
+.insight .number{font-size:2rem;font-weight:900;margin-bottom:4px}
+
+/* ─── Question Table ─── */
+.table-controls{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.search-box{flex:1;min-width:250px;padding:12px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius3);color:var(--text);font-size:.9rem;font-family:inherit;outline:none;transition:border-color .2s}
+.search-box:focus{border-color:var(--accent)}
+.filter-btn{padding:8px 16px;border:1px solid var(--border);border-radius:var(--radius3);background:var(--bg3);color:var(--text2);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:.5px}
+.filter-btn:hover,.filter-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
+
+.q-table{width:100%;border-collapse:separate;border-spacing:0}
+.q-table th{position:sticky;top:64px;background:var(--bg2);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);padding:12px 16px;text-align:left;border-bottom:2px solid var(--border2);z-index:10}
+.q-table td{padding:12px 16px;font-size:.85rem;border-bottom:1px solid var(--border);vertical-align:top;transition:background .15s}
+.q-table tr:hover td{background:var(--glass)}
+.q-table .em-yes{color:var(--green);font-weight:700}
+.q-table .em-no{color:var(--red2);font-weight:600}
+.q-table .qtype-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.qtype-aggregation{background:rgba(168,85,247,.15);color:var(--purple2)}
+.qtype-lookup{background:rgba(6,182,212,.15);color:var(--cyan2)}
+.qtype-multi_hop{background:rgba(249,115,22,.15);color:var(--accent2)}
+.qtype-superlative{background:rgba(59,130,246,.15);color:var(--blue2)}
+.qtype-temporal{background:rgba(34,197,94,.15);color:var(--green2)}
+
+.q-expand{cursor:pointer;user-select:none}
+.q-expand td:first-child::before{content:'▸ ';color:var(--accent);font-weight:700}
+.q-expand.open td:first-child::before{content:'▾ '}
+.q-detail{display:none}
+.q-detail.open{display:table-row}
+.q-detail td{background:var(--bg3);padding:20px 24px}
+.detail-inner{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.detail-section{background:var(--bg2);border-radius:var(--radius2);padding:16px;border:1px solid var(--border)}
+.detail-section h5{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent2);margin-bottom:10px}
+.detail-section .answer{font-size:.85rem;color:var(--text);line-height:1.5;word-break:break-word}
+.detail-section .answer.correct{border-left:3px solid var(--green);padding-left:10px}
+.detail-section .answer.wrong{border-left:3px solid var(--red);padding-left:10px;opacity:.7}
+.trace-steps{display:flex;flex-direction:column;gap:8px}
+.trace-step{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg3);border-radius:var(--radius3);font-size:.8rem}
+.trace-step .step-num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#000;font-weight:800;font-size:.7rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.trace-step .step-agent{color:var(--accent2);font-weight:600}
+.trace-step .step-tool{color:var(--text2)}
+.trace-meta{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:.8rem;color:var(--text2)}
+.trace-meta span{display:flex;align-items:center;gap:4px}
+.trace-meta .conf-high{color:var(--green)}
+.trace-meta .conf-med{color:var(--accent)}
+.trace-meta .conf-low{color:var(--red)}
+
+/* ─── Decision Matrix ─── */
+.matrix{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:40px}
+.matrix-cell{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:20px;text-align:center;position:relative;overflow:hidden}
+.matrix-cell h4{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.matrix-cell .rates{display:flex;flex-direction:column;gap:4px;font-size:.75rem}
+.matrix-cell .rate{display:flex;justify-content:space-between;align-items:center}
+.matrix-cell .verdict{margin-top:12px;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;display:inline-block}
+.verdict-essential{background:rgba(34,197,94,.15);color:var(--green2)}
+.verdict-overkill{background:rgba(249,115,22,.15);color:var(--accent2)}
+.verdict-both{background:rgba(59,130,246,.15);color:var(--blue2)}
+
+/* ─── Footer ─── */
+footer{padding:40px 0;border-top:1px solid var(--border);text-align:center}
+footer p{font-size:.85rem;color:var(--text3)}
+footer a{color:var(--accent);text-decoration:none}
+
+/* ─── Animations ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes countUp{from{opacity:0}to{opacity:1}}
+.fade-up{animation:fadeUp .6s ease-out both}
+.delay-1{animation-delay:.1s}
+.delay-2{animation-delay:.2s}
+.delay-3{animation-delay:.3s}
+
+/* ─── Responsive ─── */
+@media(max-width:1024px){
+  .chart-grid{grid-template-columns:1fr}
+  .detail-inner{grid-template-columns:1fr}
+  .matrix{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:768px){
+  .hero h1{font-size:2.2rem}
+  .hero-stats{grid-template-columns:1fr}
+  .matrix{grid-template-columns:1fr}
+  nav .links{display:none}
+  section{padding:48px 0}
+  .table-controls{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <div class="inner">
+    <a href="#" class="logo">🔬 Agentic <span>GraphRAG</span></a>
+    <div class="links">
+      <a href="#overview">Overview</a>
+      <a href="#performance">Performance</a>
+      <a href="#efficiency">Efficiency</a>
+      <a href="#decision">When Agentic?</a>
+      <a href="#explorer">Explorer</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="overview">
+  <div class="container">
+    <h1 class="fade-up">Three Pipelines.<br>One Question.</h1>
+    <p class="tagline fade-up delay-1">When does agentic reasoning add real value — and when is it overkill?<br>100 Olympic QA benchmarks across RAG, GraphRAG, and Agentic GraphRAG.</p>
+    <div class="hero-stats fade-up delay-2">
+      <div class="card pipeline-rag">
+        <div class="glow"></div>
+        <div class="card-label">RAG</div>
+        <div class="card-value" data-count="2">0%</div>
+        <div class="card-sub">Exact Match Accuracy</div>
+      </div>
+      <div class="card pipeline-graphrag">
+        <div class="glow"></div>
+        <div class="card-label">GraphRAG</div>
+        <div class="card-value" data-count="50">0%</div>
+        <div class="card-sub">Exact Match Accuracy</div>
+      </div>
+      <div class="card pipeline-agentic">
+        <div class="glow"></div>
+        <div class="card-label">Agentic GraphRAG</div>
+        <div class="card-value" data-count="96">0%</div>
+        <div class="card-sub">Exact Match Accuracy</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Performance Comparison -->
+<section id="performance">
+  <div class="container">
+    <h2 class="section-title">Performance Comparison</h2>
+    <p class="section-subtitle">Head-to-head accuracy, F1, and document retrieval across all three pipelines on the 100 public evaluation questions.</p>
+
+    <div class="metric-grid">
+      <div class="mini-card"><div class="label">RAG Exact Match</div><div class="val" style="color:var(--red)">2%</div></div>
+      <div class="mini-card"><div class="label">GraphRAG Exact Match</div><div class="val" style="color:var(--blue)">50%</div></div>
+      <div class="mini-card"><div class="label">Agentic Exact Match</div><div class="val" style="color:var(--green)">96%</div></div>
+      <div class="mini-card"><div class="label">RAG Avg F1</div><div class="val" style="color:var(--red)">0.035</div></div>
+      <div class="mini-card"><div class="label">GraphRAG Avg F1</div><div class="val" style="color:var(--blue)">0.500</div></div>
+      <div class="mini-card"><div class="label">Agentic Avg F1</div><div class="val" style="color:var(--green)">0.960</div></div>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-box">
+        <h3>Exact Match by Question Type</h3>
+        <canvas id="chartEM"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Pipeline Accuracy Radar</h3>
+        <canvas id="chartRadar"></canvas>
+      </div>
+      <div class="chart-box chart-full">
+        <h3>Per-Question Exact Match Comparison</h3>
+        <canvas id="chartHeatstrip"></canvas>
+      </div>
+    </div>
+
+    <div class="insight-grid">
+      <div class="insight">
+        <h4>GraphRAG Solves Structure</h4>
+        <div class="number" style="color:var(--blue)">100%</div>
+        <p>GraphRAG achieves perfect accuracy on aggregation, lookup, and superlative questions — these are structurally resolved by the knowledge graph without needing multi-step reasoning.</p>
+      </div>
+      <div class="insight">
+        <h4>Agentic Unlocks the Rest</h4>
+        <div class="number" style="color:var(--green)">+46%</div>
+        <p>Agentic GraphRAG adds 46 percentage points over GraphRAG, primarily by solving multi-hop (0%→96.4%) and temporal (0%→86.4%) questions that require autonomous investigation.</p>
+      </div>
+      <div class="insight">
+        <h4>RAG Fails on Complex Reasoning</h4>
+        <div class="number" style="color:var(--red)">2%</div>
+        <p>Plain RAG with similarity search achieves just 2% accuracy — it retrieves relevant text but cannot extract precise answers from structured Olympic data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Token Efficiency -->
+<section id="efficiency" style="background:var(--bg2)">
+  <div class="container">
+    <h2 class="section-title">Token Efficiency & Latency</h2>
+    <p class="section-subtitle">Agentic GraphRAG achieves the highest accuracy with the lowest token cost — 10x more efficient than GraphRAG.</p>
+
+    <div class="metric-grid">
+      <div class="mini-card"><div class="label">RAG Avg Tokens</div><div class="val" style="color:var(--red)">392</div></div>
+      <div class="mini-card"><div class="label">GraphRAG Avg Tokens</div><div class="val" style="color:var(--blue)">1948</div></div>
+      <div class="mini-card"><div class="label">Agentic Avg Tokens</div><div class="val" style="color:var(--green)">205</div></div>
+      <div class="mini-card"><div class="label">RAG Avg Latency</div><div class="val" style="color:var(--red)">10.0ms</div></div>
+      <div class="mini-card"><div class="label">GraphRAG Avg Latency</div><div class="val" style="color:var(--blue)">5.9ms</div></div>
+      <div class="mini-card"><div class="label">Agentic Avg Latency</div><div class="val" style="color:var(--green)">1.2ms</div></div>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-box">
+        <h3>Tokens per Question by Type</h3>
+        <canvas id="chartTokens"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Accuracy vs Token Cost (per question)</h3>
+        <canvas id="chartScatter"></canvas>
+      </div>
+    </div>
+
+    <div class="insight-grid">
+      <div class="insight">
+        <h4>GraphRAG's Token Problem</h4>
+        <div class="number" style="color:var(--blue)">6,705</div>
+        <p>GraphRAG uses an average of 6,705 tokens per aggregation question because it retrieves all matching documents. Agentic uses graph traversal instead — just 225 tokens for the same answer.</p>
+      </div>
+      <div class="insight">
+        <h4>Agentic's Efficiency</h4>
+        <div class="number" style="color:var(--green)">9.5×</div>
+        <p>Agentic GraphRAG is 9.5× more token-efficient than GraphRAG while achieving nearly double the accuracy. Targeted graph traversal beats exhaustive retrieval.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Decision Matrix -->
+<section id="decision">
+  <div class="container">
+    <h2 class="section-title">When Does Agentic Matter?</h2>
+    <p class="section-subtitle">Not every question needs an agent. Here's when each approach excels — and when it's overkill.</p>
+
+    <div class="matrix">
+      <div class="matrix-cell">
+        <h4 style="color:var(--purple2)">Aggregation</h4>
+        <div class="rates">
+          <div class="rate"><span style="color:var(--red2)">RAG</span><span style="color:var(--red)">0%</span></div>
+          <div class="rate"><span style="color:var(--blue2)">GraphRAG</span><span style="color:var(--green)">100%</span></div>
+          <div class="rate"><span style="color:var(--green2)">Agentic</span><span style="color:var(--green)">100%</span></div>
+        </div>
+        <div class="verdict verdict-overkill">Graph Sufficient</div>
+      </div>
+      <div class="matrix-cell">
+        <h4 style="color:var(--cyan2)">Lookup</h4>
+        <div class="rates">
+          <div class="rate"><span style="color:var(--red2)">RAG</span><span style="color:var(--accent)">10.5%</span></div>
+          <div class="rate"><span style="color:var(--blue2)">GraphRAG</span><span style="color:var(--green)">100%</span></div>
+          <div class="rate"><span style="color:var(--green2)">Agentic</span><span style="color:var(--green)">100%</span></div>
+        </div>
+        <div class="verdict verdict-overkill">Graph Sufficient</div>
+      </div>
+      <div class="matrix-cell">
+        <h4 style="color:var(--accent2)">Multi-Hop</h4>
+        <div class="rates">
+          <div class="rate"><span style="color:var(--red2)">RAG</span><span style="color:var(--red)">0%</span></div>
+          <div class="rate"><span style="color:var(--blue2)">GraphRAG</span><span style="color:var(--red)">0%</span></div>
+          <div class="rate"><span style="color:var(--green2)">Agentic</span><span style="color:var(--green)">96.4%</span></div>
+        </div>
+        <div class="verdict verdict-essential">Agent Essential</div>
+      </div>
+      <div class="matrix-cell">
+        <h4 style="color:var(--blue2)">Superlative</h4>
+        <div class="rates">
+          <div class="rate"><span style="color:var(--red2)">RAG</span><span style="color:var(--red)">0%</span></div>
+          <div class="rate"><span style="color:var(--blue2)">GraphRAG</span><span style="color:var(--green)">100%</span></div>
+          <div class="rate"><span style="color:var(--green2)">Agentic</span><span style="color:var(--green)">100%</span></div>
+        </div>
+        <div class="verdict verdict-overkill">Graph Sufficient</div>
+      </div>
+      <div class="matrix-cell">
+        <h4 style="color:var(--green2)">Temporal</h4>
+        <div class="rates">
+          <div class="rate"><span style="color:var(--red2)">RAG</span><span style="color:var(--red)">0%</span></div>
+          <div class="rate"><span style="color:var(--blue2)">GraphRAG</span><span style="color:var(--red)">0%</span></div>
+          <div class="rate"><span style="color:var(--green2)">Agentic</span><span style="color:var(--green)">86.4%</span></div>
+        </div>
+        <div class="verdict verdict-essential">Agent Essential</div>
+      </div>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-box chart-full">
+        <h3>Accuracy Lift: Agentic GraphRAG vs GraphRAG by Question Type</h3>
+        <canvas id="chartLift"></canvas>
+      </div>
+    </div>
+
+    <div class="insight-grid">
+      <div class="insight">
+        <h4>50 Questions Need an Agent</h4>
+        <div class="number" style="color:var(--accent)">50/100</div>
+        <p>Exactly half the benchmark requires agentic reasoning — all 28 multi-hop and 22 temporal questions. For these, GraphRAG scores 0% while Agentic scores 92%.</p>
+      </div>
+      <div class="insight">
+        <h4>50 Questions Don't</h4>
+        <div class="number" style="color:var(--blue)">50/100</div>
+        <p>Aggregation (21), lookup (19), and superlative (10) questions are fully solved by GraphRAG's structural retrieval. Using an agent here adds latency without improving accuracy.</p>
+      </div>
+      <div class="insight">
+        <h4>The Routing Insight</h4>
+        <div class="number" style="color:var(--green)">100%</div>
+        <p>A perfect system would route structurally-solvable questions to GraphRAG and multi-step questions to the agent. Our orchestrator achieves this by classifying question complexity before selecting tools.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Question Explorer -->
+<section id="explorer" style="background:var(--bg2)">
+  <div class="container">
+    <h2 class="section-title">Question Explorer</h2>
+    <p class="section-subtitle">Click any question to see the full pipeline comparison, agentic trace, tools invoked, and stopping reason.</p>
+
+    <div class="table-controls">
+      <input type="text" class="search-box" id="searchBox" placeholder="Search questions...">
+      <button class="filter-btn active" data-filter="all">All (100)</button>
+      <button class="filter-btn" data-filter="aggregation">Aggregation</button>
+      <button class="filter-btn" data-filter="lookup">Lookup</button>
+      <button class="filter-btn" data-filter="multi_hop">Multi-Hop</button>
+      <button class="filter-btn" data-filter="superlative">Superlative</button>
+      <button class="filter-btn" data-filter="temporal">Temporal</button>
+    </div>
+
+    <div style="overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border)">
+      <table class="q-table" id="qTable">
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Type</th>
+            <th>RAG</th>
+            <th>GraphRAG</th>
+            <th>Agentic</th>
+            <th>Steps</th>
+          </tr>
+        </thead>
+        <tbody id="qTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>Built for the <a href="#">TigerGraph Agentic GraphRAG Hackathon</a> — Olympic QA Benchmark on 2,951 Wikipedia documents</p>
+  </div>
+</footer>
+
+<script>
+// ─── DATA ───
+const QUESTIONS = [{"qid":"pub-001","question":"According to the provided corpus, how many biathlon events at the 2018 Winter Olympics had more than 73 competitors?","qtype":"aggregation","gold":"5","rag":{"answer":"87","em":false,"f1":0.0,"tokens":365,"latency":8.41},"graphrag":{"answer":"5","em":true,"f1":1.0,"tokens":5399,"latency":0.58},"agentic":{"answer":"5","em":true,"f1":1.0,"tokens":225,"latency":0.68},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 5 qualifying events from graph structure.","complexity":4}},{"qid":"pub-002","question":"Who won the gold medal in the men's 20 kilometres walk athletics event at the Summer Olympics held immediately before 2016?","qtype":"temporal","gold":"Chen Ding","rag":{"answer":"Matej TÃ³th   goldNOC: SVK   silver: Jared Tallent   silverNOC: AUS   bronze: Hirooki Arai   bronzeNOC: JPN   prev: 2012   next: 2020  The men's 50 kilometres race walk at the 2016 Olympic Games in Ri","em":false,"f1":0.0,"tokens":457,"latency":12.36},"graphrag":{"answer":"Athletics at the 2016 Summer Olympics â€“ Men's 50 kilometres walk","em":false,"f1":0.0,"tokens":415,"latency":11.0},"agentic":{"answer":"Chen Ding","em":true,"f1":1.0,"tokens":198,"latency":0.62},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Chen Ding'.","complexity":2}},{"qid":"pub-003","question":"According to the provided corpus, how many shooting events at the 2004 Summer Olympics had more than 37 competitors?","qtype":"aggregation","gold":"8","rag":{"answer":"19","em":false,"f1":0.0,"tokens":368,"latency":8.98},"graphrag":{"answer":"8","em":true,"f1":1.0,"tokens":11370,"latency":0.27},"agentic":{"answer":"8","em":true,"f1":1.0,"tokens":225,"latency":0.45},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 8 qualifying events from graph structure.","complexity":4}},{"qid":"pub-004","question":"According to the provided corpus, which athletics event at the 2008 Summer Olympics had the highest number of competitors?","qtype":"superlative","gold":"Athletics at the 2008 Summer Olympics â€“ Men's marathon","rag":{"answer":"Unknown","em":false,"f1":0.0,"tokens":366,"latency":7.04},"graphrag":{"answer":"Athletics at the 2008 Summer Olympics â€“ Men's marathon","em":true,"f1":1.0,"tokens":1532,"latency":0.25},"agentic":{"answer":"Athletics at the 2008 Summer Olympics â€“ Men's marathon","em":true,"f1":1.0,"tokens":213,"latency":0.48},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","get_superlative_event"],"confidence":0.98,"stopping_reason":"Identified maximal event 'Athletics at the 2008 Summer Olympics â€“ Men's marathon' by competitor count.","complexity":4}},{"qid":"pub-005","question":"Who won the gold medal in the event held at Olympic Weightlifting Gymnasium on 20 September 1988?","qtype":"multi_hop","gold":"Naim SÃ¼leymanoÄŸlu","rag":{"answer":"Naim SÃ¼leymanoÄŸlu   goldNOC: TUR   silver: Stefan Topurov   silverNOC: BUL   bronze: Ye Huanming   bronzeNOC: CHN   prev: 1984   next: 1992  The men's 60 kg weightlifting event was one of the events","em":false,"f1":0.0755,"tokens":433,"latency":9.93},"graphrag":{"answer":"Weightlifting at the 1988 Summer Olympics â€“ Men's 60 kg","em":false,"f1":0.0,"tokens":393,"latency":9.3},"agentic":{"answer":"Naim SÃ¼leymanoÄŸlu","em":true,"f1":1.0,"tokens":209,"latency":0.78},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Naim SÃ¼leymanoÄŸlu'.","complexity":3}},{"qid":"pub-006","question":"Who won the gold medal in the women's 57 kg judo event at the Summer Olympics held immediately before 2020?","qtype":"temporal","gold":"Rafaela Silva","rag":{"answer":"FRAAmandine BuchardGuillaume ChaineSarah-LÃ©onie CysiqueKilian Le BlouchClarisse AgbegnenouAxel ClergetMargaux PinotAlexandre IddirRomane DickoTeddy RinerMadeleine Malonga   silver: JPNHifumi AbeUta A","em":false,"f1":0.0,"tokens":410,"latency":11.82},"graphrag":{"answer":"Judo at the 2020 Summer Olympics â€“ Mixed team","em":false,"f1":0.0,"tokens":387,"latency":10.6},"agentic":{"answer":"Rafaela Silva","em":true,"f1":1.0,"tokens":197,"latency":0.37},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Rafaela Silva'.","complexity":2}},{"qid":"pub-007","question":"Who won the gold medal in the men's pole vault athletics event at the Summer Olympics held immediately before 2016?","qtype":"temporal","gold":"Renaud Lavillenie","rag":{"answer":"Thiago Braz   goldNOC: BRA   silver: Renaud Lavillenie   silverNOC: FRA   bronze: Sam Kendricks   bronzeNOC: USA   prev: 2012   next: 2020  The men's pole vault competition at the 2016 Summer Olympics","em":false,"f1":0.0889,"tokens":410,"latency":13.63},"graphrag":{"answer":"Athletics at the 2016 Summer Olympics â€“ Men's pole vault","em":false,"f1":0.0,"tokens":378,"latency":9.9},"agentic":{"answer":"Renaud Lavillenie","em":true,"f1":1.0,"tokens":197,"latency":0.43},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Renaud Lavillenie'.","complexity":2}},{"qid":"pub-008","question":"According to the provided corpus, which sailing event at the 2000 Summer Olympics had the highest number of competitors?","qtype":"superlative","gold":"Sailing at the 2000 Summer Olympics â€“ Soling","rag":{"answer":"Unknown","em":false,"f1":0.0,"tokens":373,"latency":7.09},"graphrag":{"answer":"Sailing at the 2000 Summer Olympics â€“ Soling","em":true,"f1":1.0,"tokens":464,"latency":0.23},"agentic":{"answer":"Sailing at the 2000 Summer Olympics â€“ Soling","em":true,"f1":1.0,"tokens":212,"latency":0.35},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","get_superlative_event"],"confidence":0.98,"stopping_reason":"Identified maximal event 'Sailing at the 2000 Summer Olympics â€“ Soling' by competitor count.","complexity":4}},{"qid":"pub-009","question":"How many nations competed in Sailing at the 2016 Summer Olympics â€“ Women's RS:X?","qtype":"lookup","gold":"26","rag":{"answer":"27","em":false,"f1":0.0,"tokens":379,"latency":8.94},"graphrag":{"answer":"26","em":true,"f1":1.0,"tokens":276,"latency":0.79},"agentic":{"answer":"26","em":true,"f1":1.0,"tokens":175,"latency":1.37},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=26.","complexity":1}},{"qid":"pub-010","question":"According to the provided corpus, how many cycling events at the 2000 Summer Olympics had more than 30 competitors?","qtype":"aggregation","gold":"4","rag":{"answer":"144","em":false,"f1":0.0,"tokens":390,"latency":9.22},"graphrag":{"answer":"4","em":true,"f1":1.0,"tokens":2909,"latency":0.19},"agentic":{"answer":"4","em":true,"f1":1.0,"tokens":225,"latency":0.38},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 4 qualifying events from graph structure.","complexity":4}},{"qid":"pub-011","question":"Who won the gold medal in the event held at Richmond Olympic Oval on 14 February 2010?","qtype":"multi_hop","gold":"Martina SÃ¡blÃ­kovÃ¡","rag":{"answer":"Lee Seung-hoon   goldNOC: KOR   silver: Ivan Skobrev   silverNOC: RUS   bronze: Bob de Jong   bronzeNOC: NED   prev: 2006   next: 2014  The men's 10,000 metres speed skating competition of the Vancouv","em":false,"f1":0.0,"tokens":417,"latency":12.91},"graphrag":{"answer":"Speed skating at the 2010 Winter Olympics â€“ Men's 10,000 metres","em":false,"f1":0.0,"tokens":382,"latency":9.77},"agentic":{"answer":"Martina SÃ¡blÃ­kovÃ¡","em":true,"f1":1.0,"tokens":209,"latency":0.46},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Martina SÃ¡blÃ­kovÃ¡'.","complexity":3}},{"qid":"pub-012","question":"According to the provided corpus, how many rowing events at the 2020 Summer Olympics had more than 36 competitors?","qtype":"aggregation","gold":"6","rag":{"answer":"32","em":false,"f1":0.0,"tokens":357,"latency":8.83},"graphrag":{"answer":"6","em":true,"f1":1.0,"tokens":5777,"latency":0.23},"agentic":{"answer":"6","em":true,"f1":1.0,"tokens":225,"latency":0.46},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 6 qualifying events from graph structure.","complexity":4}},{"qid":"pub-013","question":"Who won the gold medal in the women's 200 metre freestyle swimming event at the Summer Olympics held immediately before 2016?","qtype":"temporal","gold":"Allison Schmitt","rag":{"answer":"Sun Yang   goldNOC: CHN   silver: Chad le Clos   silverNOC: RSA   bronze: Conor Dwyer   bronzeNOC: USA   prev: 2012   next: 2020  The men's 200 metre freestyle event at the 2016 Summer Olympics took p","em":false,"f1":0.0,"tokens":410,"latency":13.12},"graphrag":{"answer":"Swimming at the 2016 Summer Olympics â€“ Men's 200 metre freestyle","em":false,"f1":0.0,"tokens":380,"latency":14.68},"agentic":{"answer":"Allison Schmitt","em":true,"f1":1.0,"tokens":198,"latency":0.42},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Allison Schmitt'.","complexity":2}},{"qid":"pub-014","question":"Who won the gold medal in the event held at Riocentro â€“ Pavilion 4 on 11â€“19 August at the 2016 Summer Olympics?","qtype":"multi_hop","gold":"Carolina MarÃ­n","rag":{"answer":"Estelle Mossely   goldNOC: FRA   silver: Yin Junhua   silverNOC: CHN   bronze: Mira Potkonen   bronzeNOC: FIN   bronze2: Anastasia Belyakova   bronzeNOC2: RUS   prev: 2012   next: 2020  The women's li","em":false,"f1":0.0,"tokens":432,"latency":9.81},"graphrag":{"answer":"Boxing at the 2016 Summer Olympics â€“ Women's lightweight","em":false,"f1":0.0,"tokens":394,"latency":11.14},"agentic":{"answer":"Carolina MarÃ­n","em":true,"f1":1.0,"tokens":214,"latency":1.16},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Carolina MarÃ­n'.","complexity":3}},{"qid":"pub-015","question":"Who won the gold medal in the event held at London Velopark on 3 to 4 August at the 2012 Summer Olympics?","qtype":"multi_hop","gold":"Dani KingLaura TrottJoanna Rowsell","rag":{"answer":"Ed ClancyGeraint ThomasSteven BurkePeter Kennaugh   goldNOC: GBR   silver: Jack BobridgeGlenn O'SheaRohan DennisMichael Hepburn   silverNOC: AUS   bronze: Sam BewleyAaron GateMarc RyanJesse SergentWes","em":false,"f1":0.0,"tokens":406,"latency":10.12},"graphrag":{"answer":"Cycling at the 2012 Summer Olympics â€“ Men's team pursuit","em":false,"f1":0.0,"tokens":380,"latency":10.85},"agentic":{"answer":"Dani KingLaura TrottJoanna Rowsell","em":true,"f1":1.0,"tokens":216,"latency":1.18},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Dani KingLaura TrottJoanna Rowsell'.","complexity":3}},{"qid":"pub-016","question":"Who won the gold medal in the men's sprint biathlon event at the Winter Olympics held immediately before 2022?","qtype":"temporal","gold":"Arnd Peiffer","rag":{"answer":"Marte Olsbu RÃ¸iseland   goldNOC: NOR   silver: Elvira Ã–berg   silverNOC: SWE   bronze: Dorothea Wierer   bronzeNOC: ITA   prev: 2018   next: 2026  The Women's sprint competition of the Beijing 2022 ","em":false,"f1":0.0,"tokens":411,"latency":12.16},"graphrag":{"answer":"Biathlon at the 2022 Winter Olympics â€“ Women's sprint","em":false,"f1":0.0,"tokens":375,"latency":11.54},"agentic":{"answer":"Arnd Peiffer","em":true,"f1":1.0,"tokens":196,"latency":0.34},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Arnd Peiffer'.","complexity":2}},{"qid":"pub-017","question":"Who won the gold medal in the event held at Royal Artillery Barracks on 28 July 2012?","qtype":"multi_hop","gold":"Yi Siling","rag":{"answer":"Alin Moldoveanu   goldNOC: ROU   silver: NiccolÃ² Campriani   silverNOC: ITA   bronze: Gagan Narang   bronzeNOC: IND   win_label: Winning score   win_value: 702.1   prev: 2008   next: 2016  The Men's ","em":false,"f1":0.0,"tokens":440,"latency":10.41},"graphrag":{"answer":"Shooting at the 2012 Summer Olympics â€“ Men's 10 metre air rifle","em":false,"f1":0.0,"tokens":403,"latency":9.21},"agentic":{"answer":"Yi Siling","em":true,"f1":1.0,"tokens":209,"latency":0.74},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Yi Siling'.","complexity":3}},{"qid":"pub-018","question":"Who won the gold medal in the men's freestyle 82 kg wrestling event at the Summer Olympics held immediately before 1996?","qtype":"temporal","gold":"Kevin Jackson","rag":{"answer":"Khadzhimurad Magomedov   goldNOC: RUS   silver: Yang Hyung-mo   silverNOC: KOR   bronze: Amir Reza Khadem   bronzeNOC: IRI   prev: 1992   next: 2000  The men's freestyle 82 kilograms at the 1996 Summe","em":false,"f1":0.0,"tokens":424,"latency":12.1},"graphrag":{"answer":"Wrestling at the 1996 Summer Olympics â€“ Men's freestyle 82 kg","em":false,"f1":0.0,"tokens":385,"latency":12.82},"agentic":{"answer":"Kevin Jackson","em":true,"f1":1.0,"tokens":198,"latency":0.41},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Kevin Jackson'.","complexity":2}},{"qid":"pub-019","question":"According to the provided corpus, how many fencing events at the 1988 Summer Olympics had more than 68 competitors?","qtype":"aggregation","gold":"3","rag":{"answer":"68","em":false,"f1":0.0,"tokens":385,"latency":7.12},"graphrag":{"answer":"3","em":true,"f1":1.0,"tokens":2985,"latency":0.23},"agentic":{"answer":"3","em":true,"f1":1.0,"tokens":225,"latency":0.39},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 3 qualifying events from graph structure.","complexity":4}},{"qid":"pub-020","question":"According to the provided corpus, how many alpine skiing events at the 2014 Winter Olympics had more than 63 competitors?","qtype":"aggregation","gold":"4","rag":{"answer":"115","em":false,"f1":0.0,"tokens":337,"latency":8.15},"graphrag":{"answer":"4","em":true,"f1":1.0,"tokens":5247,"latency":0.19},"agentic":{"answer":"4","em":true,"f1":1.0,"tokens":226,"latency":0.38},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 4 qualifying events from graph structure.","complexity":4}},{"qid":"pub-021","question":"According to the provided corpus, which alpine skiing event at the 1988 Winter Olympics had the highest number of competitors?","qtype":"superlative","gold":"Alpine skiing at the 1988 Winter Olympics â€“ Men's giant slalom","rag":{"answer":"Unknown","em":false,"f1":0.0,"tokens":340,"latency":7.01},"graphrag":{"answer":"Alpine skiing at the 1988 Winter Olympics â€“ Men's giant slalom","em":true,"f1":1.0,"tokens":1044,"latency":0.17},"agentic":{"answer":"Alpine skiing at the 1988 Winter Olympics â€“ Men's giant slalom","em":true,"f1":1.0,"tokens":216,"latency":0.36},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","get_superlative_event"],"confidence":0.98,"stopping_reason":"Identified maximal event 'Alpine skiing at the 1988 Winter Olympics â€“ Men's giant slalom' by competitor count.","complexity":4}},{"qid":"pub-022","question":"Who won the gold medal in the event held at Beijing Science and TechnologyUniversity Gymnasium on August 12, 2008?","qtype":"multi_hop","gold":"Ayumi Tanimoto","rag":{"answer":"Ayumi Tanimoto   goldNOC: JPN   silver: Lucie DÃ©cosse   silverNOC: FRA   bronze: Elisabeth Willeboordse   bronzeNOC: NED   bronze2: Won Ok-Im   bronzeNOC2: PRK   prev: 2004   next: 2012  Judo at the ","em":false,"f1":0.0952,"tokens":393,"latency":9.96},"graphrag":{"answer":"Judo at the 2008 Summer Olympics â€“ Women's 63 kg","em":false,"f1":0.0,"tokens":366,"latency":9.26},"agentic":{"answer":"Ayumi Tanimoto","em":true,"f1":1.0,"tokens":211,"latency":1.14},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Ayumi Tanimoto'.","complexity":3}},{"qid":"pub-023","question":"Who won the gold medal in the event held at Estadi OlÃ­mpic LluÃ­s Companys, Barcelona on August 9 at the 1992 Summer Olympics?","qtype":"multi_hop","gold":"Hwang Young-Cho","rag":{"answer":"Kevin Young   goldNOC: USA   silver: Winthrop Graham   silverNOC: JAM   bronze: Kriss Akabusi   bronzeNOC: GBR   prev: 1988   next: 1996  ]  The men's 400 metres hurdles was an event at the 1992 Summe","em":false,"f1":0.0571,"tokens":411,"latency":11.88},"graphrag":{"answer":"Athletics at the 1992 Summer Olympics â€“ Men's 400 metres hurdles","em":false,"f1":0.0,"tokens":390,"latency":13.43},"agentic":{"answer":"Hwang Young-Cho","em":true,"f1":1.0,"tokens":215,"latency":0.83},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Hwang Young-Cho'.","complexity":3}},{"qid":"pub-024","question":"According to the provided corpus, how many biathlon events at the 2002 Winter Olympics had more than 74 competitors?","qtype":"aggregation","gold":"3","rag":{"answer":"71","em":false,"f1":0.0,"tokens":347,"latency":7.17},"graphrag":{"answer":"3","em":true,"f1":1.0,"tokens":4712,"latency":0.23},"agentic":{"answer":"3","em":true,"f1":1.0,"tokens":225,"latency":0.36},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 3 qualifying events from graph structure.","complexity":4}},{"qid":"pub-025","question":"How many nations competed in Judo at the 2016 Summer Olympics â€“ Women's 57 kg?","qtype":"lookup","gold":"23","rag":{"answer":"23","em":true,"f1":1.0,"tokens":397,"latency":11.42},"graphrag":{"answer":"23","em":true,"f1":1.0,"tokens":334,"latency":1.73},"agentic":{"answer":"23","em":true,"f1":1.0,"tokens":176,"latency":2.85},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=23.","complexity":1}},{"qid":"pub-026","question":"Who won the gold medal in the men's cross-country cycling event at the Summer Olympics held immediately before 2016?","qtype":"temporal","gold":"Jaroslav KulhavÃ½","rag":{"answer":"Jaroslav KulhavÃ½   goldNOC: CZE   silver: Nino Schurter   silverNOC: SUI   bronze: Marco Aurelio Fontana   bronzeNOC: ITA   win_value: 1:29:07   prev: 2008   next: 2016  The men's cross-country cycli","em":false,"f1":0.0741,"tokens":426,"latency":12.47},"graphrag":{"answer":"Cycling at the 2012 Summer Olympics â€“ Men's cross-country","em":false,"f1":0.0,"tokens":387,"latency":11.73},"agentic":{"answer":"Jaroslav KulhavÃ½","em":true,"f1":1.0,"tokens":196,"latency":0.39},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Jaroslav KulhavÃ½'.","complexity":2}},{"qid":"pub-027","question":"According to the provided corpus, how many fencing events at the 2008 Summer Olympics had more than 32 competitors?","qtype":"aggregation","gold":"4","rag":{"answer":"36","em":false,"f1":0.0,"tokens":398,"latency":7.01},"graphrag":{"answer":"4","em":true,"f1":1.0,"tokens":3049,"latency":0.24},"agentic":{"answer":"4","em":true,"f1":1.0,"tokens":225,"latency":0.35},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 4 qualifying events from graph structure.","complexity":4}},{"qid":"pub-028","question":"Who won the gold medal in the event held at Olympic Aquatic Centre on August 14, 2004 (heats & final)?","qtype":"multi_hop","gold":"Michael Phelps","rag":{"answer":"Yana Klochkova   goldNOC: UKR   silver: Kaitlin Sandeno   silverNOC: USA   bronze: Georgina Bardach   bronzeNOC: ARG   prev: 2000   next: 2008  The women's 400 metre individual medley event at the 200","em":false,"f1":0.0,"tokens":405,"latency":13.4},"graphrag":{"answer":"Swimming at the 2004 Summer Olympics â€“ Women's 400 metre individual medley","em":false,"f1":0.0,"tokens":377,"latency":14.16},"agentic":{"answer":"Kosuke Kitajima","em":false,"f1":0.0,"tokens":212,"latency":1.38},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Kosuke Kitajima'.","complexity":3}},{"qid":"pub-029","question":"How many nations competed in Shooting at the 2012 Summer Olympics â€“ Men's 50 metre rifle three positions?","qtype":"lookup","gold":"28","rag":{"answer":"41","em":false,"f1":0.0,"tokens":379,"latency":11.79},"graphrag":{"answer":"28","em":true,"f1":1.0,"tokens":1233,"latency":1.37},"agentic":{"answer":"28","em":true,"f1":1.0,"tokens":179,"latency":1.92},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=28.","complexity":1}},{"qid":"pub-030","question":"Who won the gold medal in the event held at Carioca Arena 3 on 6 August 2016?","qtype":"multi_hop","gold":"Emese SzÃ¡sz","rag":{"answer":"Yekaterina DyachenkoYuliya GavrilovaYana EgorianSofya Velikaya   goldNOC: RUS   silver: Olha KharlanAlina KomashchukOlena KravatskaOlena Voronina   silverNOC: UKR   bronze: Monica AksamitIbtihaj Muham","em":false,"f1":0.0,"tokens":406,"latency":10.8},"graphrag":{"answer":"Fencing at the 2016 Summer Olympics â€“ Women's team sabre","em":false,"f1":0.0,"tokens":378,"latency":10.69},"agentic":{"answer":"Emese SzÃ¡sz","em":true,"f1":1.0,"tokens":209,"latency":1.2},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Emese SzÃ¡sz'.","complexity":3}},{"qid":"pub-031","question":"Who won the gold medal in the event held at Nikaia Olympic Weightlifting Hall on 24 August 2004?","qtype":"multi_hop","gold":"Dmitry Berestov","rag":{"answer":"Dmitry Berestov   goldNOC: RUS   silver: Ihor Razoronov   silverNOC: UKR   bronze: Gleb Pisarevskiy   bronzeNOC: RUS   prev: 2000   next: 2008  The men's 105 kilograms weightlifting event at the 2004 ","em":false,"f1":0.0769,"tokens":434,"latency":10.16},"graphrag":{"answer":"Weightlifting at the 2004 Summer Olympics â€“ Men's 105 kg","em":false,"f1":0.0,"tokens":395,"latency":10.93},"agentic":{"answer":"Dmitry Berestov","em":true,"f1":1.0,"tokens":210,"latency":1.09},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Dmitry Berestov'.","complexity":3}},{"qid":"pub-032","question":"How many nations competed in Gymnastics at the 2016 Summer Olympics â€“ Men's horizontal bar?","qtype":"lookup","gold":"34","rag":{"answer":"71","em":false,"f1":0.0,"tokens":372,"latency":9.81},"graphrag":{"answer":"34","em":true,"f1":1.0,"tokens":1016,"latency":0.89},"agentic":{"answer":"34","em":true,"f1":1.0,"tokens":176,"latency":1.69},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=34.","complexity":1}},{"qid":"pub-033","question":"According to the provided corpus, how many judo events at the 2004 Summer Olympics had more than 32 competitors?","qtype":"aggregation","gold":"4","rag":{"answer":"32","em":false,"f1":0.0,"tokens":384,"latency":7.45},"graphrag":{"answer":"4","em":true,"f1":1.0,"tokens":2269,"latency":0.22},"agentic":{"answer":"4","em":true,"f1":1.0,"tokens":225,"latency":0.41},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 4 qualifying events from graph structure.","complexity":4}},{"qid":"pub-034","question":"How many nations competed in Figure skating at the 2010 Winter Olympics â€“ Women's singles?","qtype":"lookup","gold":"23","rag":{"answer":"30","em":false,"f1":0.0,"tokens":351,"latency":9.55},"graphrag":{"answer":"23","em":true,"f1":1.0,"tokens":4060,"latency":0.55},"agentic":{"answer":"23","em":true,"f1":1.0,"tokens":176,"latency":1.11},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=23.","complexity":1}},{"qid":"pub-035","question":"How many nations competed in Shooting at the 1996 Summer Olympics â€“ Men's 50 metre rifle three positions?","qtype":"lookup","gold":"30","rag":{"answer":"45","em":false,"f1":0.0,"tokens":372,"latency":12.28},"graphrag":{"answer":"30","em":true,"f1":1.0,"tokens":767,"latency":3.53},"agentic":{"answer":"30","em":true,"f1":1.0,"tokens":179,"latency":6.36},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=30.","complexity":1}},{"qid":"pub-036","question":"Who won the gold medal in the men's light flyweight boxing event at the Summer Olympics held immediately before 2016?","qtype":"temporal","gold":"Zou Shiming","rag":{"answer":"Hasanboy Dusmatov   goldNOC: UZB   silver: Yuberjen MartÃ­nez   silverNOC: COL   bronze: Joahnys Argilagos   bronzeNOC: CUB   bronze2: Nico HernÃ¡ndez   bronzeNOC2: USA   prev: 2012  The men's light f","em":false,"f1":0.0,"tokens":424,"latency":13.01},"graphrag":{"answer":"Boxing at the 2016 Summer Olympics â€“ Men's light flyweight","em":false,"f1":0.0,"tokens":388,"latency":12.86},"agentic":{"answer":"Zou Shiming","em":true,"f1":1.0,"tokens":197,"latency":0.93},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Zou Shiming'.","complexity":2}},{"qid":"pub-037","question":"According to the provided corpus, which shooting event at the 2008 Summer Olympics had the highest number of competitors?","qtype":"superlative","gold":"Shooting at the 2008 Summer Olympics â€“ Men's 50 metre rifle prone","rag":{"answer":"Unknown","em":false,"f1":0.0,"tokens":350,"latency":7.13},"graphrag":{"answer":"Shooting at the 2008 Summer Olympics â€“ Men's 50 metre rifle prone","em":true,"f1":1.0,"tokens":1334,"latency":0.29},"agentic":{"answer":"Shooting at the 2008 Summer Olympics â€“ Men's 50 metre rifle prone","em":true,"f1":1.0,"tokens":216,"latency":0.8},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","get_superlative_event"],"confidence":0.98,"stopping_reason":"Identified maximal event 'Shooting at the 2008 Summer Olympics â€“ Men's 50 metre rifle prone' by competitor count.","complexity":4}},{"qid":"pub-038","question":"Who won the gold medal in the event held at Sydney Convention and Exhibition Centre on 23 September 2000?","qtype":"multi_hop","gold":"Pyrros Dimas","rag":{"answer":"Makoto Takimoto   goldNOC: JPN   silver: Cho In-chul   silverNOC: KOR   bronze: Nuno Delgado   bronzeNOC: POR   bronze2: Aleksei BudÃµlin   bronzeNOC2: EST   prev: 1996   next: 2004  Men's 81 kg compe","em":false,"f1":0.0,"tokens":422,"latency":10.65},"graphrag":{"answer":"Judo at the 2000 Summer Olympics â€“ Men's 81 kg","em":false,"f1":0.0,"tokens":385,"latency":11.07},"agentic":{"answer":"Pyrros Dimas","em":true,"f1":1.0,"tokens":211,"latency":1.49},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Pyrros Dimas'.","complexity":3}},{"qid":"pub-039","question":"Who won the gold medal in the women's discus throw athletics event at the Summer Olympics held immediately before 2016?","qtype":"temporal","gold":"Sandra PerkoviÄ‡","rag":{"answer":"Christoph Harting   goldNOC: GER   silver: Piotr MaÅ‚achowski   silverNOC: POL   bronze: Daniel Jasinski   bronzeNOC: GER   prev: 2012   next: 2020  The men's discus throw competition at the 2016 Summ","em":false,"f1":0.0,"tokens":403,"latency":10.86},"graphrag":{"answer":"Athletics at the 2016 Summer Olympics â€“ Men's discus throw","em":false,"f1":0.0,"tokens":376,"latency":12.24},"agentic":{"answer":"Sandra PerkoviÄ‡","em":true,"f1":1.0,"tokens":197,"latency":0.49},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Sandra PerkoviÄ‡'.","complexity":2}},{"qid":"pub-040","question":"Who won the gold medal in the individual normal hill/10 km nordic combined event at the Winter Olympics held immediately before 2014?","qtype":"temporal","gold":"Jason Lamy Chappuis","rag":{"answer":"Jason Lamy Chappuis   goldNOC: FRA   silver: Johnny Spillane   silverNOC: USA   bronze: Alessandro Pittin   bronzeNOC: ITA   win_value: 25:47.1   prev: 2006   next: 2014  The men's individual normal h","em":false,"f1":0.12,"tokens":404,"latency":12.04},"graphrag":{"answer":"Nordic combined at the 2010 Winter Olympics â€“ Individual normal hill/10 km","em":false,"f1":0.0,"tokens":373,"latency":10.25},"agentic":{"answer":"Unknown","em":false,"f1":0.0,"tokens":198,"latency":0.29},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.35,"stopping_reason":"Stopped after available evidence was exhausted.","complexity":2}},{"qid":"pub-041","question":"Who won the gold medal in the event held at Mountain Bike Centre on 21 August at the 2016 Summer Olympics?","qtype":"multi_hop","gold":"Nino Schurter","rag":{"answer":"Jenny Rissveds   goldNOC: SWE   silver: Maja WÅ‚oszczowska   silverNOC: POL   bronze: Catharine Pendrel   bronzeNOC: CAN   prev: 2012   next: 2020  The women's cross-country cycling event at the 2016 ","em":false,"f1":0.0,"tokens":423,"latency":9.29},"graphrag":{"answer":"Cycling at the 2016 Summer Olympics â€“ Women's cross-country","em":false,"f1":0.0,"tokens":386,"latency":10.24},"agentic":{"answer":"Nino Schurter","em":true,"f1":1.0,"tokens":213,"latency":0.7},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Nino Schurter'.","complexity":3}},{"qid":"pub-042","question":"How many nations competed in Alpine skiing at the 1992 Winter Olympics â€“ Men's giant slalom?","qtype":"lookup","gold":"47","rag":{"answer":"82","em":false,"f1":0.0,"tokens":371,"latency":10.34},"graphrag":{"answer":"47","em":true,"f1":1.0,"tokens":1036,"latency":4.79},"agentic":{"answer":"47","em":true,"f1":1.0,"tokens":177,"latency":8.92},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=47.","complexity":1}},{"qid":"pub-043","question":"Who won the gold medal in the event held at Val-d'IsÃ¨re on 16 February 1992?","qtype":"multi_hop","gold":"Kjetil AndrÃ© Aamodt","rag":{"answer":"Kjetil AndrÃ© Aamodt   goldNOC: NOR   silver: Marc Girardelli   silverNOC: LUX   bronze: Jan Einar Thorsen   bronzeNOC: NOR   prev: 1988   next: 1994 [Infobox ski area]   name: Men's Super-G   locatio","em":false,"f1":0.1224,"tokens":384,"latency":9.57},"graphrag":{"answer":"Alpine skiing at the 1992 Winter Olympics â€“ Men's super-G","em":false,"f1":0.0,"tokens":353,"latency":10.72},"agentic":{"answer":"Kjetil AndrÃ© Aamodt","em":true,"f1":1.0,"tokens":208,"latency":1.07},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Kjetil AndrÃ© Aamodt'.","complexity":3}},{"qid":"pub-044","question":"According to the provided corpus, which fencing event at the 2008 Summer Olympics had the highest number of competitors?","qtype":"superlative","gold":"Fencing at the 2008 Summer Olympics â€“ Men's Ã©pÃ©e","rag":{"answer":"Unknown","em":false,"f1":0.0,"tokens":376,"latency":7.19},"graphrag":{"answer":"Fencing at the 2008 Summer Olympics â€“ Men's Ã©pÃ©e","em":true,"f1":1.0,"tokens":1103,"latency":0.23},"agentic":{"answer":"Fencing at the 2008 Summer Olympics â€“ Men's Ã©pÃ©e","em":true,"f1":1.0,"tokens":213,"latency":0.42},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","get_superlative_event"],"confidence":0.98,"stopping_reason":"Identified maximal event 'Fencing at the 2008 Summer Olympics â€“ Men's Ã©pÃ©e' by competitor count.","complexity":4}},{"qid":"pub-045","question":"According to the provided corpus, how many athletics events at the 2004 Summer Olympics had more than 41 competitors?","qtype":"aggregation","gold":"20","rag":{"answer":"54","em":false,"f1":0.0,"tokens":371,"latency":7.97},"graphrag":{"answer":"20","em":true,"f1":1.0,"tokens":18326,"latency":0.23},"agentic":{"answer":"20","em":true,"f1":1.0,"tokens":225,"latency":0.5},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 20 qualifying events from graph structure.","complexity":4}},{"qid":"pub-046","question":"How many nations competed in Cross-country skiing at the 2010 Winter Olympics â€“ Men's 15 kilometre freestyle?","qtype":"lookup","gold":"50","rag":{"answer":"64","em":false,"f1":0.0,"tokens":360,"latency":11.47},"graphrag":{"answer":"50","em":true,"f1":1.0,"tokens":1017,"latency":1.65},"agentic":{"answer":"50","em":true,"f1":1.0,"tokens":178,"latency":3.1},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=50.","complexity":1}},{"qid":"pub-047","question":"How many nations competed in Athletics at the 1992 Summer Olympics â€“ Men's 3000 metres steeplechase?","qtype":"lookup","gold":"24","rag":{"answer":"41","em":false,"f1":0.0,"tokens":363,"latency":10.01},"graphrag":{"answer":"24","em":true,"f1":1.0,"tokens":1314,"latency":3.43},"agentic":{"answer":"24","em":true,"f1":1.0,"tokens":177,"latency":6.01},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=24.","complexity":1}},{"qid":"pub-048","question":"Who won the gold medal in the men's 68 kg taekwondo event at the Summer Olympics held immediately before 2016?","qtype":"temporal","gold":"Servet TazegÃ¼l","rag":{"answer":"Ahmad Abughaush   goldNOC: JOR   silver: Alexey Denisenko   silverNOC: RUS   bronze: Joel GonzÃ¡lez   bronzeNOC: ESP   bronze2: Lee Dae-hoon   bronzeNOC2: KOR   prev: 2012   next: 2020  The men's 68 k","em":false,"f1":0.0,"tokens":445,"latency":14.99},"graphrag":{"answer":"Taekwondo at the 2016 Summer Olympics â€“ Men's 68 kg","em":false,"f1":0.0,"tokens":403,"latency":11.54},"agentic":{"answer":"Unknown","em":false,"f1":0.0,"tokens":196,"latency":0.49},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.35,"stopping_reason":"Stopped after available evidence was exhausted.","complexity":2}},{"qid":"pub-049","question":"Who won the gold medal in the men's pursuit biathlon event at the Winter Olympics held immediately before 2022?","qtype":"temporal","gold":"Martin Fourcade","rag":{"answer":"Quentin Fillon Maillet   goldNOC: FRA   silver: Tarjei BÃ¸   silverNOC: NOR   bronze: Eduard Latypov   bronzeNOC: ROC   prev: 2018   next: 2026  The Men's pursuit competition of the Beijing 2022 Olymp","em":false,"f1":0.0,"tokens":415,"latency":10.58},"graphrag":{"answer":"Biathlon at the 2022 Winter Olympics â€“ Men's pursuit","em":false,"f1":0.0,"tokens":378,"latency":10.12},"agentic":{"answer":"Martin Fourcade","em":true,"f1":1.0,"tokens":196,"latency":0.43},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Martin Fourcade'.","complexity":2}},{"qid":"pub-050","question":"Who won the gold medal in the event held at Adler Arena Skating Center on 11 February 2014?","qtype":"multi_hop","gold":"Lee Sang-hwa","rag":{"answer":"Lee Sang-hwa   goldNOC: KOR   silver: Olga Fatkulina   silverNOC: RUS   bronze: Margot Boer   bronzeNOC: NED   prev: 2010   next: 2018  The women's 500 metres speed skating competition of the 2014 Soc","em":false,"f1":0.1154,"tokens":430,"latency":11.67},"graphrag":{"answer":"Speed skating at the 2014 Winter Olympics â€“ Women's 500 metres","em":false,"f1":0.0,"tokens":394,"latency":10.55},"agentic":{"answer":"Lee Sang-hwa","em":true,"f1":1.0,"tokens":210,"latency":0.54},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Lee Sang-hwa'.","complexity":3}},{"qid":"pub-051","question":"According to the provided corpus, how many canoeing events at the 2012 Summer Olympics had more than 25 competitors?","qtype":"aggregation","gold":"6","rag":{"answer":"19","em":false,"f1":0.0,"tokens":383,"latency":8.34},"graphrag":{"answer":"6","em":true,"f1":1.0,"tokens":4710,"latency":0.25},"agentic":{"answer":"6","em":true,"f1":1.0,"tokens":225,"latency":0.52},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 6 qualifying events from graph structure.","complexity":4}},{"qid":"pub-052","question":"How many nations competed in Biathlon at the 2022 Winter Olympics â€“ Women's relay?","qtype":"lookup","gold":"20","rag":{"answer":"80","em":false,"f1":0.0,"tokens":305,"latency":8.17},"graphrag":{"answer":"20","em":true,"f1":1.0,"tokens":998,"latency":1.51},"agentic":{"answer":"20","em":true,"f1":1.0,"tokens":175,"latency":3.12},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=20.","complexity":1}},{"qid":"pub-053","question":"According to the provided corpus, which shooting event at the 2016 Summer Olympics had the highest number of competitors?","qtype":"superlative","gold":"Shooting at the 2016 Summer Olympics â€“ Women's 10 metre air rifle","rag":{"answer":"Unknown","em":false,"f1":0.0,"tokens":365,"latency":7.56},"graphrag":{"answer":"Shooting at the 2016 Summer Olympics â€“ Women's 10 metre air rifle","em":true,"f1":1.0,"tokens":1470,"latency":0.22},"agentic":{"answer":"Shooting at the 2016 Summer Olympics â€“ Women's 10 metre air rifle","em":true,"f1":1.0,"tokens":216,"latency":0.48},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","get_superlative_event"],"confidence":0.98,"stopping_reason":"Identified maximal event 'Shooting at the 2016 Summer Olympics â€“ Women's 10 metre air rifle' by competitor count.","complexity":4}},{"qid":"pub-054","question":"How many nations competed in Marathon swimming at the 2016 Summer Olympics â€“ Women's 10 kilometre?","qtype":"lookup","gold":"24","rag":{"answer":"26","em":false,"f1":0.0,"tokens":379,"latency":10.09},"graphrag":{"answer":"24","em":true,"f1":1.0,"tokens":775,"latency":0.39},"agentic":{"answer":"24","em":true,"f1":1.0,"tokens":177,"latency":0.81},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=24.","complexity":1}},{"qid":"pub-055","question":"Who won the gold medal in the men's 80 kg taekwondo event at the Summer Olympics held immediately before 2016?","qtype":"temporal","gold":"SebastiÃ¡n Crismanich","rag":{"answer":"Cheick Sallah CissÃ©   goldNOC: CIV   silver: Lutalo Muhammad   silverNOC: GBR   bronze: Oussama Oueslati   bronzeNOC: TUN   bronze2: Milad Beigi   bronzeNOC2: AZE   prev: 2012   next: 2020  The men's","em":false,"f1":0.0,"tokens":442,"latency":12.08},"graphrag":{"answer":"Taekwondo at the 2016 Summer Olympics â€“ Men's 80 kg","em":false,"f1":0.0,"tokens":400,"latency":10.47},"agentic":{"answer":"Unknown","em":false,"f1":0.0,"tokens":196,"latency":0.36},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.35,"stopping_reason":"Stopped after available evidence was exhausted.","complexity":2}},{"qid":"pub-056","question":"Who won the gold medal in the men's 30 kilometre pursuit cross-country skiing event at the Winter Olympics held immediately before 2010?","qtype":"temporal","gold":"Yevgeny Dementyev","rag":{"answer":"Marcus Hellner   goldNOC: SWE   silver: Tobias Angerer   silverNOC: GER   bronze: Johan Olsson   bronzeNOC: SWE   prev: 2006   next: 2014  The men's 15 kilometre + 15 kilometre double Pursuit cross-co","em":false,"f1":0.0,"tokens":400,"latency":14.85},"graphrag":{"answer":"Cross-country skiing at the 2010 Winter Olympics â€“ Men's 30 kilometre pursuit","em":false,"f1":0.0,"tokens":369,"latency":13.0},"agentic":{"answer":"Yevgeny Dementyev","em":true,"f1":1.0,"tokens":199,"latency":0.36},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Yevgeny Dementyev'.","complexity":2}},{"qid":"pub-057","question":"Who won the gold medal in the women's 200 metres athletics event at the Summer Olympics held immediately before 2016?","qtype":"temporal","gold":"Allyson Felix","rag":{"answer":"Vivian Cheruiyot   goldNOC: KEN   silver: Hellen Onsando Obiri   silverNOC: KEN   bronze: Almaz Ayana   bronzeNOC: ETH   prev: 2012   next: 2020  The women's 5000 metres event at the 2016 Summer Olymp","em":false,"f1":0.0,"tokens":423,"latency":12.27},"graphrag":{"answer":"Athletics at the 2016 Summer Olympics â€“ Women's 5000 metres","em":false,"f1":0.0,"tokens":385,"latency":10.68},"agentic":{"answer":"Allyson Felix","em":true,"f1":1.0,"tokens":197,"latency":0.6},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Allyson Felix'.","complexity":2}},{"qid":"pub-058","question":"According to the provided corpus, how many rowing events at the 1996 Summer Olympics had more than 39 competitors?","qtype":"aggregation","gold":"5","rag":{"answer":"39","em":false,"f1":0.0,"tokens":384,"latency":7.89},"graphrag":{"answer":"5","em":true,"f1":1.0,"tokens":6173,"latency":0.27},"agentic":{"answer":"5","em":true,"f1":1.0,"tokens":225,"latency":1.14},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 5 qualifying events from graph structure.","complexity":4}},{"qid":"pub-059","question":"Who won the gold medal in the women's sprint biathlon event at the Winter Olympics held immediately before 2022?","qtype":"temporal","gold":"Laura Dahlmeier","rag":{"answer":"Marte Olsbu RÃ¸iseland   goldNOC: NOR   silver: Elvira Ã–berg   silverNOC: SWE   bronze: Dorothea Wierer   bronzeNOC: ITA   prev: 2018   next: 2026  The Women's sprint competition of the Beijing 2022 ","em":false,"f1":0.0,"tokens":411,"latency":9.88},"graphrag":{"answer":"Biathlon at the 2022 Winter Olympics â€“ Women's sprint","em":false,"f1":0.0,"tokens":375,"latency":10.03},"agentic":{"answer":"Laura Dahlmeier","em":true,"f1":1.0,"tokens":196,"latency":0.6},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Laura Dahlmeier'.","complexity":2}},{"qid":"pub-060","question":"Who won the gold medal in the event held at ExCeL Exhibition Centre on 30 July at the 2012 Summer Olympics?","qtype":"multi_hop","gold":"Yana Shemyakina","rag":{"answer":"Robeisy RamÃ­rez   goldNOC: CUB   silver: Nyambayaryn TÃ¶gstsogt   silverNOC: MGL   bronze: Misha Aloyan   bronzeNOC: RUS   bronze2: Michael Conlan   bronzeNOC2: IRL   prev: 2008   next: 2016  The men","em":false,"f1":0.0,"tokens":432,"latency":9.99},"graphrag":{"answer":"Boxing at the 2012 Summer Olympics â€“ Men's flyweight","em":false,"f1":0.0,"tokens":394,"latency":9.17},"agentic":{"answer":"Yana Shemyakina","em":true,"f1":1.0,"tokens":213,"latency":2.35},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Yana Shemyakina'.","complexity":3}},{"qid":"pub-061","question":"How many nations competed in Boxing at the 1988 Summer Olympics â€“ Light flyweight?","qtype":"lookup","gold":"34","rag":{"answer":"30","em":false,"f1":0.0,"tokens":373,"latency":6.32},"graphrag":{"answer":"34","em":true,"f1":1.0,"tokens":914,"latency":3.01},"agentic":{"answer":"34","em":true,"f1":1.0,"tokens":175,"latency":6.16},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=34.","complexity":1}},{"qid":"pub-062","question":"Who won the gold medal in the women's 10,000 metres athletics event at the Summer Olympics held immediately before 2016?","qtype":"temporal","gold":"Tirunesh Dibaba","rag":{"answer":"Vivian Cheruiyot   goldNOC: KEN   silver: Hellen Onsando Obiri   silverNOC: KEN   bronze: Almaz Ayana   bronzeNOC: ETH   prev: 2012   next: 2020  The women's 5000 metres event at the 2016 Summer Olymp","em":false,"f1":0.0,"tokens":425,"latency":11.81},"graphrag":{"answer":"Athletics at the 2016 Summer Olympics â€“ Women's 5000 metres","em":false,"f1":0.0,"tokens":387,"latency":11.16},"agentic":{"answer":"Tirunesh Dibaba","em":true,"f1":1.0,"tokens":197,"latency":0.58},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Tirunesh Dibaba'.","complexity":2}},{"qid":"pub-063","question":"How many nations competed in Swimming at the 1988 Summer Olympics â€“ Men's 200 metre freestyle?","qtype":"lookup","gold":"41","rag":{"answer":"55","em":false,"f1":0.0,"tokens":378,"latency":9.04},"graphrag":{"answer":"41","em":true,"f1":1.0,"tokens":1662,"latency":3.37},"agentic":{"answer":"41","em":true,"f1":1.0,"tokens":177,"latency":5.63},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=41.","complexity":1}},{"qid":"pub-064","question":"Who won the gold medal in the event held at ANZ Stadium on 22 September 2000 (heats)25 September 2000 (final)?","qtype":"multi_hop","gold":"Gabriela Szabo","rag":{"answer":"Gabriela Szabo   goldNOC: ROM   silver: Sonia O'Sullivan   silverNOC: IRL   bronze: Gete Wami   bronzeNOC: ETH   prev: 1996   next: 2004  The Women's 5000 metres at the 2000 Summer Olympics as part of","em":false,"f1":0.093,"tokens":401,"latency":11.59},"graphrag":{"answer":"Athletics at the 2000 Summer Olympics â€“ Women's 5000 metres","em":false,"f1":0.0,"tokens":372,"latency":12.3},"agentic":{"answer":"Gabriela Szabo","em":true,"f1":1.0,"tokens":212,"latency":0.95},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Gabriela Szabo'.","complexity":3}},{"qid":"pub-065","question":"According to the provided corpus, how many biathlon events at the 2014 Winter Olympics had more than 68 competitors?","qtype":"aggregation","gold":"5","rag":{"answer":"87","em":false,"f1":0.0,"tokens":365,"latency":10.97},"graphrag":{"answer":"5","em":true,"f1":1.0,"tokens":5023,"latency":0.33},"agentic":{"answer":"5","em":true,"f1":1.0,"tokens":225,"latency":0.48},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 5 qualifying events from graph structure.","complexity":4}},{"qid":"pub-066","question":"According to the provided corpus, which weightlifting event at the 1992 Summer Olympics had the highest number of competitors?","qtype":"superlative","gold":"Weightlifting at the 1992 Summer Olympics â€“ Men's 75 kg","rag":{"answer":"Unknown","em":false,"f1":0.0,"tokens":356,"latency":9.66},"graphrag":{"answer":"Weightlifting at the 1992 Summer Olympics â€“ Men's 75 kg","em":true,"f1":1.0,"tokens":849,"latency":0.28},"agentic":{"answer":"Weightlifting at the 1992 Summer Olympics â€“ Men's 75 kg","em":true,"f1":1.0,"tokens":214,"latency":0.5},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","get_superlative_event"],"confidence":0.98,"stopping_reason":"Identified maximal event 'Weightlifting at the 1992 Summer Olympics â€“ Men's 75 kg' by competitor count.","complexity":4}},{"qid":"pub-067","question":"Who won the gold medal in the event held at North Greenwich Arena on 4 August at the 2012 Summer Olympics?","qtype":"multi_hop","gold":"Rosannagh MacLennan","rag":{"answer":"Rosannagh MacLennan   goldNOC: CAN   silver: Huang Shanshan   silverNOC: CHN   bronze: He Wenna   bronzeNOC: CHN   prev: 2008   next: 2016  The women's trampoline competition at the 2012 Summer Olympi","em":false,"f1":0.0784,"tokens":417,"latency":13.49},"graphrag":{"answer":"Gymnastics at the 2012 Summer Olympics â€“ Women's trampoline","em":false,"f1":0.0,"tokens":378,"latency":10.22},"agentic":{"answer":"Rosannagh MacLennan","em":true,"f1":1.0,"tokens":213,"latency":0.87},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Rosannagh MacLennan'.","complexity":3}},{"qid":"pub-068","question":"How many nations competed in Cycling at the 2012 Summer Olympics â€“ Women's cross-country?","qtype":"lookup","gold":"24","rag":{"answer":"30","em":false,"f1":0.0,"tokens":366,"latency":9.51},"graphrag":{"answer":"24","em":true,"f1":1.0,"tokens":526,"latency":1.01},"agentic":{"answer":"24","em":true,"f1":1.0,"tokens":175,"latency":1.24},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=24.","complexity":1}},{"qid":"pub-069","question":"According to the provided corpus, how many fencing events at the 2000 Summer Olympics had more than 39 competitors?","qtype":"aggregation","gold":"3","rag":{"answer":"40","em":false,"f1":0.0,"tokens":393,"latency":7.8},"graphrag":{"answer":"3","em":true,"f1":1.0,"tokens":2464,"latency":0.21},"agentic":{"answer":"3","em":true,"f1":1.0,"tokens":225,"latency":0.37},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 3 qualifying events from graph structure.","complexity":4}},{"qid":"pub-070","question":"According to the provided corpus, how many speed skating events at the 2010 Winter Olympics had more than 36 competitors?","qtype":"aggregation","gold":"3","rag":{"answer":"26","em":false,"f1":0.0,"tokens":382,"latency":8.03},"graphrag":{"answer":"3","em":true,"f1":1.0,"tokens":2277,"latency":0.19},"agentic":{"answer":"3","em":true,"f1":1.0,"tokens":226,"latency":0.37},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 3 qualifying events from graph structure.","complexity":4}},{"qid":"pub-071","question":"How many nations competed in Biathlon at the 2018 Winter Olympics â€“ Women's pursuit?","qtype":"lookup","gold":"24","rag":{"answer":"58","em":false,"f1":0.0,"tokens":366,"latency":8.01},"graphrag":{"answer":"24","em":true,"f1":1.0,"tokens":1653,"latency":0.48},"agentic":{"answer":"24","em":true,"f1":1.0,"tokens":175,"latency":0.97},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=24.","complexity":1}},{"qid":"pub-072","question":"Who won the gold medal in the women's 500 metres speed skating event at the Winter Olympics held immediately before 2014?","qtype":"temporal","gold":"Lee Sang-hwa","rag":{"answer":"Lee Sang-hwa   goldNOC: KOR   silver: Olga Fatkulina   silverNOC: RUS   bronze: Margot Boer   bronzeNOC: NED   prev: 2010   next: 2018  The women's 500 metres speed skating competition of the 2014 Soc","em":false,"f1":0.1154,"tokens":429,"latency":11.92},"graphrag":{"answer":"Speed skating at the 2014 Winter Olympics â€“ Women's 500 metres","em":false,"f1":0.0,"tokens":393,"latency":11.14},"agentic":{"answer":"Lee Sang-hwa","em":true,"f1":1.0,"tokens":198,"latency":0.32},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Lee Sang-hwa'.","complexity":2}},{"qid":"pub-073","question":"Who won the gold medal in the event held at Sydney International Shooting Centre on 21 September 2000 (slow)22 September 2000 (fast)?","qtype":"multi_hop","gold":"Yang Ling","rag":{"answer":"Yang Ling   goldNOC: CHN   silver: Oleg Moldovan   silverNOC: MDA   bronze: Niu Zhiyuan   bronzeNOC: CHN   win_label: Winning score   win_value: 681.1   prev: 1996   next: 2004  The men's skeet shooti","em":false,"f1":0.093,"tokens":397,"latency":11.79},"graphrag":{"answer":"Shooting at the 2000 Summer Olympics â€“ Men's 10 metre running target","em":false,"f1":0.0,"tokens":370,"latency":12.21},"agentic":{"answer":"Yang Ling","em":true,"f1":1.0,"tokens":214,"latency":1.58},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Yang Ling'.","complexity":3}},{"qid":"pub-074","question":"How many nations competed in Cross-country skiing at the 2006 Winter Olympics â€“ Women's 4 Ã— 5 kilometre relay?","qtype":"lookup","gold":"17","rag":{"answer":"48","em":false,"f1":0.0,"tokens":323,"latency":12.75},"graphrag":{"answer":"17","em":true,"f1":1.0,"tokens":565,"latency":2.13},"agentic":{"answer":"17","em":true,"f1":1.0,"tokens":180,"latency":4.09},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=17.","complexity":1}},{"qid":"pub-075","question":"How many nations competed in Swimming at the 2000 Summer Olympics â€“ Men's 1500 metre freestyle?","qtype":"lookup","gold":"32","rag":{"answer":"41","em":false,"f1":0.0,"tokens":375,"latency":10.72},"graphrag":{"answer":"32","em":true,"f1":1.0,"tokens":915,"latency":0.12},"agentic":{"answer":"32","em":true,"f1":1.0,"tokens":177,"latency":0.33},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=32.","complexity":1}},{"qid":"pub-076","question":"Who won the gold medal in the event held at Sestriere on February 24, 2006?","qtype":"multi_hop","gold":"Julia Mancuso","rag":{"answer":"Antoine DÃ©nÃ©riaz   goldNOC: FRA   silver: Michael Walchhofer   silverNOC: AUT   bronze: Bruno Kernen   bronzeNOC: SUI   prev: 2002   next: 2010 [Infobox ski area]   name: Men's downhill   location: ","em":false,"f1":0.0,"tokens":391,"latency":10.69},"graphrag":{"answer":"Alpine skiing at the 2006 Winter Olympics â€“ Men's downhill","em":false,"f1":0.0,"tokens":361,"latency":8.66},"agentic":{"answer":"Julia Mancuso","em":true,"f1":1.0,"tokens":207,"latency":0.4},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Julia Mancuso'.","complexity":3}},{"qid":"pub-077","question":"Who won the gold medal in the event held at Xiaohaituo Bobsleigh and Luge TrackBeijing on 13, 14 February 2022?","qtype":"multi_hop","gold":"Kaillie Humphries","rag":{"answer":"Kaillie Humphries   goldNOC: USA   silver: Elana Meyers Taylor   silverNOC: USA   bronze: Christine de Bruin   bronzeNOC: CAN   next: 2026  The women's monobob competition in bobsleigh at the 2022 Win","em":false,"f1":0.087,"tokens":390,"latency":11.47},"graphrag":{"answer":"Bobsleigh at the 2022 Winter Olympics â€“ Women's monobob","em":false,"f1":0.0,"tokens":356,"latency":10.49},"agentic":{"answer":"Kaillie Humphries","em":true,"f1":1.0,"tokens":212,"latency":0.29},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Kaillie Humphries'.","complexity":3}},{"qid":"pub-078","question":"According to the provided corpus, how many athletics events at the 1996 Summer Olympics had more than 49 competitors?","qtype":"aggregation","gold":"7","rag":{"answer":"59","em":false,"f1":0.0,"tokens":365,"latency":6.82},"graphrag":{"answer":"7","em":true,"f1":1.0,"tokens":15131,"latency":0.39},"agentic":{"answer":"7","em":true,"f1":1.0,"tokens":225,"latency":1.94},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 7 qualifying events from graph structure.","complexity":4}},{"qid":"pub-079","question":"Who won the gold medal in the event held at Centennial Parklands, Sydney on 26 September at the 2000 Summer Olympics?","qtype":"multi_hop","gold":"Leontien Zijlaard","rag":{"answer":"Jan Ullrich   goldNOC: GER   silver: Alexander Vinokourov   silverNOC: KAZ   bronze: Andreas KlÃ¶den   bronzeNOC: GER   prev: 1996   next: 2004  The men's individual road race at the 2000 Summer Olymp","em":false,"f1":0.0,"tokens":417,"latency":8.57},"graphrag":{"answer":"Cycling at the 2000 Summer Olympics â€“ Men's individual road race","em":false,"f1":0.0,"tokens":386,"latency":9.84},"agentic":{"answer":"Leontien Zijlaard","em":true,"f1":1.0,"tokens":213,"latency":1.36},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Leontien Zijlaard'.","complexity":3}},{"qid":"pub-080","question":"How many nations competed in Beach volleyball at the 2008 Summer Olympics â€“ Women's tournament?","qtype":"lookup","gold":"17","rag":{"answer":"48","em":false,"f1":0.0,"tokens":362,"latency":8.94},"graphrag":{"answer":"17","em":true,"f1":1.0,"tokens":2370,"latency":2.45},"agentic":{"answer":"17","em":true,"f1":1.0,"tokens":176,"latency":4.88},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=17.","complexity":1}},{"qid":"pub-081","question":"Who won the gold medal in the event held at Beijing Shooting Range Hall on August 10, 2008?","qtype":"multi_hop","gold":"Guo Wenjun","rag":{"answer":"Jin Jong-oh   goldNOC: KOR   silver: Tan Zongliang   silverNOC: CHN   bronze: Vladimir Isakov   bronzeNOC: RUS   win_label: Winning score   win_value: 660.4   prev: 2004   next: 2012  The men's ISSF 5","em":false,"f1":0.0,"tokens":433,"latency":9.54},"graphrag":{"answer":"Shooting at the 2008 Summer Olympics â€“ Men's 50 metre pistol","em":false,"f1":0.0,"tokens":398,"latency":11.35},"agentic":{"answer":"Guo Wenjun","em":true,"f1":1.0,"tokens":210,"latency":1.01},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Guo Wenjun'.","complexity":3}},{"qid":"pub-082","question":"According to the provided corpus, how many swimming events at the 1996 Summer Olympics had more than 42 competitors?","qtype":"aggregation","gold":"12","rag":{"answer":"36","em":false,"f1":0.0,"tokens":376,"latency":8.32},"graphrag":{"answer":"12","em":true,"f1":1.0,"tokens":8580,"latency":0.26},"agentic":{"answer":"12","em":true,"f1":1.0,"tokens":225,"latency":0.48},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 12 qualifying events from graph structure.","complexity":4}},{"qid":"pub-083","question":"Who won the gold medal in the event held at Kvitfjell and Hafjell on February 20â€“21, 1994?","qtype":"multi_hop","gold":"Pernilla Wiberg","rag":{"answer":"Pernilla Wiberg   goldNOC: SWE   silver: Vreni Schneider   silverNOC: SUI   bronze: Alenka DovÅ¾an   bronzeNOC: SLO   prev: 1992   next: 1998  The Women's combined competition of the Lillehammer 1994 ","em":false,"f1":0.0851,"tokens":393,"latency":9.42},"graphrag":{"answer":"Alpine skiing at the 1994 Winter Olympics â€“ Women's combined","em":false,"f1":0.0,"tokens":359,"latency":8.99},"agentic":{"answer":"Pernilla Wiberg","em":true,"f1":1.0,"tokens":209,"latency":0.34},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Pernilla Wiberg'.","complexity":3}},{"qid":"pub-084","question":"According to the provided corpus, which fencing event at the 1992 Summer Olympics had the highest number of competitors?","qtype":"superlative","gold":"Fencing at the 1992 Summer Olympics â€“ Men's Ã©pÃ©e","rag":{"answer":"Unknown","em":false,"f1":0.0,"tokens":382,"latency":6.15},"graphrag":{"answer":"Fencing at the 1992 Summer Olympics â€“ Men's Ã©pÃ©e","em":true,"f1":1.0,"tokens":2988,"latency":0.23},"agentic":{"answer":"Fencing at the 1992 Summer Olympics â€“ Men's Ã©pÃ©e","em":true,"f1":1.0,"tokens":213,"latency":0.35},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","get_superlative_event"],"confidence":0.98,"stopping_reason":"Identified maximal event 'Fencing at the 1992 Summer Olympics â€“ Men's Ã©pÃ©e' by competitor count.","complexity":4}},{"qid":"pub-085","question":"According to the provided corpus, which sailing event at the 2008 Summer Olympics had the highest number of competitors?","qtype":"superlative","gold":"Sailing at the 2008 Summer Olympics â€“ Men's 470","rag":{"answer":"Unknown","em":false,"f1":0.0,"tokens":369,"latency":5.92},"graphrag":{"answer":"Sailing at the 2008 Summer Olympics â€“ Men's 470","em":true,"f1":1.0,"tokens":665,"latency":0.17},"agentic":{"answer":"Sailing at the 2008 Summer Olympics â€“ Men's 470","em":true,"f1":1.0,"tokens":213,"latency":0.37},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","get_superlative_event"],"confidence":0.98,"stopping_reason":"Identified maximal event 'Sailing at the 2008 Summer Olympics â€“ Men's 470' by competitor count.","complexity":4}},{"qid":"pub-086","question":"Who won the gold medal in the event held at Richmond Olympic Oval on 17 February 2010?","qtype":"multi_hop","gold":"Shani Davis","rag":{"answer":"Lee Seung-hoon   goldNOC: KOR   silver: Ivan Skobrev   silverNOC: RUS   bronze: Bob de Jong   bronzeNOC: NED   prev: 2006   next: 2014  The men's 10,000 metres speed skating competition of the Vancouv","em":false,"f1":0.0,"tokens":417,"latency":9.96},"graphrag":{"answer":"Speed skating at the 2010 Winter Olympics â€“ Men's 10,000 metres","em":false,"f1":0.0,"tokens":382,"latency":10.1},"agentic":{"answer":"Shani Davis","em":true,"f1":1.0,"tokens":209,"latency":0.44},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Shani Davis'.","complexity":3}},{"qid":"pub-087","question":"According to the provided corpus, how many athletics events at the 1988 Summer Olympics had more than 41 competitors?","qtype":"aggregation","gold":"17","rag":{"answer":"59","em":false,"f1":0.0,"tokens":362,"latency":6.94},"graphrag":{"answer":"17","em":true,"f1":1.0,"tokens":18993,"latency":0.3},"agentic":{"answer":"17","em":true,"f1":1.0,"tokens":225,"latency":0.56},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 17 qualifying events from graph structure.","complexity":4}},{"qid":"pub-088","question":"According to the provided corpus, which alpine skiing event at the 1992 Winter Olympics had the highest number of competitors?","qtype":"superlative","gold":"Alpine skiing at the 1992 Winter Olympics â€“ Men's giant slalom","rag":{"answer":"Unknown","em":false,"f1":0.0,"tokens":337,"latency":7.73},"graphrag":{"answer":"Alpine skiing at the 1992 Winter Olympics â€“ Men's giant slalom","em":true,"f1":1.0,"tokens":1050,"latency":0.18},"agentic":{"answer":"Alpine skiing at the 1992 Winter Olympics â€“ Men's giant slalom","em":true,"f1":1.0,"tokens":216,"latency":0.49},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","get_superlative_event"],"confidence":0.98,"stopping_reason":"Identified maximal event 'Alpine skiing at the 1992 Winter Olympics â€“ Men's giant slalom' by competitor count.","complexity":4}},{"qid":"pub-089","question":"According to the provided corpus, how many boxing events at the 1988 Summer Olympics had more than 39 competitors?","qtype":"aggregation","gold":"5","rag":{"answer":"17","em":false,"f1":0.0,"tokens":364,"latency":6.94},"graphrag":{"answer":"5","em":true,"f1":1.0,"tokens":5287,"latency":0.18},"agentic":{"answer":"5","em":true,"f1":1.0,"tokens":225,"latency":0.44},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 5 qualifying events from graph structure.","complexity":4}},{"qid":"pub-090","question":"Who won the gold medal in the men's greco-roman 96 kg wrestling event at the Summer Olympics held immediately before 2012?","qtype":"temporal","gold":"Aslanbek Khushtov","rag":{"answer":"Ghasem Rezaei   goldNOC: IRI   silver: Rustam Totrov   silverNOC: RUS   bronze: Artur Aleksanyan   bronzeNOC: ARM   bronze2: Jimmy Lidberg   bronzeNOC2: SWE   prev: 2008   next: 2016  Men's Greco-Roma","em":false,"f1":0.0,"tokens":416,"latency":13.6},"graphrag":{"answer":"Wrestling at the 2012 Summer Olympics â€“ Men's Greco-Roman 96 kg","em":false,"f1":0.0,"tokens":380,"latency":12.0},"agentic":{"answer":"Aslanbek Khushtov","em":true,"f1":1.0,"tokens":198,"latency":0.45},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Aslanbek Khushtov'.","complexity":2}},{"qid":"pub-091","question":"How many nations competed in Wrestling at the 1992 Summer Olympics â€“ Men's freestyle 100 kg?","qtype":"lookup","gold":"18","rag":{"answer":"18","em":true,"f1":1.0,"tokens":383,"latency":9.77},"graphrag":{"answer":"18","em":true,"f1":1.0,"tokens":944,"latency":2.18},"agentic":{"answer":"18","em":true,"f1":1.0,"tokens":177,"latency":3.54},"trace":{"steps":2,"agents":["EntityLinkingAgent","DocumentRetrievalAgent"],"tools":["link_question_entities","lookup_event_nations"],"confidence":0.99,"stopping_reason":"Direct event lookup resolved nations=18.","complexity":1}},{"qid":"pub-092","question":"According to the provided corpus, how many shooting events at the 1992 Summer Olympics had more than 44 competitors?","qtype":"aggregation","gold":"6","rag":{"answer":"19","em":false,"f1":0.0,"tokens":373,"latency":7.61},"graphrag":{"answer":"6","em":true,"f1":1.0,"tokens":4807,"latency":0.25},"agentic":{"answer":"6","em":true,"f1":1.0,"tokens":225,"latency":0.43},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 6 qualifying events from graph structure.","complexity":4}},{"qid":"pub-093","question":"According to the provided corpus, how many biathlon events at the 2006 Winter Olympics had more than 72 competitors?","qtype":"aggregation","gold":"4","rag":{"answer":"71","em":false,"f1":0.0,"tokens":360,"latency":10.51},"graphrag":{"answer":"4","em":true,"f1":1.0,"tokens":5307,"latency":0.18},"agentic":{"answer":"4","em":true,"f1":1.0,"tokens":225,"latency":0.37},"trace":{"steps":2,"agents":["EntityLinkingAgent","StructuralAggregatorAgent"],"tools":["link_question_entities","aggregate_event_count"],"confidence":0.98,"stopping_reason":"Aggregated 4 qualifying events from graph structure.","complexity":4}},{"qid":"pub-094","question":"Who won the gold medal in the men's greco-roman 48 kg wrestling event at the Summer Olympics held immediately before 1996?","qtype":"temporal","gold":"Oleg Kucherenko","rag":{"answer":"Andrea Minguzzi   goldNOC: ITA   silver: ZoltÃ¡n Fodor   silverNOC: HUN   bronze: Nazmi Avluca   bronzeNOC: TUR   bronze2: not awarded   prev: 2004   next: 2012  Men's Greco-Roman 84 kilograms competi","em":false,"f1":0.0,"tokens":418,"latency":14.73},"graphrag":{"answer":"Wrestling at the 2008 Summer Olympics â€“ Men's Greco-Roman 84 kg","em":false,"f1":0.0,"tokens":385,"latency":14.35},"agentic":{"answer":"Oleg Kucherenko","em":true,"f1":1.0,"tokens":198,"latency":0.39},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Oleg Kucherenko'.","complexity":2}},{"qid":"pub-095","question":"Who won the gold medal in the event held at Beijing National Stadium on 16 August 2008?","qtype":"multi_hop","gold":"Valerie Vili","rag":{"answer":"Gerd Kanter   goldNOC: EST   silver: Piotr MaÅ‚achowski   silverNOC: POL   bronze: Virgilijus Alekna   bronzeNOC: LTU   win_label: Winning distance   win_value: 68.82   prev: 2004   next: 2012  The me","em":false,"f1":0.0,"tokens":402,"latency":11.44},"graphrag":{"answer":"Athletics at the 2008 Summer Olympics â€“ Men's discus throw","em":false,"f1":0.0,"tokens":374,"latency":9.41},"agentic":{"answer":"Valerie Vili","em":true,"f1":1.0,"tokens":209,"latency":1.01},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Valerie Vili'.","complexity":3}},{"qid":"pub-096","question":"Who won the gold medal in the event held at Riocentro â€“ Pavilion 6 on 10â€“21 August 2016?","qtype":"multi_hop","gold":"Fazliddin Gaibnazarov","rag":{"answer":"Tony Yoka   goldNOC: FRA   silver: Joe Joyce   silverNOC: GBR   bronze: Filip HrgoviÄ‡   bronzeNOC: CRO   bronze2: Ivan Dychko   bronzeNOC2: KAZ   prev: 2012   next: 2020  The men's super heavyweight ","em":false,"f1":0.0,"tokens":429,"latency":10.17},"graphrag":{"answer":"Boxing at the 2016 Summer Olympics â€“ Men's super heavyweight","em":false,"f1":0.0,"tokens":389,"latency":10.4},"agentic":{"answer":"Fazliddin Gaibnazarov","em":true,"f1":1.0,"tokens":210,"latency":0.84},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Fazliddin Gaibnazarov'.","complexity":3}},{"qid":"pub-097","question":"Who won the gold medal in the women's Ã©pÃ©e fencing event at the Summer Olympics held immediately before 2016?","qtype":"temporal","gold":"Yana Shemyakina","rag":{"answer":"Park Sang-young   goldNOC: KOR   silver: GÃ©za Imre   silverNOC: HUN   bronze: Gauthier Grumier   bronzeNOC: FRA   prev: 2012   next: 2020  The men's Ã©pÃ©e competition in fencing at the 2016 Summer O","em":false,"f1":0.0,"tokens":433,"latency":10.96},"graphrag":{"answer":"Fencing at the 2016 Summer Olympics â€“ Men's Ã©pÃ©e","em":false,"f1":0.0,"tokens":386,"latency":9.95},"agentic":{"answer":"Yana Shemyakina","em":true,"f1":1.0,"tokens":196,"latency":0.4},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Yana Shemyakina'.","complexity":2}},{"qid":"pub-098","question":"Who won the gold medal in the event held at Sydney Convention and Exhibition Centre on 18 September to 1 October 2000?","qtype":"multi_hop","gold":"Bekzat Sattarkhanov","rag":{"answer":"Bekzat Sattarkhanov   goldNOC: KAZ   silver: Ricardo Juarez   silverNOC: USA   bronze: Tahar Tamsamani   bronzeNOC: MAR   bronze2: Kamil Djamaloudinov   bronzeNOC2: RUS   prev: 1996   next: 2004  The ","em":false,"f1":0.0952,"tokens":404,"latency":10.71},"graphrag":{"answer":"Boxing at the 2000 Summer Olympics â€“ Featherweight","em":false,"f1":0.0,"tokens":373,"latency":12.06},"agentic":{"answer":"Bekzat Sattarkhanov","em":true,"f1":1.0,"tokens":214,"latency":1.24},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Bekzat Sattarkhanov'.","complexity":3}},{"qid":"pub-099","question":"Who won the gold medal in the event held at Laura Biathlon & Ski Complex on 22 February 2014?","qtype":"multi_hop","gold":"Erik LesserDaniel BÃ¶hmArnd PeifferSimon Schempp","rag":{"answer":"Darya Domracheva   goldNOC: BLR   silver: Tora Berger   silverNOC: NOR   bronze: Teja Gregorin   bronzeNOC: SLO   prev: 2010   next: 2018  The women's 10 km pursuit biathlon competition of the Sochi 2","em":false,"f1":0.0,"tokens":414,"latency":10.57},"graphrag":{"answer":"Biathlon at the 2014 Winter Olympics â€“ Women's pursuit","em":false,"f1":0.0,"tokens":376,"latency":9.37},"agentic":{"answer":"Erik LesserDaniel BÃ¶hmArnd PeifferSimon Schempp","em":true,"f1":1.0,"tokens":214,"latency":0.41},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_venue_event_winner"],"confidence":0.9,"stopping_reason":"Venue/date traversal resolved gold medalist 'Erik LesserDaniel BÃ¶hmArnd PeifferSimon Schempp'.","complexity":3}},{"qid":"pub-100","question":"Who won the gold medal in the women's 200 metre backstroke swimming event at the Summer Olympics held immediately before 2016?","qtype":"temporal","gold":"Missy Franklin","rag":{"answer":"Aaron Peirsol   goldNOC: USA   silver: Markus Rogan   silverNOC: AUT   bronze: RÄƒzvan Florea   bronzeNOC: ROM   prev: 2000   next: 2008  The men's 200 metre backstroke event at the 2004 Olympic Games","em":false,"f1":0.0,"tokens":407,"latency":10.12},"graphrag":{"answer":"Swimming at the 2004 Summer Olympics â€“ Men's 200 metre backstroke","em":false,"f1":0.0,"tokens":382,"latency":12.02},"agentic":{"answer":"Missy Franklin","em":true,"f1":1.0,"tokens":198,"latency":0.41},"trace":{"steps":2,"agents":["EntityLinkingAgent","GraphTraversalAgent"],"tools":["link_question_entities","traverse_temporal_predecessor"],"confidence":0.96,"stopping_reason":"Temporal predecessor path resolved gold medalist 'Missy Franklin'.","complexity":2}}];
+
+const RAG_METRICS = {"total_questions": 100, "exact_match_accuracy": 0.02, "exact_match_count": 2, "average_f1": 0.0347, "doc_retrieval_hit_rate": 0.83, "doc_precision": 0.238, "doc_recall": 0.5786, "average_tokens_per_question": 391.93, "average_latency_ms": 10.0321, "average_retrieval_steps": 1.0, "by_question_complexity": {"aggregation": {"count": 21, "exact_match_rate": 0.0, "avg_f1": 0.0, "avg_tokens": 371.8571, "avg_latency_ms": 8.1181}, "lookup": {"count": 19, "exact_match_rate": 0.1053, "avg_f1": 0.1053, "avg_tokens": 366.0, "avg_latency_ms": 9.9437}, "multi_hop": {"count": 28, "exact_match_rate": 0.0, "avg_f1": 0.0384, "avg_tokens": 413.3214, "avg_latency_ms": 10.7129}, "superlative": {"count": 10, "exact_match_rate": 0.0, "avg_f1": 0.0, "avg_tokens": 361.4, "avg_latency_ms": 7.248}, "temporal": {"count": 22, "exact_match_rate": 0.0, "avg_f1": 0.0181, "avg_tokens": 420.1364, "avg_latency_ms": 12.3345}}};
+const GRAPHRAG_METRICS = {"total_questions": 100, "exact_match_accuracy": 0.5, "exact_match_count": 50, "average_f1": 0.5, "doc_retrieval_hit_rate": 0.9, "doc_precision": 0.598, "doc_recall": 0.6248, "average_tokens_per_question": 1947.8, "average_latency_ms": 5.9302, "average_retrieval_steps": 1.0, "by_question_complexity": {"aggregation": {"count": 21, "exact_match_rate": 1.0, "avg_f1": 1.0, "avg_tokens": 6704.5238, "avg_latency_ms": 0.2581}, "lookup": {"count": 19, "exact_match_rate": 1.0, "avg_f1": 1.0, "avg_tokens": 1177.6316, "avg_latency_ms": 1.8621}, "multi_hop": {"count": 28, "exact_match_rate": 0.0, "avg_f1": 0.0, "avg_tokens": 380.1429, "avg_latency_ms": 10.5675}, "superlative": {"count": 10, "exact_match_rate": 1.0, "avg_f1": 1.0, "avg_tokens": 1249.9, "avg_latency_ms": 0.225}, "temporal": {"count": 22, "exact_match_rate": 0.0, "avg_f1": 0.0, "avg_tokens": 384.8636, "avg_latency_ms": 11.5491}}};
+const AGENTIC_METRICS = {"total_questions": 100, "exact_match_accuracy": 0.96, "exact_match_count": 96, "average_f1": 0.96, "doc_retrieval_hit_rate": 0.96, "doc_precision": 0.96, "doc_recall": 0.6498, "average_tokens_per_question": 204.78, "average_latency_ms": 1.1709, "average_retrieval_steps": 2.0, "by_question_complexity": {"aggregation": {"count": 21, "exact_match_rate": 1.0, "avg_f1": 1.0, "avg_tokens": 225.0952, "avg_latency_ms": 0.5457}, "lookup": {"count": 19, "exact_match_rate": 1.0, "avg_f1": 1.0, "avg_tokens": 176.6842, "avg_latency_ms": 3.3737}, "multi_hop": {"count": 28, "exact_match_rate": 0.9643, "avg_f1": 0.9643, "avg_tokens": 211.25, "avg_latency_ms": 0.9589}, "superlative": {"count": 10, "exact_match_rate": 1.0, "avg_f1": 1.0, "avg_tokens": 214.2, "avg_latency_ms": 0.46}, "temporal": {"count": 22, "exact_match_rate": 0.8636, "avg_f1": 0.8636, "avg_tokens": 197.1364, "avg_latency_ms": 0.4582}}};
+
+const QTYPES = ['aggregation','lookup','multi_hop','superlative','temporal'];
+const QTYPE_LABELS = ['Aggregation','Lookup','Multi-Hop','Superlative','Temporal'];
+const COLORS = {rag:'#ef4444',graphrag:'#3b82f6',agentic:'#22c55e'};
+
+// ─── CHART.JS DEFAULTS ───
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+Chart.defaults.font.family = "'Inter',system-ui,sans-serif";
+
+// ─── COUNTER ANIMATION ───
+document.querySelectorAll('[data-count]').forEach(el => {
+  const target = parseInt(el.dataset.count);
+  let current = 0;
+  const step = Math.max(1, Math.floor(target / 40));
+  const interval = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current + '%';
+    if (current >= target) clearInterval(interval);
+  }, 30);
+});
+
+// ─── NAV SCROLL ───
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ─── EXACT MATCH BY TYPE CHART ───
+new Chart(document.getElementById('chartEM'), {
+  type: 'bar',
+  data: {
+    labels: QTYPE_LABELS,
+    datasets: [
+      {label:'RAG', data:QTYPES.map(t => (RAG_METRICS.by_question_complexity[t]?.exact_match_rate || 0)*100), backgroundColor:'rgba(239,68,68,0.7)', borderRadius:6},
+      {label:'GraphRAG', data:QTYPES.map(t => (GRAPHRAG_METRICS.by_question_complexity[t]?.exact_match_rate || 0)*100), backgroundColor:'rgba(59,130,246,0.7)', borderRadius:6},
+      {label:'Agentic', data:QTYPES.map(t => (AGENTIC_METRICS.by_question_complexity[t]?.exact_match_rate || 0)*100), backgroundColor:'rgba(34,197,94,0.7)', borderRadius:6},
+    ]
+  },
+  options:{
+    responsive:true, plugins:{legend:{position:'top'}},
+    scales:{y:{beginAtZero:true,max:105,ticks:{callback:v=>v+'%'}}}
+  }
+});
+
+// ─── RADAR CHART ───
+new Chart(document.getElementById('chartRadar'), {
+  type: 'radar',
+  data: {
+    labels: QTYPE_LABELS,
+    datasets: [
+      {label:'RAG',data:QTYPES.map(t=>(RAG_METRICS.by_question_complexity[t]?.exact_match_rate||0)*100),borderColor:COLORS.rag,backgroundColor:'rgba(239,68,68,0.1)',pointBackgroundColor:COLORS.rag},
+      {label:'GraphRAG',data:QTYPES.map(t=>(GRAPHRAG_METRICS.by_question_complexity[t]?.exact_match_rate||0)*100),borderColor:COLORS.graphrag,backgroundColor:'rgba(59,130,246,0.1)',pointBackgroundColor:COLORS.graphrag},
+      {label:'Agentic',data:QTYPES.map(t=>(AGENTIC_METRICS.by_question_complexity[t]?.exact_match_rate||0)*100),borderColor:COLORS.agentic,backgroundColor:'rgba(34,197,94,0.1)',pointBackgroundColor:COLORS.agentic},
+    ]
+  },
+  options:{responsive:true,plugins:{legend:{position:'top'}},scales:{r:{beginAtZero:true,max:100,ticks:{stepSize:25}}}}
+});
+
+// ─── HEATSTRIP ───
+(() => {
+  const ctx = document.getElementById('chartHeatstrip');
+  const labels = QUESTIONS.map(q => q.qid);
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {label:'RAG',data:QUESTIONS.map(q=>q.rag.em?1:0),backgroundColor:QUESTIONS.map(q=>q.rag.em?'rgba(34,197,94,0.8)':'rgba(239,68,68,0.4)'),categoryPercentage:1,barPercentage:1},
+        {label:'GraphRAG',data:QUESTIONS.map(q=>q.graphrag.em?1:0),backgroundColor:QUESTIONS.map(q=>q.graphrag.em?'rgba(34,197,94,0.8)':'rgba(239,68,68,0.4)'),categoryPercentage:1,barPercentage:1},
+        {label:'Agentic',data:QUESTIONS.map(q=>q.agentic.em?1:0),backgroundColor:QUESTIONS.map(q=>q.agentic.em?'rgba(34,197,94,0.8)':'rgba(239,68,68,0.4)'),categoryPercentage:1,barPercentage:1},
+      ]
+    },
+    options:{
+      responsive:true,indexAxis:'x',
+      plugins:{legend:{position:'top'},tooltip:{callbacks:{label:i=>i.dataset.label+': '+(i.raw?'✓ Correct':'✗ Wrong')}}},
+      scales:{x:{display:false},y:{display:false,max:1.2}}
+    }
+  });
+})();
+
+// ─── TOKENS BY TYPE ───
+new Chart(document.getElementById('chartTokens'), {
+  type: 'bar',
+  data: {
+    labels: QTYPE_LABELS,
+    datasets: [
+      {label:'RAG',data:QTYPES.map(t=>RAG_METRICS.by_question_complexity[t]?.avg_tokens||0),backgroundColor:'rgba(239,68,68,0.7)',borderRadius:6},
+      {label:'GraphRAG',data:QTYPES.map(t=>GRAPHRAG_METRICS.by_question_complexity[t]?.avg_tokens||0),backgroundColor:'rgba(59,130,246,0.7)',borderRadius:6},
+      {label:'Agentic',data:QTYPES.map(t=>AGENTIC_METRICS.by_question_complexity[t]?.avg_tokens||0),backgroundColor:'rgba(34,197,94,0.7)',borderRadius:6},
+    ]
+  },
+  options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{beginAtZero:true}}}
+});
+
+// ─── SCATTER: ACCURACY VS TOKEN ───
+(() => {
+  const datasets = [
+    {label:'RAG',data:QUESTIONS.map(q=>({x:q.rag.tokens,y:q.rag.f1*100})),backgroundColor:'rgba(239,68,68,0.6)',pointRadius:4},
+    {label:'GraphRAG',data:QUESTIONS.map(q=>({x:q.graphrag.tokens,y:q.graphrag.f1*100})),backgroundColor:'rgba(59,130,246,0.6)',pointRadius:4},
+    {label:'Agentic',data:QUESTIONS.map(q=>({x:q.agentic.tokens,y:q.agentic.f1*100})),backgroundColor:'rgba(34,197,94,0.6)',pointRadius:4},
+  ];
+  new Chart(document.getElementById('chartScatter'), {
+    type:'scatter',
+    data:{datasets},
+    options:{responsive:true,plugins:{legend:{position:'top'}},scales:{x:{title:{display:true,text:'Total Tokens'},type:'logarithmic'},y:{title:{display:true,text:'F1 Score (%)'},min:0,max:105}}}
+  });
+})();
+
+// ─── LIFT CHART ───
+new Chart(document.getElementById('chartLift'), {
+  type: 'bar',
+  data: {
+    labels: QTYPE_LABELS,
+    datasets: [{
+      label:'Accuracy Lift (Agentic − GraphRAG)',
+      data:QTYPES.map(t=>{
+        const g = (GRAPHRAG_METRICS.by_question_complexity[t]?.exact_match_rate||0)*100;
+        const a = (AGENTIC_METRICS.by_question_complexity[t]?.exact_match_rate||0)*100;
+        return +(a - g).toFixed(1);
+      }),
+      backgroundColor:QTYPES.map(t=>{
+        const g = (GRAPHRAG_METRICS.by_question_complexity[t]?.exact_match_rate||0)*100;
+        const a = (AGENTIC_METRICS.by_question_complexity[t]?.exact_match_rate||0)*100;
+        return a > g ? 'rgba(34,197,94,0.7)' : 'rgba(249,115,22,0.4)';
+      }),
+      borderRadius:6
+    }]
+  },
+  options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v>0?'+'+v+'%':v+'%'}}}}
+});
+
+// ─── QUESTION TABLE ───
+const tbody = document.getElementById('qTableBody');
+let currentFilter = 'all';
+let currentSearch = '';
+
+function renderTable() {
+  const filtered = QUESTIONS.filter(q => {
+    if (currentFilter !== 'all' && q.qtype !== currentFilter) return false;
+    if (currentSearch && !q.question.toLowerCase().includes(currentSearch.toLowerCase()) && !q.qid.toLowerCase().includes(currentSearch.toLowerCase())) return false;
+    return true;
+  });
+  tbody.innerHTML = filtered.map(q => {
+    const confClass = q.trace.confidence >= 0.9 ? 'conf-high' : q.trace.confidence >= 0.5 ? 'conf-med' : 'conf-low';
+    return `
+      <tr class="q-expand" data-qid="${q.qid}">
+        <td style="max-width:400px">${q.question}</td>
+        <td><span class="qtype-badge qtype-${q.qtype}">${q.qtype.replace('_',' ')}</span></td>
+        <td class="${q.rag.em?'em-yes':'em-no'}">${q.rag.em?'✓':'✗'}</td>
+        <td class="${q.graphrag.em?'em-yes':'em-no'}">${q.graphrag.em?'✓':'✗'}</td>
+        <td class="${q.agentic.em?'em-yes':'em-no'}">${q.agentic.em?'✓':'✗'}</td>
+        <td>${q.trace.steps}</td>
+      </tr>
+      <tr class="q-detail" data-qid="${q.qid}">
+        <td colspan="6">
+          <div class="detail-inner">
+            <div>
+              <div class="detail-section">
+                <h5>🎯 Gold Answer</h5>
+                <div class="answer" style="color:var(--accent2);font-weight:600">${q.gold}</div>
+              </div>
+              <div class="detail-section" style="margin-top:12px">
+                <h5 style="color:var(--red2)">RAG Answer</h5>
+                <div class="answer ${q.rag.em?'correct':'wrong'}">${q.rag.answer}</div>
+                <div class="trace-meta"><span>Tokens: ${q.rag.tokens}</span><span>Latency: ${q.rag.latency}ms</span></div>
+              </div>
+              <div class="detail-section" style="margin-top:12px">
+                <h5 style="color:var(--blue2)">GraphRAG Answer</h5>
+                <div class="answer ${q.graphrag.em?'correct':'wrong'}">${q.graphrag.answer}</div>
+                <div class="trace-meta"><span>Tokens: ${q.graphrag.tokens}</span><span>Latency: ${q.graphrag.latency}ms</span></div>
+              </div>
+              <div class="detail-section" style="margin-top:12px">
+                <h5 style="color:var(--green2)">Agentic Answer</h5>
+                <div class="answer ${q.agentic.em?'correct':'wrong'}">${q.agentic.answer}</div>
+                <div class="trace-meta"><span>Tokens: ${q.agentic.tokens}</span><span>Latency: ${q.agentic.latency}ms</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="detail-section">
+                <h5>🔍 Agentic Trace</h5>
+                <div class="trace-steps">
+                  ${q.trace.agents.map((a, i) => `
+                    <div class="trace-step">
+                      <div class="step-num">${i+1}</div>
+                      <div><span class="step-agent">${a}</span> → <span class="step-tool">${q.trace.tools[i] || '—'}</span></div>
+                    </div>
+                  `).join('')}
+                </div>
+                <div class="trace-meta" style="margin-top:16px">
+                  <span>Confidence: <strong class="${confClass}">${(q.trace.confidence*100).toFixed(0)}%</strong></span>
+                  <span>Complexity: ${q.trace.complexity}/5</span>
+                  <span>Steps: ${q.trace.steps}</span>
+                </div>
+                <div style="margin-top:12px;font-size:.8rem;color:var(--text2)">
+                  <strong style="color:var(--text3)">Stopping Reason:</strong> ${q.trace.stopping_reason}
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  // Re-attach click handlers
+  document.querySelectorAll('.q-expand').forEach(row => {
+    row.addEventListener('click', () => {
+      const qid = row.dataset.qid;
+      const detail = document.querySelector(`.q-detail[data-qid="${qid}"]`);
+      row.classList.toggle('open');
+      detail.classList.toggle('open');
+    });
+  });
+}
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderTable();
+  });
+});
+
+// Search
+document.getElementById('searchBox').addEventListener('input', e => {
+  currentSearch = e.target.value;
+  renderTable();
+});
+
+renderTable();
+</script>
+</body>
+</html>

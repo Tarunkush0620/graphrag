@@ -104,11 +104,21 @@ const PROVIDER_FIELDS: Record<string, ProviderConfig> = {
       { key: "WATSONX_PROJECT_ID", label: "Project ID", type: "text", required: true }
     ],
     configFields: []
+  },
+  openrouter: {
+    authFields: [
+      { key: "OPENROUTER_API_KEY", label: "OpenRouter API Key", type: "password", required: true }
+    ],
+    configFields: [
+      { key: "openai_api_base", label: "OpenRouter Base URL", type: "text", placeholder: "https://openrouter.ai/api/v1" }
+    ],
+    note: "OpenRouter multi-model router supporting NVIDIA Nemotron, Qwen3 Coder, Gemma 4, Nex-N2-Pro, and Llama 3.3 free models."
   }
 };
 
 // Single provider list shared across all service Select dropdowns
 const LLM_PROVIDERS = [
+  { value: "openrouter", label: "OpenRouter (Free Multi-Model Hub)" },
   { value: "openai", label: "OpenAI" },
   { value: "azure", label: "Azure OpenAI" },
   { value: "genai", label: "Google GenAI (Gemini)" },

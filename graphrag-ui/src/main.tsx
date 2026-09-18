@@ -2,6 +2,12 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { Outlet, RouterProvider, createBrowserRouter, Navigate } from "react-router-dom";
+import Benchmark from "./pages/Benchmark.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
+import Investigate from "./pages/Investigate.tsx";
+import Compare from "./pages/Compare.tsx";
+import KnowledgeGraph from "./pages/KnowledgeGraph.tsx";
+import Documents from "./pages/Documents.tsx";
 import Chat from "./pages/Chat";
 import ChatDialog from "./pages/ChatDialog.tsx";
 import TraceLogs from "./pages/TraceLogs.tsx";
@@ -45,11 +51,39 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
+        element: <Dashboard />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/investigate",
+        element: <Investigate />,
+      },
+      {
+        path: "/compare",
+        element: <Compare />,
+      },
+      {
+        path: "/benchmark",
+        element: <Benchmark />,
+      },
+      {
+        path: "/graph",
+        element: <KnowledgeGraph />,
+      },
+      {
+        path: "/documents",
+        element: <Documents />,
+      },
+      {
+        path: "/login",
         element: <App />,
       },
       {
         path: "/chat",
-        element: <RequireAuth><Chat /></RequireAuth>,
+        element: <Chat />,
       },
       {
         path: "/chat-dialog",

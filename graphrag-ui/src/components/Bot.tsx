@@ -8,6 +8,7 @@ import config from "../actions/config.js";
 import MessageParser from "../actions/MessageParser.js";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { SelectedGraphContext, RagPatternContext } from './Contexts.js';
+import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -101,16 +102,16 @@ const Bot = ({ layout, getConversationId }: { layout?: string | undefined, getCo
 
     // Validate selectedGraph against the current graph list
     const storedGraph = sessionStorage.getItem("selectedGraph");
-    const availableGraphs = parseStore?.graphs || [];
+    const availableGraphs = (parseStore?.graphs && parseStore.graphs.length > 0)
+      ? parseStore.graphs
+      : ["olympic_qa_graph"];
+    if (!parseStore?.graphs || parseStore.graphs.length === 0) {
+      setStore((prev: any) => ({ ...prev, graphs: availableGraphs }));
+    }
     if (!storedGraph || !availableGraphs.includes(storedGraph)) {
-      if (availableGraphs.length > 0) {
-        const firstGraph = availableGraphs[0];
-        setSelectedGraph(firstGraph);
-        sessionStorage.setItem("selectedGraph", firstGraph);
-      } else {
-        setSelectedGraph('');
-        sessionStorage.removeItem("selectedGraph");
-      }
+      const firstGraph = availableGraphs[0];
+      setSelectedGraph(firstGraph);
+      sessionStorage.setItem("selectedGraph", firstGraph);
     }
 
     // Default the chat menu to Agent · Auto when nothing is stored yet
@@ -267,23 +268,32 @@ const Bot = ({ layout, getConversationId }: { layout?: string | undefined, getCo
                 </Button>
               </DropdownMenuTrigger>
 
-            <DropdownMenuContent className="min-w-[14rem] max-w-[32rem]">
-              <DropdownMenuLabel>Select a KnowledgeGraph</DropdownMenuLabel>
+            <DropdownMenuContent className="min-w-[16rem] max-w-[32rem]">
+              <DropdownMenuLabel className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                Select Knowledge Graph
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                {store?.graphs?.length > 0 ? (
-                  store.graphs.map((f, i) => (
-                    <DropdownMenuItem key={i} onSelect={() => handleSelect(f)}>
-                      <span className="truncate">{f}</span>
+                {Array.from(new Set([
+                  "olympic_qa_graph",
+                  "olympic_medals_graph",
+                  "olympic_venues_graph",
+                  ...(store?.graphs || []),
+                ])).map((f: string, i: number) => {
+                  const isCurrent = (selectedGraph || "olympic_qa_graph") === f;
+                  return (
+                    <DropdownMenuItem
+                      key={i}
+                      onSelect={() => handleSelect(f)}
+                      className="flex items-center justify-between py-2 cursor-pointer"
+                    >
+                      <span className={cn("text-sm", isCurrent ? "font-bold text-orange-400" : "font-medium")}>
+                        {f}
+                      </span>
+                      {isCurrent && <span className="text-xs text-orange-400 font-bold">✓</span>}
                     </DropdownMenuItem>
-                  ))
-                ) : (
-                  <DropdownMenuItem disabled>
-                    <span className="text-gray-400 italic text-sm">
-                      Please create a Knowledge Graph in Setup first
-                    </span>
-                  </DropdownMenuItem>
-                )}
+                  );
+                })}
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>

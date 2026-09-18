@@ -1,0 +1,49 @@
+{
+  "total_questions": 100,
+  "exact_match_accuracy": 0.02,
+  "exact_match_count": 2,
+  "average_f1": 0.0347,
+  "doc_retrieval_hit_rate": 0.83,
+  "doc_precision": 0.238,
+  "doc_recall": 0.5786,
+  "average_tokens_per_question": 391.93,
+  "average_latency_ms": 9.7031,
+  "average_retrieval_steps": 1.0,
+  "by_question_complexity": {
+    "aggregation": {
+      "count": 21,
+      "exact_match_rate": 0.0,
+      "avg_f1": 0.0,
+      "avg_tokens": 371.8571,
+      "avg_latency_ms": 7.8162
+    },
+    "lookup": {
+      "count": 19,
+      "exact_match_rate": 0.1053,
+      "avg_f1": 0.1053,
+      "avg_tokens": 366.0,
+      "avg_latency_ms": 9.6879
+    },
+    "multi_hop": {
+      "count": 28,
+      "exact_match_rate": 0.0,
+      "avg_f1": 0.0384,
+      "avg_tokens": 413.3214,
+      "avg_latency_ms": 10.4989
+    },
+    "superlative": {
+      "count": 10,
+      "exact_match_rate": 0.0,
+      "avg_f1": 0.0,
+      "avg_tokens": 361.4,
+      "avg_latency_ms": 7.222
+    },
+    "temporal": {
+      "count": 22,
+      "exact_match_rate": 0.0,
+      "avg_f1": 0.0181,
+      "avg_tokens": 420.1364,
+      "avg_latency_ms": 11.6323
+    }
+  }
+}

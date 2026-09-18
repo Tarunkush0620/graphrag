@@ -258,9 +258,11 @@ export const CustomChatMessage: FC<IChatbotMessageProps> = ({
         <div className="flex flex-col w-full relative">
           <div className="prose dark:prose-invert text-sm w-full mt-7 mb-7">
             {message.response_type === "progress" ? (
-              <p className={`graphrag-thinking${message.response_type !== "history" ? " typewriter" : ""}`}>{message.content}</p>
+              <p className="graphrag-thinking text-gray-400">{message.content}</p>
             ) : (
-              <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents} className={message.response_type === "history" ? undefined : "typewriter"}>{message.content}</ReactMarkdown>
+              <div className="text-gray-200 leading-relaxed space-y-2">
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>{message.content}</ReactMarkdown>
+              </div>
             )}
             <RetrieverBadge message={message} />
             <Interactions

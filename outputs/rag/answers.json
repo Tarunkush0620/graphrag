@@ -1,0 +1,2802 @@
+[
+  {
+    "qid": "pub-001",
+    "question": "According to the provided corpus, how many biathlon events at the 2018 Winter Olympics had more than 73 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "87",
+    "gold_answers": [
+      "5"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 0.1818,
+    "context_tokens": 345,
+    "prompt_tokens": 364,
+    "completion_tokens": 1,
+    "total_tokens": 365,
+    "latency_ms": 8.41,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q47091419",
+      "Q47155365",
+      "Q107802335",
+      "Q1221922",
+      "Q107861704"
+    ]
+  },
+  {
+    "qid": "pub-002",
+    "question": "Who won the gold medal in the men's 20 kilometres walk athletics event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Matej Tóth   goldNOC: SVK   silver: Jared Tallent   silverNOC: AUS   bronze: Hirooki Arai   bronzeNOC: JPN   prev: 2012   next: 2020  The men's 50 kilometres race walk at the 2016 Olympic Games in Rio de Janeiro was held on 19 August. Matej Tóth, winner of the 2015 World Championships from Slovakia won the gold medal, r",
+    "gold_answers": [
+      "Chen Ding"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 1.0,
+    "context_tokens": 383,
+    "prompt_tokens": 404,
+    "completion_tokens": 53,
+    "total_tokens": 457,
+    "latency_ms": 12.36,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26225938",
+      "Q26233122",
+      "Q936622",
+      "Q956242",
+      "Q1050909"
+    ]
+  },
+  {
+    "qid": "pub-003",
+    "question": "According to the provided corpus, how many shooting events at the 2004 Summer Olympics had more than 37 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "19",
+    "gold_answers": [
+      "8"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 348,
+    "prompt_tokens": 367,
+    "completion_tokens": 1,
+    "total_tokens": 368,
+    "latency_ms": 8.98,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1005423",
+      "Q7500810",
+      "Q7500786",
+      "Q1221922",
+      "Q47091419"
+    ]
+  },
+  {
+    "qid": "pub-004",
+    "question": "According to the provided corpus, which athletics event at the 2008 Summer Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "predicted_answer": "Unknown",
+    "gold_answers": [
+      "Athletics at the 2008 Summer Olympics – Men's marathon"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 0.0465,
+    "context_tokens": 346,
+    "prompt_tokens": 365,
+    "completion_tokens": 1,
+    "total_tokens": 366,
+    "latency_ms": 7.04,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q3628698",
+      "Q3628768",
+      "Q656634",
+      "Q517035",
+      "Q1408852"
+    ]
+  },
+  {
+    "qid": "pub-005",
+    "question": "Who won the gold medal in the event held at Olympic Weightlifting Gymnasium on 20 September 1988?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Naim Süleymanoğlu   goldNOC: TUR   silver: Stefan Topurov   silverNOC: BUL   bronze: Ye Huanming   bronzeNOC: CHN   prev: 1984   next: 1992  The men's 60 kg weightlifting event was one of the events at the weightlifting competition of the 1988 Summer Olympics, limiting competitors to a maximum of 60 kilograms of body mass. Th",
+    "gold_answers": [
+      "Naim Süleymanoğlu"
+    ],
+    "exact_match": false,
+    "f1": 0.0755,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 366,
+    "prompt_tokens": 383,
+    "completion_tokens": 50,
+    "total_tokens": 433,
+    "latency_ms": 9.93,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q25239316",
+      "Q25239317",
+      "Q25239533",
+      "Q10522554",
+      "Q25239321"
+    ]
+  },
+  {
+    "qid": "pub-006",
+    "question": "Who won the gold medal in the women's 57 kg judo event at the Summer Olympics held immediately before 2020?",
+    "qtype": "temporal",
+    "predicted_answer": "FRAAmandine BuchardGuillaume ChaineSarah-Léonie CysiqueKilian Le BlouchClarisse AgbegnenouAxel ClergetMargaux PinotAlexandre IddirRomane DickoTeddy RinerMadeleine Malonga   silver: JPNHifumi AbeUta AbeShohei OnoTsukasa YoshidaShoichiro MukaiChizuru AraiTakanori NagaseMiku TashiroHisayoshi HarasawaShori HamadaAaron WolfAkira Sone   bronze: ISRTohar ButbulTimna Nelson-LevyBaruch Sh",
+    "gold_answers": [
+      "Rafaela Silva"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 1.0,
+    "context_tokens": 358,
+    "prompt_tokens": 378,
+    "completion_tokens": 32,
+    "total_tokens": 410,
+    "latency_ms": 11.82,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q65235579",
+      "Q26217865",
+      "Q65235550",
+      "Q26212162",
+      "Q26217871"
+    ]
+  },
+  {
+    "qid": "pub-007",
+    "question": "Who won the gold medal in the men's pole vault athletics event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Thiago Braz   goldNOC: BRA   silver: Renaud Lavillenie   silverNOC: FRA   bronze: Sam Kendricks   bronzeNOC: USA   prev: 2012   next: 2020  The men's pole vault competition at the 2016 Summer Olympics in Rio de Janeiro, Brazil. The event was held at the Olympic Stadium between",
+    "gold_answers": [
+      "Renaud Lavillenie"
+    ],
+    "exact_match": false,
+    "f1": 0.0889,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 1.0,
+    "context_tokens": 348,
+    "prompt_tokens": 368,
+    "completion_tokens": 42,
+    "total_tokens": 410,
+    "latency_ms": 13.63,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26208457",
+      "Q3628702",
+      "Q2000968",
+      "Q3628783",
+      "Q1433109"
+    ]
+  },
+  {
+    "qid": "pub-008",
+    "question": "According to the provided corpus, which sailing event at the 2000 Summer Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "predicted_answer": "Unknown",
+    "gold_answers": [
+      "Sailing at the 2000 Summer Olympics – Soling"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.6,
+    "doc_recall": 0.375,
+    "context_tokens": 353,
+    "prompt_tokens": 372,
+    "completion_tokens": 1,
+    "total_tokens": 373,
+    "latency_ms": 7.09,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q7400327",
+      "Q1423968",
+      "Q7400332",
+      "Q7400330",
+      "Q7400342"
+    ]
+  },
+  {
+    "qid": "pub-009",
+    "question": "How many nations competed in Sailing at the 2016 Summer Olympics – Women's RS:X?",
+    "qtype": "lookup",
+    "predicted_answer": "27",
+    "gold_answers": [
+      "26"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 364,
+    "prompt_tokens": 378,
+    "completion_tokens": 1,
+    "total_tokens": 379,
+    "latency_ms": 8.94,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q3039134",
+      "Q584005",
+      "Q2558792",
+      "Q26254891",
+      "Q26250761"
+    ]
+  },
+  {
+    "qid": "pub-010",
+    "question": "According to the provided corpus, how many cycling events at the 2000 Summer Olympics had more than 30 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "144",
+    "gold_answers": [
+      "4"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.1,
+    "context_tokens": 370,
+    "prompt_tokens": 389,
+    "completion_tokens": 1,
+    "total_tokens": 390,
+    "latency_ms": 9.22,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q2445057",
+      "Q5198390",
+      "Q1005771",
+      "Q3001408",
+      "Q24761058"
+    ]
+  },
+  {
+    "qid": "pub-011",
+    "question": "Who won the gold medal in the event held at Richmond Olympic Oval on 14 February 2010?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Lee Seung-hoon   goldNOC: KOR   silver: Ivan Skobrev   silverNOC: RUS   bronze: Bob de Jong   bronzeNOC: NED   prev: 2006   next: 2014  The men's 10,000 metres speed skating competition of the Vancouver 2010 Olympics was held at Richmond Olympic Oval on 23 February 2010.  The overwhelming pre-race favorite S",
+    "gold_answers": [
+      "Martina Sáblíková"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 354,
+    "prompt_tokens": 371,
+    "completion_tokens": 46,
+    "total_tokens": 417,
+    "latency_ms": 12.91,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q595972",
+      "Q916771",
+      "Q607635",
+      "Q580481",
+      "Q905540"
+    ]
+  },
+  {
+    "qid": "pub-012",
+    "question": "According to the provided corpus, how many rowing events at the 2020 Summer Olympics had more than 36 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "32",
+    "gold_answers": [
+      "6"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.0714,
+    "context_tokens": 337,
+    "prompt_tokens": 356,
+    "completion_tokens": 1,
+    "total_tokens": 357,
+    "latency_ms": 8.83,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q22968982",
+      "Q26233821",
+      "Q1005423",
+      "Q26219839",
+      "Q62020028"
+    ]
+  },
+  {
+    "qid": "pub-013",
+    "question": "Who won the gold medal in the women's 200 metre freestyle swimming event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Sun Yang   goldNOC: CHN   silver: Chad le Clos   silverNOC: RSA   bronze: Conor Dwyer   bronzeNOC: USA   prev: 2012   next: 2020  The men's 200 metre freestyle event at the 2016 Summer Olympics took place between 7–8 August at the Olympic Aquatics Stadium. Ther",
+    "gold_answers": [
+      "Allison Schmitt"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.5,
+    "context_tokens": 348,
+    "prompt_tokens": 369,
+    "completion_tokens": 41,
+    "total_tokens": 410,
+    "latency_ms": 13.12,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q25927635",
+      "Q25932055",
+      "Q25932068",
+      "Q25932069",
+      "Q3879598"
+    ]
+  },
+  {
+    "qid": "pub-014",
+    "question": "Who won the gold medal in the event held at Riocentro – Pavilion 4 on 11–19 August at the 2016 Summer Olympics?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Estelle Mossely   goldNOC: FRA   silver: Yin Junhua   silverNOC: CHN   bronze: Mira Potkonen   bronzeNOC: FIN   bronze2: Anastasia Belyakova   bronzeNOC2: RUS   prev: 2012   next: 2020  The women's lightweight boxing competition at the 2016 Olympic Games in Rio de Janeiro was held from 12 to 19 August at the Riocentro.",
+    "gold_answers": [
+      "Carolina Marín"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 363,
+    "prompt_tokens": 385,
+    "completion_tokens": 47,
+    "total_tokens": 432,
+    "latency_ms": 9.81,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26218607",
+      "Q25301483",
+      "Q25301787",
+      "Q25301754",
+      "Q26212155"
+    ]
+  },
+  {
+    "qid": "pub-015",
+    "question": "Who won the gold medal in the event held at London Velopark on 3 to 4 August at the 2012 Summer Olympics?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Ed ClancyGeraint ThomasSteven BurkePeter Kennaugh   goldNOC: GBR   silver: Jack BobridgeGlenn O'SheaRohan DennisMichael Hepburn   silverNOC: AUS   bronze: Sam BewleyAaron GateMarc RyanJesse SergentWestley Gough   bronzeNOC: NZL   prev: 2008   next: 2016  The men's cycling team pursuit at the 2012",
+    "gold_answers": [
+      "Dani KingLaura TrottJoanna Rowsell"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 348,
+    "prompt_tokens": 370,
+    "completion_tokens": 36,
+    "total_tokens": 406,
+    "latency_ms": 10.12,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q2297621",
+      "Q2070832",
+      "Q2269694",
+      "Q2297633",
+      "Q2329168"
+    ]
+  },
+  {
+    "qid": "pub-016",
+    "question": "Who won the gold medal in the men's sprint biathlon event at the Winter Olympics held immediately before 2022?",
+    "qtype": "temporal",
+    "predicted_answer": "Marte Olsbu Røiseland   goldNOC: NOR   silver: Elvira Öberg   silverNOC: SWE   bronze: Dorothea Wierer   bronzeNOC: ITA   prev: 2018   next: 2026  The Women's sprint competition of the Beijing 2022 Olympics was held on 11 February, at the National Biathlon Centre, in the Zhangjiakou cluster of competition venues,",
+    "gold_answers": [
+      "Arnd Peiffer"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.5,
+    "context_tokens": 347,
+    "prompt_tokens": 366,
+    "completion_tokens": 45,
+    "total_tokens": 411,
+    "latency_ms": 12.16,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q107861710",
+      "Q107861714",
+      "Q107861699",
+      "Q107802335",
+      "Q107861726"
+    ]
+  },
+  {
+    "qid": "pub-017",
+    "question": "Who won the gold medal in the event held at Royal Artillery Barracks on 28 July 2012?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Alin Moldoveanu   goldNOC: ROU   silver: Niccolò Campriani   silverNOC: ITA   bronze: Gagan Narang   bronzeNOC: IND   win_label: Winning score   win_value: 702.1   prev: 2008   next: 2016  The Men's 10 metre air rifle event at the 2012 Olympic Games took place on 30 July 2012 at the Royal Artillery Barracks.  The event consi",
+    "gold_answers": [
+      "Yi Siling"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 374,
+    "prompt_tokens": 391,
+    "completion_tokens": 49,
+    "total_tokens": 440,
+    "latency_ms": 10.41,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q2254560",
+      "Q2268082",
+      "Q681571",
+      "Q1137721",
+      "Q2353523"
+    ]
+  },
+  {
+    "qid": "pub-018",
+    "question": "Who won the gold medal in the men's freestyle 82 kg wrestling event at the Summer Olympics held immediately before 1996?",
+    "qtype": "temporal",
+    "predicted_answer": "Khadzhimurad Magomedov   goldNOC: RUS   silver: Yang Hyung-mo   silverNOC: KOR   bronze: Amir Reza Khadem   bronzeNOC: IRI   prev: 1992   next: 2000  The men's freestyle 82 kilograms at the 1996 Summer Olympics as part of the wrestling program were held at the Georgia World Congress Center from July 30 to July 31. The",
+    "gold_answers": [
+      "Kevin Jackson"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.5,
+    "context_tokens": 353,
+    "prompt_tokens": 374,
+    "completion_tokens": 50,
+    "total_tokens": 424,
+    "latency_ms": 12.1,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q8037937",
+      "Q1005230",
+      "Q581364",
+      "Q140244",
+      "Q2048869"
+    ]
+  },
+  {
+    "qid": "pub-019",
+    "question": "According to the provided corpus, how many fencing events at the 1988 Summer Olympics had more than 68 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "68",
+    "gold_answers": [
+      "3"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 0.25,
+    "context_tokens": 365,
+    "prompt_tokens": 384,
+    "completion_tokens": 1,
+    "total_tokens": 385,
+    "latency_ms": 7.12,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q5443136",
+      "Q5443144",
+      "Q3951952",
+      "Q38599",
+      "Q3628684"
+    ]
+  },
+  {
+    "qid": "pub-020",
+    "question": "According to the provided corpus, how many alpine skiing events at the 2014 Winter Olympics had more than 63 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "115",
+    "gold_answers": [
+      "4"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.8,
+    "doc_recall": 0.4,
+    "context_tokens": 316,
+    "prompt_tokens": 336,
+    "completion_tokens": 1,
+    "total_tokens": 337,
+    "latency_ms": 8.15,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q15055004",
+      "Q15054997",
+      "Q1005571",
+      "Q15055013",
+      "Q15054994"
+    ]
+  },
+  {
+    "qid": "pub-021",
+    "question": "According to the provided corpus, which alpine skiing event at the 1988 Winter Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "predicted_answer": "Unknown",
+    "gold_answers": [
+      "Alpine skiing at the 1988 Winter Olympics – Men's giant slalom"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.1,
+    "context_tokens": 319,
+    "prompt_tokens": 339,
+    "completion_tokens": 1,
+    "total_tokens": 340,
+    "latency_ms": 7.01,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q3628698",
+      "Q9663",
+      "Q1534918",
+      "Q15055004",
+      "Q1005571"
+    ]
+  },
+  {
+    "qid": "pub-022",
+    "question": "Who won the gold medal in the event held at Beijing Science and TechnologyUniversity Gymnasium on August 12, 2008?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Ayumi Tanimoto   goldNOC: JPN   silver: Lucie Décosse   silverNOC: FRA   bronze: Elisabeth Willeboordse   bronzeNOC: NED   bronze2: Won Ok-Im   bronzeNOC2: PRK   prev: 2004   next: 2012  Judo at the 2008 Summer Olympics The women's 63 kg (also known as light-midd",
+    "gold_answers": [
+      "Ayumi Tanimoto"
+    ],
+    "exact_match": false,
+    "f1": 0.0952,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 337,
+    "prompt_tokens": 356,
+    "completion_tokens": 37,
+    "total_tokens": 393,
+    "latency_ms": 9.96,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1193975",
+      "Q1094662",
+      "Q590226",
+      "Q1193963",
+      "Q247273"
+    ]
+  },
+  {
+    "qid": "pub-023",
+    "question": "Who won the gold medal in the event held at Estadi Olímpic Lluís Companys, Barcelona on August 9 at the 1992 Summer Olympics?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Kevin Young   goldNOC: USA   silver: Winthrop Graham   silverNOC: JAM   bronze: Kriss Akabusi   bronzeNOC: GBR   prev: 1988   next: 1996  ]  The men's 400 metres hurdles was an event at the 1992 Summer Olympics",
+    "gold_answers": [
+      "Hwang Young-Cho"
+    ],
+    "exact_match": false,
+    "f1": 0.0571,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 356,
+    "prompt_tokens": 379,
+    "completion_tokens": 32,
+    "total_tokens": 411,
+    "latency_ms": 11.88,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q2303535",
+      "Q1407627",
+      "Q1408897",
+      "Q1408876",
+      "Q1444605"
+    ]
+  },
+  {
+    "qid": "pub-024",
+    "question": "According to the provided corpus, how many biathlon events at the 2002 Winter Olympics had more than 74 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "71",
+    "gold_answers": [
+      "3"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 1.0,
+    "doc_recall": 0.625,
+    "context_tokens": 327,
+    "prompt_tokens": 346,
+    "completion_tokens": 1,
+    "total_tokens": 347,
+    "latency_ms": 7.17,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1221922",
+      "Q256759",
+      "Q1005108",
+      "Q1222092",
+      "Q280553"
+    ]
+  },
+  {
+    "qid": "pub-025",
+    "question": "How many nations competed in Judo at the 2016 Summer Olympics – Women's 57 kg?",
+    "qtype": "lookup",
+    "predicted_answer": "23",
+    "gold_answers": [
+      "23"
+    ],
+    "exact_match": true,
+    "f1": 1.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 381,
+    "prompt_tokens": 396,
+    "completion_tokens": 1,
+    "total_tokens": 397,
+    "latency_ms": 11.42,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26217865",
+      "Q1064016",
+      "Q26212162",
+      "Q26217871",
+      "Q26218598"
+    ]
+  },
+  {
+    "qid": "pub-026",
+    "question": "Who won the gold medal in the men's cross-country cycling event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Jaroslav Kulhavý   goldNOC: CZE   silver: Nino Schurter   silverNOC: SUI   bronze: Marco Aurelio Fontana   bronzeNOC: ITA   win_value: 1:29:07   prev: 2008   next: 2016  The men's cross-country cycling event at the 2012 Olympic Games in London took place at Hadleigh Farm on 12 August.  Fifty cyclists from 32 countries competed. Jarosla",
+    "gold_answers": [
+      "Jaroslav Kulhavý"
+    ],
+    "exact_match": false,
+    "f1": 0.0741,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 1.0,
+    "context_tokens": 359,
+    "prompt_tokens": 378,
+    "completion_tokens": 48,
+    "total_tokens": 426,
+    "latency_ms": 12.47,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q2036655",
+      "Q2269155",
+      "Q2269694",
+      "Q25476845",
+      "Q25476835"
+    ]
+  },
+  {
+    "qid": "pub-027",
+    "question": "According to the provided corpus, how many fencing events at the 2008 Summer Olympics had more than 32 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "36",
+    "gold_answers": [
+      "4"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 0.2,
+    "context_tokens": 378,
+    "prompt_tokens": 397,
+    "completion_tokens": 1,
+    "total_tokens": 398,
+    "latency_ms": 7.01,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q3951952",
+      "Q2570149",
+      "Q25386268",
+      "Q3951953",
+      "Q2570158"
+    ]
+  },
+  {
+    "qid": "pub-028",
+    "question": "Who won the gold medal in the event held at Olympic Aquatic Centre on August 14, 2004 (heats & final)?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Yana Klochkova   goldNOC: UKR   silver: Kaitlin Sandeno   silverNOC: USA   bronze: Georgina Bardach   bronzeNOC: ARG   prev: 2000   next: 2008  The women's 400 metre individual medley event at the 2004 Olympic Games was contested at the Olympic Aquatic Centre of the Ath",
+    "gold_answers": [
+      "Michael Phelps"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 345,
+    "prompt_tokens": 365,
+    "completion_tokens": 40,
+    "total_tokens": 405,
+    "latency_ms": 13.4,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1141034",
+      "Q3879570",
+      "Q3879561",
+      "Q3879574",
+      "Q3879564"
+    ]
+  },
+  {
+    "qid": "pub-029",
+    "question": "How many nations competed in Shooting at the 2012 Summer Olympics – Men's 50 metre rifle three positions?",
+    "qtype": "lookup",
+    "predicted_answer": "41",
+    "gold_answers": [
+      "28"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 360,
+    "prompt_tokens": 378,
+    "completion_tokens": 1,
+    "total_tokens": 379,
+    "latency_ms": 11.79,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q334901",
+      "Q1346374",
+      "Q5395306",
+      "Q26219821",
+      "Q26237418"
+    ]
+  },
+  {
+    "qid": "pub-030",
+    "question": "Who won the gold medal in the event held at Carioca Arena 3 on 6 August 2016?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Yekaterina DyachenkoYuliya GavrilovaYana EgorianSofya Velikaya   goldNOC: RUS   silver: Olha KharlanAlina KomashchukOlena KravatskaOlena Voronina   silverNOC: UKR   bronze: Monica AksamitIbtihaj MuhammadDagmara WozniakMariel Zagunis   bronzeNOC: USA   prev: 2008   next: 2020  The women's team sabre competition in fencing at the 2016 Summe",
+    "gold_answers": [
+      "Emese Szász"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 351,
+    "prompt_tokens": 368,
+    "completion_tokens": 38,
+    "total_tokens": 406,
+    "latency_ms": 10.8,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q25384919",
+      "Q26219849",
+      "Q26219848",
+      "Q25384913",
+      "Q26219855"
+    ]
+  },
+  {
+    "qid": "pub-031",
+    "question": "Who won the gold medal in the event held at Nikaia Olympic Weightlifting Hall on 24 August 2004?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Dmitry Berestov   goldNOC: RUS   silver: Ihor Razoronov   silverNOC: UKR   bronze: Gleb Pisarevskiy   bronzeNOC: RUS   prev: 2000   next: 2008  The men's 105 kilograms weightlifting event at the 2004 Summer Olympics in Athens, Greece took place at the Nikaia Olympic Weightlifting Hall on 24 August.  Total score was the sum of",
+    "gold_answers": [
+      "Dmitry Berestov"
+    ],
+    "exact_match": false,
+    "f1": 0.0769,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 367,
+    "prompt_tokens": 385,
+    "completion_tokens": 49,
+    "total_tokens": 434,
+    "latency_ms": 10.16,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1750583",
+      "Q906859",
+      "Q1750587",
+      "Q1750578",
+      "Q1750589"
+    ]
+  },
+  {
+    "qid": "pub-032",
+    "question": "How many nations competed in Gymnastics at the 2016 Summer Olympics – Men's horizontal bar?",
+    "qtype": "lookup",
+    "predicted_answer": "71",
+    "gold_answers": [
+      "34"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 356,
+    "prompt_tokens": 371,
+    "completion_tokens": 1,
+    "total_tokens": 372,
+    "latency_ms": 9.81,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26233795",
+      "Q26233789",
+      "Q26233791",
+      "Q26233793",
+      "Q903439"
+    ]
+  },
+  {
+    "qid": "pub-033",
+    "question": "According to the provided corpus, how many judo events at the 2004 Summer Olympics had more than 32 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "32",
+    "gold_answers": [
+      "4"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 364,
+    "prompt_tokens": 383,
+    "completion_tokens": 1,
+    "total_tokens": 384,
+    "latency_ms": 7.45,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q10522594",
+      "Q10522555",
+      "Q6303861",
+      "Q10522577",
+      "Q10522549"
+    ]
+  },
+  {
+    "qid": "pub-034",
+    "question": "How many nations competed in Figure skating at the 2010 Winter Olympics – Women's singles?",
+    "qtype": "lookup",
+    "predicted_answer": "30",
+    "gold_answers": [
+      "23"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 335,
+    "prompt_tokens": 350,
+    "completion_tokens": 1,
+    "total_tokens": 351,
+    "latency_ms": 9.55,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q916735",
+      "Q769542",
+      "Q15620700",
+      "Q15619183",
+      "Q15292539"
+    ]
+  },
+  {
+    "qid": "pub-035",
+    "question": "How many nations competed in Shooting at the 1996 Summer Olympics – Men's 50 metre rifle three positions?",
+    "qtype": "lookup",
+    "predicted_answer": "45",
+    "gold_answers": [
+      "30"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 353,
+    "prompt_tokens": 371,
+    "completion_tokens": 1,
+    "total_tokens": 372,
+    "latency_ms": 12.28,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q7500793",
+      "Q5395306",
+      "Q7500802",
+      "Q1346374",
+      "Q7500840"
+    ]
+  },
+  {
+    "qid": "pub-036",
+    "question": "Who won the gold medal in the men's light flyweight boxing event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Hasanboy Dusmatov   goldNOC: UZB   silver: Yuberjen Martínez   silverNOC: COL   bronze: Joahnys Argilagos   bronzeNOC: CUB   bronze2: Nico Hernández   bronzeNOC2: USA   prev: 2012  The men's light flyweight boxing competition at the 2016 Summer Olympics in Rio de Janeiro was held from 6 to 14 August at the Riocentro.",
+    "gold_answers": [
+      "Zou Shiming"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 1.0,
+    "context_tokens": 358,
+    "prompt_tokens": 378,
+    "completion_tokens": 46,
+    "total_tokens": 424,
+    "latency_ms": 13.01,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26037184",
+      "Q2000524",
+      "Q4951834",
+      "Q10572415",
+      "Q10572416"
+    ]
+  },
+  {
+    "qid": "pub-037",
+    "question": "According to the provided corpus, which shooting event at the 2008 Summer Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "predicted_answer": "Unknown",
+    "gold_answers": [
+      "Shooting at the 2008 Summer Olympics – Men's 50 metre rifle prone"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.0714,
+    "context_tokens": 330,
+    "prompt_tokens": 349,
+    "completion_tokens": 1,
+    "total_tokens": 350,
+    "latency_ms": 7.13,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q7500830",
+      "Q26406504",
+      "Q1075735",
+      "Q1075752",
+      "Q775967"
+    ]
+  },
+  {
+    "qid": "pub-038",
+    "question": "Who won the gold medal in the event held at Sydney Convention and Exhibition Centre on 23 September 2000?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Makoto Takimoto   goldNOC: JPN   silver: Cho In-chul   silverNOC: KOR   bronze: Nuno Delgado   bronzeNOC: POR   bronze2: Aleksei Budõlin   bronzeNOC2: EST   prev: 1996   next: 2004  Men's 81 kg competition in judo at the 2000 Summer Olympics was held on 19 September at the Sydney Convention and Exhibition Centre.  Thi",
+    "gold_answers": [
+      "Pyrros Dimas"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 356,
+    "prompt_tokens": 375,
+    "completion_tokens": 47,
+    "total_tokens": 422,
+    "latency_ms": 10.65,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q10522550",
+      "Q4160927",
+      "Q4160926",
+      "Q6303889",
+      "Q4160923"
+    ]
+  },
+  {
+    "qid": "pub-039",
+    "question": "Who won the gold medal in the women's discus throw athletics event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Christoph Harting   goldNOC: GER   silver: Piotr Małachowski   silverNOC: POL   bronze: Daniel Jasinski   bronzeNOC: GER   prev: 2012   next: 2020  The men's discus throw competition at the 2016 Summer Olympics in Rio de Janeiro, Brazil, was held at the",
+    "gold_answers": [
+      "Sandra Perković"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.5,
+    "context_tokens": 346,
+    "prompt_tokens": 366,
+    "completion_tokens": 37,
+    "total_tokens": 403,
+    "latency_ms": 10.86,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26214545",
+      "Q645460",
+      "Q3628777",
+      "Q765839",
+      "Q1771958"
+    ]
+  },
+  {
+    "qid": "pub-040",
+    "question": "Who won the gold medal in the individual normal hill/10 km nordic combined event at the Winter Olympics held immediately before 2014?",
+    "qtype": "temporal",
+    "predicted_answer": "Jason Lamy Chappuis   goldNOC: FRA   silver: Johnny Spillane   silverNOC: USA   bronze: Alessandro Pittin   bronzeNOC: ITA   win_value: 25:47.1   prev: 2006   next: 2014  The men's individual normal hill/10 km Nordic combined competition for the 2010 Winter Olympics in Vancouver, Canada, was held at Whistler Olym",
+    "gold_answers": [
+      "Jason Lamy Chappuis"
+    ],
+    "exact_match": false,
+    "f1": 0.12,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 1.0,
+    "context_tokens": 339,
+    "prompt_tokens": 361,
+    "completion_tokens": 43,
+    "total_tokens": 404,
+    "latency_ms": 12.04,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q303268",
+      "Q613470",
+      "Q15056068",
+      "Q656724",
+      "Q15056067"
+    ]
+  },
+  {
+    "qid": "pub-041",
+    "question": "Who won the gold medal in the event held at Mountain Bike Centre on 21 August at the 2016 Summer Olympics?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Jenny Rissveds   goldNOC: SWE   silver: Maja Włoszczowska   silverNOC: POL   bronze: Catharine Pendrel   bronzeNOC: CAN   prev: 2012   next: 2020  The women's cross-country cycling event at the 2016 Summer Olympics in Rio de Janeiro took place at the Mountain Bike Centre on 20 August.  The medals were p",
+    "gold_answers": [
+      "Nino Schurter"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 356,
+    "prompt_tokens": 377,
+    "completion_tokens": 46,
+    "total_tokens": 423,
+    "latency_ms": 9.29,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q25476835",
+      "Q25476845",
+      "Q938833",
+      "Q938805",
+      "Q1076798"
+    ]
+  },
+  {
+    "qid": "pub-042",
+    "question": "How many nations competed in Alpine skiing at the 1992 Winter Olympics – Men's giant slalom?",
+    "qtype": "lookup",
+    "predicted_answer": "82",
+    "gold_answers": [
+      "47"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 354,
+    "prompt_tokens": 370,
+    "completion_tokens": 1,
+    "total_tokens": 371,
+    "latency_ms": 10.34,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1005801",
+      "Q917743",
+      "Q1005805",
+      "Q15054999",
+      "Q2574045"
+    ]
+  },
+  {
+    "qid": "pub-043",
+    "question": "Who won the gold medal in the event held at Val-d'Isère on 16 February 1992?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Kjetil André Aamodt   goldNOC: NOR   silver: Marc Girardelli   silverNOC: LUX   bronze: Jan Einar Thorsen   bronzeNOC: NOR   prev: 1988   next: 1994 [Infobox ski area]   name: Men's Super-G   location: Val d'IsèreFace de Bellevarde   vertical: 535   top_elevation: 2371   base_elevation: 1836  The men's super-G competition",
+    "gold_answers": [
+      "Kjetil André Aamodt"
+    ],
+    "exact_match": false,
+    "f1": 0.1224,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 328,
+    "prompt_tokens": 343,
+    "completion_tokens": 41,
+    "total_tokens": 384,
+    "latency_ms": 9.57,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1534918",
+      "Q1005572",
+      "Q1005805",
+      "Q1005286",
+      "Q1222639"
+    ]
+  },
+  {
+    "qid": "pub-044",
+    "question": "According to the provided corpus, which fencing event at the 2008 Summer Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "predicted_answer": "Unknown",
+    "gold_answers": [
+      "Fencing at the 2008 Summer Olympics – Men's épée"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.6,
+    "doc_recall": 0.3,
+    "context_tokens": 356,
+    "prompt_tokens": 375,
+    "completion_tokens": 1,
+    "total_tokens": 376,
+    "latency_ms": 7.19,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26406504",
+      "Q2570149",
+      "Q2570158",
+      "Q2570052",
+      "Q599412"
+    ]
+  },
+  {
+    "qid": "pub-045",
+    "question": "According to the provided corpus, how many athletics events at the 2004 Summer Olympics had more than 41 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "54",
+    "gold_answers": [
+      "20"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.6,
+    "doc_recall": 0.0698,
+    "context_tokens": 351,
+    "prompt_tokens": 370,
+    "completion_tokens": 1,
+    "total_tokens": 371,
+    "latency_ms": 7.97,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q2313564",
+      "Q2201769",
+      "Q917323",
+      "Q2198226",
+      "Q3628684"
+    ]
+  },
+  {
+    "qid": "pub-046",
+    "question": "How many nations competed in Cross-country skiing at the 2010 Winter Olympics – Men's 15 kilometre freestyle?",
+    "qtype": "lookup",
+    "predicted_answer": "64",
+    "gold_answers": [
+      "50"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 342,
+    "prompt_tokens": 359,
+    "completion_tokens": 1,
+    "total_tokens": 360,
+    "latency_ms": 11.47,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q848689",
+      "Q384953",
+      "Q221335",
+      "Q1004989",
+      "Q220386"
+    ]
+  },
+  {
+    "qid": "pub-047",
+    "question": "How many nations competed in Athletics at the 1992 Summer Olympics – Men's 3000 metres steeplechase?",
+    "qtype": "lookup",
+    "predicted_answer": "41",
+    "gold_answers": [
+      "24"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 346,
+    "prompt_tokens": 362,
+    "completion_tokens": 1,
+    "total_tokens": 363,
+    "latency_ms": 10.01,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q2557141",
+      "Q1409048",
+      "Q1771990",
+      "Q3628765",
+      "Q26208467"
+    ]
+  },
+  {
+    "qid": "pub-048",
+    "question": "Who won the gold medal in the men's 68 kg taekwondo event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Ahmad Abughaush   goldNOC: JOR   silver: Alexey Denisenko   silverNOC: RUS   bronze: Joel González   bronzeNOC: ESP   bronze2: Lee Dae-hoon   bronzeNOC2: KOR   prev: 2012   next: 2020  The men's 68 kg competition at the 2016 Summer Olympics was held on 18 August, at the Carioca Arena 3.  Competition format The main bracket consisted of a single",
+    "gold_answers": [
+      "Servet Tazegül"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 1.0,
+    "context_tokens": 373,
+    "prompt_tokens": 393,
+    "completion_tokens": 52,
+    "total_tokens": 445,
+    "latency_ms": 14.99,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26219849",
+      "Q3980076",
+      "Q7674779",
+      "Q1005685",
+      "Q2142977"
+    ]
+  },
+  {
+    "qid": "pub-049",
+    "question": "Who won the gold medal in the men's pursuit biathlon event at the Winter Olympics held immediately before 2022?",
+    "qtype": "temporal",
+    "predicted_answer": "Quentin Fillon Maillet   goldNOC: FRA   silver: Tarjei Bø   silverNOC: NOR   bronze: Eduard Latypov   bronzeNOC: ROC   prev: 2018   next: 2026  The Men's pursuit competition of the Beijing 2022 Olympics was held on 13 February, at the National Biathlon Centre, in the Zhangjiakou cluster of competition venues, 180",
+    "gold_answers": [
+      "Martin Fourcade"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.5,
+    "context_tokens": 350,
+    "prompt_tokens": 369,
+    "completion_tokens": 46,
+    "total_tokens": 415,
+    "latency_ms": 10.58,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q107861704",
+      "Q107861714",
+      "Q225969",
+      "Q107861726",
+      "Q47155365"
+    ]
+  },
+  {
+    "qid": "pub-050",
+    "question": "Who won the gold medal in the event held at Adler Arena Skating Center on 11 February 2014?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Lee Sang-hwa   goldNOC: KOR   silver: Olga Fatkulina   silverNOC: RUS   bronze: Margot Boer   bronzeNOC: NED   prev: 2010   next: 2018  The women's 500 metres speed skating competition of the 2014 Sochi Olympics was held at Adler Arena Skating Center on 11 February 2014.  The reigning 2014 World Sprint Spe",
+    "gold_answers": [
+      "Lee Sang-hwa"
+    ],
+    "exact_match": false,
+    "f1": 0.1154,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 365,
+    "prompt_tokens": 383,
+    "completion_tokens": 47,
+    "total_tokens": 430,
+    "latency_ms": 11.67,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q15056224",
+      "Q15056222",
+      "Q15056223",
+      "Q15056225",
+      "Q15056220"
+    ]
+  },
+  {
+    "qid": "pub-051",
+    "question": "According to the provided corpus, how many canoeing events at the 2012 Summer Olympics had more than 25 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "19",
+    "gold_answers": [
+      "6"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 363,
+    "prompt_tokens": 382,
+    "completion_tokens": 1,
+    "total_tokens": 383,
+    "latency_ms": 8.34,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1005423",
+      "Q733756",
+      "Q2353523",
+      "Q26219824",
+      "Q645932"
+    ]
+  },
+  {
+    "qid": "pub-052",
+    "question": "How many nations competed in Biathlon at the 2022 Winter Olympics – Women's relay?",
+    "qtype": "lookup",
+    "predicted_answer": "80",
+    "gold_answers": [
+      "20"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 290,
+    "prompt_tokens": 304,
+    "completion_tokens": 1,
+    "total_tokens": 305,
+    "latency_ms": 8.17,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q107861706",
+      "Q107802331",
+      "Q15052025",
+      "Q107861696",
+      "Q1222092"
+    ]
+  },
+  {
+    "qid": "pub-053",
+    "question": "According to the provided corpus, which shooting event at the 2016 Summer Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "predicted_answer": "Unknown",
+    "gold_answers": [
+      "Shooting at the 2016 Summer Olympics – Women's 10 metre air rifle"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 0.1429,
+    "context_tokens": 345,
+    "prompt_tokens": 364,
+    "completion_tokens": 1,
+    "total_tokens": 365,
+    "latency_ms": 7.56,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26406504",
+      "Q7500830",
+      "Q26406514",
+      "Q26237421",
+      "Q26219824"
+    ]
+  },
+  {
+    "qid": "pub-054",
+    "question": "How many nations competed in Marathon swimming at the 2016 Summer Olympics – Women's 10 kilometre?",
+    "qtype": "lookup",
+    "predicted_answer": "26",
+    "gold_answers": [
+      "24"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 362,
+    "prompt_tokens": 378,
+    "completion_tokens": 1,
+    "total_tokens": 379,
+    "latency_ms": 10.09,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q25991470",
+      "Q25991460",
+      "Q739527",
+      "Q1064845",
+      "Q1004931"
+    ]
+  },
+  {
+    "qid": "pub-055",
+    "question": "Who won the gold medal in the men's 80 kg taekwondo event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Cheick Sallah Cissé   goldNOC: CIV   silver: Lutalo Muhammad   silverNOC: GBR   bronze: Oussama Oueslati   bronzeNOC: TUN   bronze2: Milad Beigi   bronzeNOC2: AZE   prev: 2012   next: 2020  The men's 80 kg taekwondo competition at the 2016 Summer Olympics was held on 19 August, at the Carioca Arena 3. This event featured five-time Olympian and t",
+    "gold_answers": [
+      "Sebastián Crismanich"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.5,
+    "context_tokens": 370,
+    "prompt_tokens": 390,
+    "completion_tokens": 52,
+    "total_tokens": 442,
+    "latency_ms": 12.08,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26219850",
+      "Q26219852",
+      "Q1005660",
+      "Q3980075",
+      "Q1339098"
+    ]
+  },
+  {
+    "qid": "pub-056",
+    "question": "Who won the gold medal in the men's 30 kilometre pursuit cross-country skiing event at the Winter Olympics held immediately before 2010?",
+    "qtype": "temporal",
+    "predicted_answer": "Marcus Hellner   goldNOC: SWE   silver: Tobias Angerer   silverNOC: GER   bronze: Johan Olsson   bronzeNOC: SWE   prev: 2006   next: 2014  The men's 15 kilometre + 15 kilometre double Pursuit cross-country skiing competition at the 2010 Winter Olympics in Vancouver, Canada, was held on 20 February",
+    "gold_answers": [
+      "Yevgeny Dementyev"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.5,
+    "context_tokens": 335,
+    "prompt_tokens": 357,
+    "completion_tokens": 43,
+    "total_tokens": 400,
+    "latency_ms": 14.85,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q848689",
+      "Q220386",
+      "Q1004987",
+      "Q478542",
+      "Q1004989"
+    ]
+  },
+  {
+    "qid": "pub-057",
+    "question": "Who won the gold medal in the women's 200 metres athletics event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Vivian Cheruiyot   goldNOC: KEN   silver: Hellen Onsando Obiri   silverNOC: KEN   bronze: Almaz Ayana   bronzeNOC: ETH   prev: 2012   next: 2020  The women's 5000 metres event at the 2016 Summer Olympics took place between 16–19 August at the Olympic Stadium.  Summary Almaz Ayana came into this race with the numb",
+    "gold_answers": [
+      "Allyson Felix"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.5,
+    "context_tokens": 355,
+    "prompt_tokens": 375,
+    "completion_tokens": 48,
+    "total_tokens": 423,
+    "latency_ms": 12.27,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26219862",
+      "Q26219856",
+      "Q26208467",
+      "Q26219842",
+      "Q1439338"
+    ]
+  },
+  {
+    "qid": "pub-058",
+    "question": "According to the provided corpus, how many rowing events at the 1996 Summer Olympics had more than 39 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "39",
+    "gold_answers": [
+      "5"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 0.1667,
+    "context_tokens": 364,
+    "prompt_tokens": 383,
+    "completion_tokens": 1,
+    "total_tokens": 384,
+    "latency_ms": 7.89,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q22964455",
+      "Q22968982",
+      "Q3001408",
+      "Q17515791",
+      "Q1005423"
+    ]
+  },
+  {
+    "qid": "pub-059",
+    "question": "Who won the gold medal in the women's sprint biathlon event at the Winter Olympics held immediately before 2022?",
+    "qtype": "temporal",
+    "predicted_answer": "Marte Olsbu Røiseland   goldNOC: NOR   silver: Elvira Öberg   silverNOC: SWE   bronze: Dorothea Wierer   bronzeNOC: ITA   prev: 2018   next: 2026  The Women's sprint competition of the Beijing 2022 Olympics was held on 11 February, at the National Biathlon Centre, in the Zhangjiakou cluster of competition venues,",
+    "gold_answers": [
+      "Laura Dahlmeier"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 1.0,
+    "context_tokens": 347,
+    "prompt_tokens": 366,
+    "completion_tokens": 45,
+    "total_tokens": 411,
+    "latency_ms": 9.88,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q107861710",
+      "Q107861714",
+      "Q107861726",
+      "Q47091419",
+      "Q47155365"
+    ]
+  },
+  {
+    "qid": "pub-060",
+    "question": "Who won the gold medal in the event held at ExCeL Exhibition Centre on 30 July at the 2012 Summer Olympics?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Robeisy Ramírez   goldNOC: CUB   silver: Nyambayaryn Tögstsogt   silverNOC: MGL   bronze: Misha Aloyan   bronzeNOC: RUS   bronze2: Michael Conlan   bronzeNOC2: IRL   prev: 2008   next: 2016  The men's flyweight boxing competition at the 2012 Olympic Games in London was held from 30 July to 12 August at the ExCeL Ex",
+    "gold_answers": [
+      "Yana Shemyakina"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 364,
+    "prompt_tokens": 385,
+    "completion_tokens": 47,
+    "total_tokens": 432,
+    "latency_ms": 9.99,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q332673",
+      "Q1156695",
+      "Q934172",
+      "Q1339098",
+      "Q1076798"
+    ]
+  },
+  {
+    "qid": "pub-061",
+    "question": "How many nations competed in Boxing at the 1988 Summer Olympics – Light flyweight?",
+    "qtype": "lookup",
+    "predicted_answer": "30",
+    "gold_answers": [
+      "34"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 358,
+    "prompt_tokens": 372,
+    "completion_tokens": 1,
+    "total_tokens": 373,
+    "latency_ms": 6.32,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q10572415",
+      "Q4951834",
+      "Q10572416",
+      "Q26037184",
+      "Q2000524"
+    ]
+  },
+  {
+    "qid": "pub-062",
+    "question": "Who won the gold medal in the women's 10,000 metres athletics event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Vivian Cheruiyot   goldNOC: KEN   silver: Hellen Onsando Obiri   silverNOC: KEN   bronze: Almaz Ayana   bronzeNOC: ETH   prev: 2012   next: 2020  The women's 5000 metres event at the 2016 Summer Olympics took place between 16–19 August at the Olympic Stadium.  Summary Almaz Ayana came into this race with the numb",
+    "gold_answers": [
+      "Tirunesh Dibaba"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.5,
+    "context_tokens": 357,
+    "prompt_tokens": 377,
+    "completion_tokens": 48,
+    "total_tokens": 425,
+    "latency_ms": 11.81,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26219862",
+      "Q26233297",
+      "Q2071171",
+      "Q26208467",
+      "Q3628679"
+    ]
+  },
+  {
+    "qid": "pub-063",
+    "question": "How many nations competed in Swimming at the 1988 Summer Olympics – Men's 200 metre freestyle?",
+    "qtype": "lookup",
+    "predicted_answer": "55",
+    "gold_answers": [
+      "41"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 361,
+    "prompt_tokens": 377,
+    "completion_tokens": 1,
+    "total_tokens": 378,
+    "latency_ms": 9.04,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q3879660",
+      "Q3879648",
+      "Q7656692",
+      "Q3879629",
+      "Q7656684"
+    ]
+  },
+  {
+    "qid": "pub-064",
+    "question": "Who won the gold medal in the event held at ANZ Stadium on 22 September 2000 (heats)25 September 2000 (final)?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Gabriela Szabo   goldNOC: ROM   silver: Sonia O'Sullivan   silverNOC: IRL   bronze: Gete Wami   bronzeNOC: ETH   prev: 1996   next: 2004  The Women's 5000 metres at the 2000 Summer Olympics as part of the athletics programme was held at Stadium Australia on",
+    "gold_answers": [
+      "Gabriela Szabo"
+    ],
+    "exact_match": false,
+    "f1": 0.093,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 342,
+    "prompt_tokens": 362,
+    "completion_tokens": 39,
+    "total_tokens": 401,
+    "latency_ms": 11.59,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q3628769",
+      "Q3628778",
+      "Q3628777",
+      "Q3628767",
+      "Q3628775"
+    ]
+  },
+  {
+    "qid": "pub-065",
+    "question": "According to the provided corpus, how many biathlon events at the 2014 Winter Olympics had more than 68 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "87",
+    "gold_answers": [
+      "5"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 345,
+    "prompt_tokens": 364,
+    "completion_tokens": 1,
+    "total_tokens": 365,
+    "latency_ms": 10.97,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q47091419",
+      "Q1221922",
+      "Q225969",
+      "Q47155365",
+      "Q917217"
+    ]
+  },
+  {
+    "qid": "pub-066",
+    "question": "According to the provided corpus, which weightlifting event at the 1992 Summer Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "predicted_answer": "Unknown",
+    "gold_answers": [
+      "Weightlifting at the 1992 Summer Olympics – Men's 75 kg"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 336,
+    "prompt_tokens": 355,
+    "completion_tokens": 1,
+    "total_tokens": 356,
+    "latency_ms": 9.66,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1095367",
+      "Q1192124",
+      "Q3628698",
+      "Q1004861",
+      "Q5555971"
+    ]
+  },
+  {
+    "qid": "pub-067",
+    "question": "Who won the gold medal in the event held at North Greenwich Arena on 4 August at the 2012 Summer Olympics?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Rosannagh MacLennan   goldNOC: CAN   silver: Huang Shanshan   silverNOC: CHN   bronze: He Wenna   bronzeNOC: CHN   prev: 2008   next: 2016  The women's trampoline competition at the 2012 Summer Olympics took place at the North Greenwich Arena on 4 August.  Competition format In the qualification round, each gymnast performed two routines",
+    "gold_answers": [
+      "Rosannagh MacLennan"
+    ],
+    "exact_match": false,
+    "f1": 0.0784,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 348,
+    "prompt_tokens": 369,
+    "completion_tokens": 48,
+    "total_tokens": 417,
+    "latency_ms": 13.49,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q284413",
+      "Q284423",
+      "Q3082335",
+      "Q26233789",
+      "Q588440"
+    ]
+  },
+  {
+    "qid": "pub-068",
+    "question": "How many nations competed in Cycling at the 2012 Summer Olympics – Women's cross-country?",
+    "qtype": "lookup",
+    "predicted_answer": "30",
+    "gold_answers": [
+      "24"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 351,
+    "prompt_tokens": 365,
+    "completion_tokens": 1,
+    "total_tokens": 366,
+    "latency_ms": 9.51,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q2269155",
+      "Q938805",
+      "Q2036655",
+      "Q25476835",
+      "Q938833"
+    ]
+  },
+  {
+    "qid": "pub-069",
+    "question": "According to the provided corpus, how many fencing events at the 2000 Summer Olympics had more than 39 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "40",
+    "gold_answers": [
+      "3"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 0.2,
+    "context_tokens": 373,
+    "prompt_tokens": 392,
+    "completion_tokens": 1,
+    "total_tokens": 393,
+    "latency_ms": 7.8,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q2570149",
+      "Q3951952",
+      "Q632472",
+      "Q647742",
+      "Q25780"
+    ]
+  },
+  {
+    "qid": "pub-070",
+    "question": "According to the provided corpus, how many speed skating events at the 2010 Winter Olympics had more than 36 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "26",
+    "gold_answers": [
+      "3"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 361,
+    "prompt_tokens": 381,
+    "completion_tokens": 1,
+    "total_tokens": 382,
+    "latency_ms": 8.03,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q15056223",
+      "Q15056222",
+      "Q769542",
+      "Q905485",
+      "Q15056224"
+    ]
+  },
+  {
+    "qid": "pub-071",
+    "question": "How many nations competed in Biathlon at the 2018 Winter Olympics – Women's pursuit?",
+    "qtype": "lookup",
+    "predicted_answer": "58",
+    "gold_answers": [
+      "24"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 351,
+    "prompt_tokens": 365,
+    "completion_tokens": 1,
+    "total_tokens": 366,
+    "latency_ms": 8.01,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q47155365",
+      "Q14643199",
+      "Q107861714",
+      "Q107861704",
+      "Q47155371"
+    ]
+  },
+  {
+    "qid": "pub-072",
+    "question": "Who won the gold medal in the women's 500 metres speed skating event at the Winter Olympics held immediately before 2014?",
+    "qtype": "temporal",
+    "predicted_answer": "Lee Sang-hwa   goldNOC: KOR   silver: Olga Fatkulina   silverNOC: RUS   bronze: Margot Boer   bronzeNOC: NED   prev: 2010   next: 2018  The women's 500 metres speed skating competition of the 2014 Sochi Olympics was held at Adler Arena Skating Center on 11 February 2014.  The reigning 2014 World Sprint Spe",
+    "gold_answers": [
+      "Lee Sang-hwa"
+    ],
+    "exact_match": false,
+    "f1": 0.1154,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.5,
+    "context_tokens": 361,
+    "prompt_tokens": 382,
+    "completion_tokens": 47,
+    "total_tokens": 429,
+    "latency_ms": 11.92,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q15056224",
+      "Q15056225",
+      "Q47309836",
+      "Q15056222",
+      "Q765657"
+    ]
+  },
+  {
+    "qid": "pub-073",
+    "question": "Who won the gold medal in the event held at Sydney International Shooting Centre on 21 September 2000 (slow)22 September 2000 (fast)?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Yang Ling   goldNOC: CHN   silver: Oleg Moldovan   silverNOC: MDA   bronze: Niu Zhiyuan   bronzeNOC: CHN   win_label: Winning score   win_value: 681.1   prev: 1996   next: 2004  The men's skeet shooting competition at the 2000 Summer Olympics was the last shooting event of",
+    "gold_answers": [
+      "Yang Ling"
+    ],
+    "exact_match": false,
+    "f1": 0.093,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 336,
+    "prompt_tokens": 358,
+    "completion_tokens": 39,
+    "total_tokens": 397,
+    "latency_ms": 11.79,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q7500807",
+      "Q3899247",
+      "Q7500821",
+      "Q4443767",
+      "Q3879591"
+    ]
+  },
+  {
+    "qid": "pub-074",
+    "question": "How many nations competed in Cross-country skiing at the 2006 Winter Olympics – Women's 4 × 5 kilometre relay?",
+    "qtype": "lookup",
+    "predicted_answer": "48",
+    "gold_answers": [
+      "17"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 303,
+    "prompt_tokens": 322,
+    "completion_tokens": 1,
+    "total_tokens": 323,
+    "latency_ms": 12.75,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1222080",
+      "Q220386",
+      "Q748648",
+      "Q827175",
+      "Q1222066"
+    ]
+  },
+  {
+    "qid": "pub-075",
+    "question": "How many nations competed in Swimming at the 2000 Summer Olympics – Men's 1500 metre freestyle?",
+    "qtype": "lookup",
+    "predicted_answer": "41",
+    "gold_answers": [
+      "32"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 358,
+    "prompt_tokens": 374,
+    "completion_tokens": 1,
+    "total_tokens": 375,
+    "latency_ms": 10.72,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q3879590",
+      "Q3879649",
+      "Q5970589",
+      "Q596094",
+      "Q3879629"
+    ]
+  },
+  {
+    "qid": "pub-076",
+    "question": "Who won the gold medal in the event held at Sestriere on February 24, 2006?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Antoine Dénériaz   goldNOC: FRA   silver: Michael Walchhofer   silverNOC: AUT   bronze: Bruno Kernen   bronzeNOC: SUI   prev: 2002   next: 2010 [Infobox ski area]   name: Men's downhill   location: SestriereKandahar Banchetta   vertical: 914   top_elevation: 2800   base_elevation: 1886  The men's downhill of the 2006 Winter",
+    "gold_answers": [
+      "Julia Mancuso"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 336,
+    "prompt_tokens": 351,
+    "completion_tokens": 40,
+    "total_tokens": 391,
+    "latency_ms": 10.69,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q917752",
+      "Q585893",
+      "Q917747",
+      "Q917743",
+      "Q1042644"
+    ]
+  },
+  {
+    "qid": "pub-077",
+    "question": "Who won the gold medal in the event held at Xiaohaituo Bobsleigh and Luge TrackBeijing on 13, 14 February 2022?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Kaillie Humphries   goldNOC: USA   silver: Elana Meyers Taylor   silverNOC: USA   bronze: Christine de Bruin   bronzeNOC: CAN   next: 2026  The women's monobob competition in bobsleigh at the 2022 Winter Olympics was held on 13 February (heats 1 and 2) and 14 February (heats 3",
+    "gold_answers": [
+      "Kaillie Humphries"
+    ],
+    "exact_match": false,
+    "f1": 0.087,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 327,
+    "prompt_tokens": 347,
+    "completion_tokens": 43,
+    "total_tokens": 390,
+    "latency_ms": 11.47,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q110264144",
+      "Q110264101",
+      "Q110264143",
+      "Q110264107",
+      "Q1222257"
+    ]
+  },
+  {
+    "qid": "pub-078",
+    "question": "According to the provided corpus, how many athletics events at the 1996 Summer Olympics had more than 49 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "59",
+    "gold_answers": [
+      "7"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.0625,
+    "context_tokens": 345,
+    "prompt_tokens": 364,
+    "completion_tokens": 1,
+    "total_tokens": 365,
+    "latency_ms": 6.82,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q3628684",
+      "Q2308435",
+      "Q13655354",
+      "Q2201769",
+      "Q2313564"
+    ]
+  },
+  {
+    "qid": "pub-079",
+    "question": "Who won the gold medal in the event held at Centennial Parklands, Sydney on 26 September at the 2000 Summer Olympics?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Jan Ullrich   goldNOC: GER   silver: Alexander Vinokourov   silverNOC: KAZ   bronze: Andreas Klöden   bronzeNOC: GER   prev: 1996   next: 2004  The men's individual road race at the 2000 Summer Olympics in Sydney, Australia, was held on Wednesday, 27 September 2000 (the second day of",
+    "gold_answers": [
+      "Leontien Zijlaard"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 354,
+    "prompt_tokens": 375,
+    "completion_tokens": 42,
+    "total_tokens": 417,
+    "latency_ms": 8.57,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q3001459",
+      "Q2526348",
+      "Q2774005",
+      "Q2133123",
+      "Q7400333"
+    ]
+  },
+  {
+    "qid": "pub-080",
+    "question": "How many nations competed in Beach volleyball at the 2008 Summer Olympics – Women's tournament?",
+    "qtype": "lookup",
+    "predicted_answer": "48",
+    "gold_answers": [
+      "17"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 346,
+    "prompt_tokens": 361,
+    "completion_tokens": 1,
+    "total_tokens": 362,
+    "latency_ms": 8.94,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q977229",
+      "Q4471528",
+      "Q1065654",
+      "Q24995398",
+      "Q918063"
+    ]
+  },
+  {
+    "qid": "pub-081",
+    "question": "Who won the gold medal in the event held at Beijing Shooting Range Hall on August 10, 2008?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Jin Jong-oh   goldNOC: KOR   silver: Tan Zongliang   silverNOC: CHN   bronze: Vladimir Isakov   bronzeNOC: RUS   win_label: Winning score   win_value: 660.4   prev: 2004   next: 2012  The men's ISSF 50 meter pistol event at the 2008 Olympic Games took place on August 12 at the Beijing Shooting Range Hall.",
+    "gold_answers": [
+      "Guo Wenjun"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 369,
+    "prompt_tokens": 387,
+    "completion_tokens": 46,
+    "total_tokens": 433,
+    "latency_ms": 9.54,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1205250",
+      "Q1204722",
+      "Q1005423",
+      "Q940196",
+      "Q1360895"
+    ]
+  },
+  {
+    "qid": "pub-082",
+    "question": "According to the provided corpus, how many swimming events at the 1996 Summer Olympics had more than 42 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "36",
+    "gold_answers": [
+      "12"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 356,
+    "prompt_tokens": 375,
+    "completion_tokens": 1,
+    "total_tokens": 376,
+    "latency_ms": 8.32,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1067772",
+      "Q1005018",
+      "Q3001408",
+      "Q1005423",
+      "Q7500786"
+    ]
+  },
+  {
+    "qid": "pub-083",
+    "question": "Who won the gold medal in the event held at Kvitfjell and Hafjell on February 20–21, 1994?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Pernilla Wiberg   goldNOC: SWE   silver: Vreni Schneider   silverNOC: SUI   bronze: Alenka Dovžan   bronzeNOC: SLO   prev: 1992   next: 1998  The Women's combined competition of the Lillehammer 1994 Olympics was held at Kvitfjell and Hafjell.  The defending world champion was Miriam Vogt of Germany, while A",
+    "gold_answers": [
+      "Pernilla Wiberg"
+    ],
+    "exact_match": false,
+    "f1": 0.0851,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 332,
+    "prompt_tokens": 349,
+    "completion_tokens": 44,
+    "total_tokens": 393,
+    "latency_ms": 9.42,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1222212",
+      "Q1005292",
+      "Q1222469",
+      "Q1222715",
+      "Q1005575"
+    ]
+  },
+  {
+    "qid": "pub-084",
+    "question": "According to the provided corpus, which fencing event at the 1992 Summer Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "predicted_answer": "Unknown",
+    "gold_answers": [
+      "Fencing at the 1992 Summer Olympics – Men's épée"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.125,
+    "context_tokens": 362,
+    "prompt_tokens": 381,
+    "completion_tokens": 1,
+    "total_tokens": 382,
+    "latency_ms": 6.15,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26406504",
+      "Q25793",
+      "Q2570052",
+      "Q2570149",
+      "Q38412"
+    ]
+  },
+  {
+    "qid": "pub-085",
+    "question": "According to the provided corpus, which sailing event at the 2008 Summer Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "predicted_answer": "Unknown",
+    "gold_answers": [
+      "Sailing at the 2008 Summer Olympics – Men's 470"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.6,
+    "doc_recall": 0.2727,
+    "context_tokens": 349,
+    "prompt_tokens": 368,
+    "completion_tokens": 1,
+    "total_tokens": 369,
+    "latency_ms": 5.92,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q368950",
+      "Q2563908",
+      "Q2410252",
+      "Q2566720",
+      "Q7400342"
+    ]
+  },
+  {
+    "qid": "pub-086",
+    "question": "Who won the gold medal in the event held at Richmond Olympic Oval on 17 February 2010?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Lee Seung-hoon   goldNOC: KOR   silver: Ivan Skobrev   silverNOC: RUS   bronze: Bob de Jong   bronzeNOC: NED   prev: 2006   next: 2014  The men's 10,000 metres speed skating competition of the Vancouver 2010 Olympics was held at Richmond Olympic Oval on 23 February 2010.  The overwhelming pre-race favorite S",
+    "gold_answers": [
+      "Shani Davis"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 354,
+    "prompt_tokens": 371,
+    "completion_tokens": 46,
+    "total_tokens": 417,
+    "latency_ms": 9.96,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q595972",
+      "Q916771",
+      "Q905540",
+      "Q607635",
+      "Q580481"
+    ]
+  },
+  {
+    "qid": "pub-087",
+    "question": "According to the provided corpus, how many athletics events at the 1988 Summer Olympics had more than 41 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "59",
+    "gold_answers": [
+      "17"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 1.0,
+    "doc_recall": 0.1316,
+    "context_tokens": 342,
+    "prompt_tokens": 361,
+    "completion_tokens": 1,
+    "total_tokens": 362,
+    "latency_ms": 6.94,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q3628684",
+      "Q3628678",
+      "Q3628690",
+      "Q13655354",
+      "Q3628681"
+    ]
+  },
+  {
+    "qid": "pub-088",
+    "question": "According to the provided corpus, which alpine skiing event at the 1992 Winter Olympics had the highest number of competitors?",
+    "qtype": "superlative",
+    "predicted_answer": "Unknown",
+    "gold_answers": [
+      "Alpine skiing at the 1992 Winter Olympics – Men's giant slalom"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 0.2,
+    "context_tokens": 316,
+    "prompt_tokens": 336,
+    "completion_tokens": 1,
+    "total_tokens": 337,
+    "latency_ms": 7.73,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1534918",
+      "Q15054994",
+      "Q9663",
+      "Q15055004",
+      "Q1005572"
+    ]
+  },
+  {
+    "qid": "pub-089",
+    "question": "According to the provided corpus, how many boxing events at the 1988 Summer Olympics had more than 39 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "17",
+    "gold_answers": [
+      "5"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.0833,
+    "context_tokens": 344,
+    "prompt_tokens": 363,
+    "completion_tokens": 1,
+    "total_tokens": 364,
+    "latency_ms": 6.94,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q10684072",
+      "Q3925469",
+      "Q10572465",
+      "Q10581227",
+      "Q10719575"
+    ]
+  },
+  {
+    "qid": "pub-090",
+    "question": "Who won the gold medal in the men's greco-roman 96 kg wrestling event at the Summer Olympics held immediately before 2012?",
+    "qtype": "temporal",
+    "predicted_answer": "Ghasem Rezaei   goldNOC: IRI   silver: Rustam Totrov   silverNOC: RUS   bronze: Artur Aleksanyan   bronzeNOC: ARM   bronze2: Jimmy Lidberg   bronzeNOC2: SWE   prev: 2008   next: 2016  Men's Greco-Roman 96 kilograms competition at the 2012 Summer Olympics in London, United Kingdom, took place on 7 August at ExCeL London. This Greco-Roman",
+    "gold_answers": [
+      "Aslanbek Khushtov"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.4,
+    "doc_recall": 1.0,
+    "context_tokens": 348,
+    "prompt_tokens": 369,
+    "completion_tokens": 47,
+    "total_tokens": 416,
+    "latency_ms": 13.6,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q2358254",
+      "Q1005294",
+      "Q2358274",
+      "Q305439",
+      "Q1005272"
+    ]
+  },
+  {
+    "qid": "pub-091",
+    "question": "How many nations competed in Wrestling at the 1992 Summer Olympics – Men's freestyle 100 kg?",
+    "qtype": "lookup",
+    "predicted_answer": "18",
+    "gold_answers": [
+      "18"
+    ],
+    "exact_match": true,
+    "f1": 1.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 366,
+    "prompt_tokens": 382,
+    "completion_tokens": 1,
+    "total_tokens": 383,
+    "latency_ms": 9.77,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q3498987",
+      "Q8037924",
+      "Q3879648",
+      "Q3498676",
+      "Q26419030"
+    ]
+  },
+  {
+    "qid": "pub-092",
+    "question": "According to the provided corpus, how many shooting events at the 1992 Summer Olympics had more than 44 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "19",
+    "gold_answers": [
+      "6"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.0769,
+    "context_tokens": 353,
+    "prompt_tokens": 372,
+    "completion_tokens": 1,
+    "total_tokens": 373,
+    "latency_ms": 7.61,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1005423",
+      "Q7500786",
+      "Q7500761",
+      "Q7500739",
+      "Q1221922"
+    ]
+  },
+  {
+    "qid": "pub-093",
+    "question": "According to the provided corpus, how many biathlon events at the 2006 Winter Olympics had more than 72 competitors?",
+    "qtype": "aggregation",
+    "predicted_answer": "71",
+    "gold_answers": [
+      "4"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.1111,
+    "context_tokens": 340,
+    "prompt_tokens": 359,
+    "completion_tokens": 1,
+    "total_tokens": 360,
+    "latency_ms": 10.51,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1221922",
+      "Q225969",
+      "Q256759",
+      "Q1004924",
+      "Q1005108"
+    ]
+  },
+  {
+    "qid": "pub-094",
+    "question": "Who won the gold medal in the men's greco-roman 48 kg wrestling event at the Summer Olympics held immediately before 1996?",
+    "qtype": "temporal",
+    "predicted_answer": "Andrea Minguzzi   goldNOC: ITA   silver: Zoltán Fodor   silverNOC: HUN   bronze: Nazmi Avluca   bronzeNOC: TUR   bronze2: not awarded   prev: 2004   next: 2012  Men's Greco-Roman 84 kilograms competition at the 2008 Summer Olympics in Beijing, China, was held on August 14 at the China Agricultural University",
+    "gold_answers": [
+      "Oleg Kucherenko"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 353,
+    "prompt_tokens": 374,
+    "completion_tokens": 44,
+    "total_tokens": 418,
+    "latency_ms": 14.73,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q1005272",
+      "Q24906829",
+      "Q1005235",
+      "Q26271817",
+      "Q1005294"
+    ]
+  },
+  {
+    "qid": "pub-095",
+    "question": "Who won the gold medal in the event held at Beijing National Stadium on 16 August 2008?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Gerd Kanter   goldNOC: EST   silver: Piotr Małachowski   silverNOC: POL   bronze: Virgilijus Alekna   bronzeNOC: LTU   win_label: Winning distance   win_value: 68.82   prev: 2004   next: 2012  The men's discus throw event at the 2008 Summer Olympics took place on 16–19 August",
+    "gold_answers": [
+      "Valerie Vili"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 347,
+    "prompt_tokens": 364,
+    "completion_tokens": 38,
+    "total_tokens": 402,
+    "latency_ms": 11.44,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q517035",
+      "Q917323",
+      "Q1066390",
+      "Q766954",
+      "Q754844"
+    ]
+  },
+  {
+    "qid": "pub-096",
+    "question": "Who won the gold medal in the event held at Riocentro – Pavilion 6 on 10–21 August 2016?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Tony Yoka   goldNOC: FRA   silver: Joe Joyce   silverNOC: GBR   bronze: Filip Hrgović   bronzeNOC: CRO   bronze2: Ivan Dychko   bronzeNOC2: KAZ   prev: 2012   next: 2020  The men's super heavyweight boxing competition at the 2016 Olympic Games in Rio de Janeiro was held from 9 to 21 August at the Riocentro.  Tony Yok",
+    "gold_answers": [
+      "Fazliddin Gaibnazarov"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 361,
+    "prompt_tokens": 379,
+    "completion_tokens": 50,
+    "total_tokens": 429,
+    "latency_ms": 10.17,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q26212155",
+      "Q26212151",
+      "Q25301787",
+      "Q25301916",
+      "Q25301754"
+    ]
+  },
+  {
+    "qid": "pub-097",
+    "question": "Who won the gold medal in the women's épée fencing event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Park Sang-young   goldNOC: KOR   silver: Géza Imre   silverNOC: HUN   bronze: Gauthier Grumier   bronzeNOC: FRA   prev: 2012   next: 2020  The men's épée competition in fencing at the 2016 Summer Olympics in Rio de Janeiro was held on 9 August at the Carioca Arena 3. There were 38 competitors from 20 nations. South Korea's Park Sang-young won the",
+    "gold_answers": [
+      "Yana Shemyakina"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 358,
+    "prompt_tokens": 377,
+    "completion_tokens": 56,
+    "total_tokens": 433,
+    "latency_ms": 10.96,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q25386262",
+      "Q1143843",
+      "Q2726750",
+      "Q25384917",
+      "Q632742"
+    ]
+  },
+  {
+    "qid": "pub-098",
+    "question": "Who won the gold medal in the event held at Sydney Convention and Exhibition Centre on 18 September to 1 October 2000?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Bekzat Sattarkhanov   goldNOC: KAZ   silver: Ricardo Juarez   silverNOC: USA   bronze: Tahar Tamsamani   bronzeNOC: MAR   bronze2: Kamil Djamaloudinov   bronzeNOC2: RUS   prev: 1996   next: 2004  The men's featherweight boxing competition at the 2000 Olympic Games in Sydney was held from 18",
+    "gold_answers": [
+      "Bekzat Sattarkhanov"
+    ],
+    "exact_match": false,
+    "f1": 0.0952,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 1.0,
+    "context_tokens": 343,
+    "prompt_tokens": 365,
+    "completion_tokens": 39,
+    "total_tokens": 404,
+    "latency_ms": 10.71,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q4951838",
+      "Q4951847",
+      "Q8037963",
+      "Q4951842",
+      "Q4951844"
+    ]
+  },
+  {
+    "qid": "pub-099",
+    "question": "Who won the gold medal in the event held at Laura Biathlon & Ski Complex on 22 February 2014?",
+    "qtype": "multi_hop",
+    "predicted_answer": "Darya Domracheva   goldNOC: BLR   silver: Tora Berger   silverNOC: NOR   bronze: Teja Gregorin   bronzeNOC: SLO   prev: 2010   next: 2018  The women's 10 km pursuit biathlon competition of the Sochi 2014 Olympics was held at Laura Biathlon & Ski Complex on 11 February 2014.  In the pursuit competition, th",
+    "gold_answers": [
+      "Erik LesserDaniel BöhmArnd PeifferSimon Schempp"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 0.0,
+    "doc_precision": 0.0,
+    "doc_recall": 0.0,
+    "context_tokens": 348,
+    "prompt_tokens": 367,
+    "completion_tokens": 47,
+    "total_tokens": 414,
+    "latency_ms": 10.57,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q14643199",
+      "Q14643284",
+      "Q14643126",
+      "Q15055028",
+      "Q15052025"
+    ]
+  },
+  {
+    "qid": "pub-100",
+    "question": "Who won the gold medal in the women's 200 metre backstroke swimming event at the Summer Olympics held immediately before 2016?",
+    "qtype": "temporal",
+    "predicted_answer": "Aaron Peirsol   goldNOC: USA   silver: Markus Rogan   silverNOC: AUT   bronze: Răzvan Florea   bronzeNOC: ROM   prev: 2000   next: 2008  The men's 200 metre backstroke event at the 2004 Olympic Games was contested at the Olympic Aquatic Cent",
+    "gold_answers": [
+      "Missy Franklin"
+    ],
+    "exact_match": false,
+    "f1": 0.0,
+    "doc_hit": 1.0,
+    "doc_precision": 0.2,
+    "doc_recall": 0.5,
+    "context_tokens": 350,
+    "prompt_tokens": 371,
+    "completion_tokens": 36,
+    "total_tokens": 407,
+    "latency_ms": 10.12,
+    "retrieval_steps": 1,
+    "citations_count": 5,
+    "cited_doc_ids": [
+      "Q267771",
+      "Q2071160",
+      "Q25932666",
+      "Q25991449",
+      "Q526698"
+    ]
+  }
+]
