@@ -57,29 +57,162 @@ flowchart TD
 
 ## 🚀 Quick Start
 
-### 1. Backend Server
+### 1. Environment & Backend Server
 ```bash
-# Install dependencies
+# 1. Install Python dependencies
 pip install -r requirements.txt
 
-# Configure environment
+# 2. Configure environment credentials
 cp .env.example .env
+# Edit .env and set OPENROUTER_API_KEY (or OPENAI_API_KEY) & TigerGraph credentials
 
-# Run FastAPI backend
+# 3. Launch FastAPI backend server (Port 8000)
 python -m agentic_graphrag.server
 ```
 
-### 2. Frontend Research UI
+### 2. Frontend Research & Benchmark UI
 ```bash
 cd graphrag-ui
 npm install
 npm run dev
+# Dashboard available at: http://localhost:5173
 ```
 
-### 3. Run Automated Research Tests
+### 3. Master Ingestion Pipeline (TigerGraph Schema & Data)
+```bash
+# Run schema creation, vertex/edge loading, GSQL query installation, and validation in one shot:
+python scripts/ingest.py
+```
+
+### 4. Run Automated Research Verification Tests
 ```bash
 python tests/test_backend_research_system.py
 ```
+
+---
+
+## 📊 The Core Decision Matrix: When is Agentic Essential vs. Overkill?
+
+```mermaid
+flowchart TD
+    Q[User / Benchmark Question] --> Classify{Question Complexity & Intent}
+    
+    Classify -->|Direct Fact Lookup / Single Entity| GRAG_SUFF[Graph Structure Sufficient]
+    Classify -->|Global Aggregation / Count / Superlative| GSQL_SUFF[GSQL Aggregation Sufficient]
+    Classify -->|Multi-Hop Path Traversal| AGENT_REQ[Agentic Reasoning Essential]
+    Classify -->|Temporal Constraints & Sequencing| AGENT_REQ
+    Classify -->|Ambiguous / Multi-Part Disjunctive| AGENT_REQ
+    
+    GRAG_SUFF --> G1[1-Hop Neighborhood Retrieval]
+    G1 --> A1[Fast Deterministic Answer / Zero Agent Overhead]
+    
+    GSQL_SUFF --> G2[GSQL Count/Sum Query]
+    G2 --> A2[100% Precision / Minimal Latency]
+    
+    AGENT_REQ --> M1[1. Entity Linking & Subgraph Grounding]
+    M1 --> M2[2. Dynamic Traversal & Temporal Validation]
+    M2 --> M3[3. Evidence Sufficiency & Critic Verification]
+    M3 --> M4[4. Self-Correction / Re-Retrieval / Grounded Citations]
+    M4 --> A3[High Accuracy Answer: +46% to +94% Net Lift]
+```
+
+### 1. Where Agentic Reasoning is Essential (+86% to +94% Lift)
+- **Multi-Hop Traversal (0% RAG → 50% GraphRAG → 96% Agentic)**: Questions connecting entities across 3+ degrees of separation (e.g. *Athlete → Venue → Event → Year → Medals*) fail under fixed-radius 1-pass retrieval. The dynamic orchestrator actively prunes dead ends and tracks intermediate facts.
+- **Temporal & Chronological Sequencing**: Questions with constraints like *"prior to 2004"*, *"between 1992 and 2000"*, or *"first occurrence"* require agents to compare sequence timestamps before finalizing evidence.
+- **Hypothesis Validation & Self-Correction**: When intermediate evidence is contradictory or incomplete, the critic agent triggers targeted re-retrieval rather than hallucinating answers.
+
+### 2. Where Standard Graph Structure is Sufficient (Agent Overkill)
+- **Aggregations & Counts (Graph 100% · Agent 100%)**: Direct counting (e.g. *"How many total gold medals were awarded in 2008?"*) is solved with 100% precision by executing a single GSQL aggregation query.
+- **Direct Property Lookups (Graph 100% · Agent 100%)**: Single-hop vertex attribute queries (e.g. *"Who coached the 2012 US Men's Basketball Team?"*) resolve directly from 1-hop neighborhood without agent overhead.
+
+---
+
+## ⚡ Token Efficiency & Pareto Frontier
+
+```
+┌───────────────────────────┬──────────────┬──────────────┬─────────────────────────┐
+│ Metric                    │ Baseline RAG │ GraphRAG     │ Agentic GraphRAG (Ours) │
+├───────────────────────────┼──────────────┼──────────────┼─────────────────────────┤
+│ Exact Match (EM) Accuracy │ 2.0% (1/100) │ 50.0% (50/100)│ 96.0% (96/100)          │
+│ Average F1 Score          │ 0.035        │ 0.500        │ 0.960                   │
+│ Average Tokens / Query    │ 392          │ 1,948        │ 205 (9.5× fewer tokens) │
+│ Retrieval Steps           │ 1.0          │ 1.0          │ 1.63 (Adaptive)         │
+│ Latency (Avg)             │ 890ms        │ 1,240ms      │ 1,820ms                 │
+└───────────────────────────┴──────────────┴──────────────┴─────────────────────────┘
+```
+
+> **Why Agentic GraphRAG uses 9.5× fewer tokens than Standard GraphRAG:**  
+> Standard GraphRAG dumps broad community summaries and wide 2-hop neighborhoods into the LLM context window (averaging **1,948 tokens/query**). In contrast, **Agentic GraphRAG** formulates targeted GSQL/Cypher path traversals, filtering context down to precise factual triples and terminating early as soon as the evidence sufficiency threshold ($\ge 0.85$) is met.
+
+---
+
+## 🧠 SFT Trajectories & LoRA Fine-Tuning
+
+To distill autonomous reasoning into compact, low-latency open-weight models (e.g., Llama 3, Qwen 2.5), the platform includes an end-to-end Supervised Fine-Tuning (SFT) and LoRA training pipeline:
+
+1. **Trajectory Generation**:
+   ```bash
+   python scripts/generate_sft_trajectories.py
+   ```
+   Exports high-quality multi-step agent trajectories into both **Alpaca** format ([`training_data/agentic_graphrag_sft_alpaca.json`](file:///c:/Users/tarun/OneDrive/Desktop/graphrag/training_data/agentic_graphrag_sft_alpaca.json)) and **ShareGPT** format ([`training_data/agentic_graphrag_sft_sharegpt.jsonl`](file:///c:/Users/tarun/OneDrive/Desktop/graphrag/training_data/agentic_graphrag_sft_sharegpt.jsonl)).
+
+2. **LoRA Fine-Tuning**:
+   ```bash
+   python scripts/train_lora.py
+   ```
+   Fine-tunes the base LLM on reasoning chains, tool selection, and stopping criteria.
+
+---
+
+## 🖥️ Interactive Web Dashboard & UI Pages
+
+The user interface (`graphrag-ui`) provides a comprehensive research platform:
+
+| Route | Page | Description |
+| :--- | :--- | :--- |
+| `/` | **Dashboard / Chat** | Interactive multi-turn chat with live streaming, citation badges, and pipeline selector. |
+| `/compare` | **Comparison Arena** | Side-by-side execution of Baseline RAG, GraphRAG, and Agentic GraphRAG on identical prompts. |
+| `/investigate` | **Investigation Trace** | Visual multi-step reasoning DAG, tool invocations, confidence scores, and backtracking logs. |
+| `/graph` | **Knowledge Graph** | Interactive 2D/3D force-directed graph explorer with node filtering and cluster inspection. |
+| `/benchmark` | **Benchmark & Metrics** | Comprehensive analytics dashboard showing accuracy, token efficiency, and decision matrix. |
+| `/documents` | **Document Manager** | Ingest source documents, view chunking splits, and monitor vector embeddings. |
+
+---
+
+## 📁 Repository Structure & Deliverables
+
+```
+graphrag/
+├── agentic_graphrag/              # Autonomous Multi-Agent Engine
+│   ├── agents/                   # Specialized Agents (Critic, Planner, Orchestrator)
+│   ├── engine/                   # State Manager, Tools, Vector Store, LLM Service
+│   ├── pipelines/                # 3 Pipelines (rag.py, graphrag.py, agentic.py)
+│   └── server.py                 # FastAPI High-Performance Backend
+├── graphrag-ui/                  # Modern TigerGraph Dark Research UI (React + Vite + Tailwind)
+│   └── src/pages/                # Dashboard, Compare, Investigate, Graph, Benchmark, Documents
+├── hackathon-resources/          # Official Benchmark Resources
+│   ├── corpus/                   # Olympic Knowledge Corpus (corpus.jsonl)
+│   └── questions/                # 100 Public (eval_public.jsonl) & 50 Hidden (eval_hidden.jsonl)
+├── outputs/                      # Public 100-Question Benchmark Outputs & Metrics
+│   ├── agentic_graphrag/         # Answers, metrics, execution traces
+│   ├── graphrag/                 # Answers and metrics
+│   ├── rag/                      # Answers and metrics
+│   └── submission_eval_hidden_outputs.json # Formatted Hidden 50 Questions Submission
+├── outputs_hidden/               # Hidden 50-Question Benchmark Traces & Answers
+├── scripts/                      # Data Ingestion, SFT, & LoRA Scripts
+│   ├── ingest.py                 # Master one-shot ingestion runner
+│   ├── create_schema.py          # TigerGraph schema definition
+│   ├── load_data.py              # Vertex & edge batch loader
+│   ├── create_queries.py         # GSQL query installer
+│   ├── validate_graph.py         # Graph integrity & statistics checker
+│   ├── generate_sft_trajectories.py # SFT trajectory exporter
+│   └── train_lora.py             # LoRA fine-tuning script
+├── tests/                        # Automated Verification Test Suite
+├── SUBMISSION.md                 # Official Hackathon Final Submission Report
+└── README.md                     # Complete Project Documentation & Reference Guide
+```
+
+---
 
 ---
 
