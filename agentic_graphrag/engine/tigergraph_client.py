@@ -8,8 +8,12 @@ Provides dual-mode execution:
 from typing import List, Dict, Any, Optional, Set
 import os
 import logging
+from dotenv import load_dotenv
+
+load_dotenv()
 
 logger = logging.getLogger(__name__)
+
 
 
 class TigerGraphClient:
@@ -48,7 +52,15 @@ class TigerGraphClient:
                 graphname=self.graph_name,
             )
             if self.token:
-                conn.apiToken = self.token
+                try:
+                    conn.apiToken = self.token
+                except Exception:
+                    pass
+                try:
+                    conn.getToken(self.token)
+                except Exception:
+                    pass
+
             # Quick probe
             res = conn.getVer()
             if res:
@@ -58,6 +70,7 @@ class TigerGraphClient:
         except Exception as e:
             logger.info(f"TigerGraph server not reachable at {self.host} ({e}). Using embedded knowledge graph engine.")
             self.is_connected = False
+
 
     def add_vertex(self, v_type: str, v_id: str, attributes: Optional[Dict[str, Any]] = None):
         if v_type not in self.vertices:

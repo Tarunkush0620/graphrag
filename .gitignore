@@ -18,3 +18,9 @@ __pycache__/
 
 # Release docs
 /RELEASE_NOTES.md
+
+# Environment variables & local credentials
+.env
+.env.local
+*.env
+
