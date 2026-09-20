@@ -87,3 +87,5 @@ The Benchmark Dashboard is integrated directly into the official **`graphrag-ui`
 - **Public Benchmark Outputs**: [`outputs/agentic_graphrag/answers.json`](file:///c:/Users/tarun/OneDrive/Desktop/graphrag/outputs/agentic_graphrag/answers.json), [`metrics.json`](file:///c:/Users/tarun/OneDrive/Desktop/graphrag/outputs/agentic_graphrag/metrics.json)
 - **Hidden Test Outputs (50 Questions)**: [`outputs/submission_eval_hidden_outputs.json`](file:///c:/Users/tarun/OneDrive/Desktop/graphrag/outputs/submission_eval_hidden_outputs.json)
 - **Frontend Dashboard**: [`graphrag-ui/src/pages/Benchmark.tsx`](file:///c:/Users/tarun/OneDrive/Desktop/graphrag/graphrag-ui/src/pages/Benchmark.tsx)
+- **Interactive Demo Walkthrough Recording**: [`demo_walkthrough.webp`](file:///c:/Users/tarun/OneDrive/Desktop/graphrag/demo_walkthrough.webp)
+
